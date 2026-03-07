@@ -36,9 +36,9 @@ function initEventListeners() {
     const refreshBtn = document.getElementById('refresh-weather');
     const locationBtn = document.getElementById('btn-location');
     const shareBtn = document.getElementById('btn-share');
-    const compareBtn = document.getElementById('btn-compare');
     const telegramBtn = document.getElementById('btn-telegram');
     const scrollToTopBtn = document.getElementById('scroll-to-top');
+    const aiBtn = document.getElementById('btn-ai');
 
     // Кнопки быстрого поиска
     tipButtons.forEach(button => {
@@ -57,7 +57,17 @@ function initEventListeners() {
         }
     });
 
-
+    // ИИ Анализ
+    if (aiBtn) {
+        aiBtn.addEventListener('click', () => {
+            const city = cityInput.value.trim();
+            if (!city && !currentWeatherData) {
+                showNotification('Сначала найдите город для ИИ анализа', 'warning');
+                return;
+            }
+            showNotification('ИИ Анализ в разработке...', 'info');
+        });
+    }
 
     // Обновить погоду
     if (refreshBtn) {
