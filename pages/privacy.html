@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Политика конфиденциальности – WeatherAI</title>
+
+    <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header>
+        <a href="../index.html" class="logo">
+            <i data-lucide="cloud-sun" class="logo-icon"></i>
+            <span><span class="brand-text">Weather</span><span class="brand-highlight">AI</span></span>
+        </a>
+        <div class="header-controls">
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i data-lucide="moon"></i>
+            </button>
+            <select id="lang-select" class="lang-picker">
+                <option value="ru">RU</option>
+                <option value="kk">KK</option>
+                <option value="en">EN</option>
+            </select>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <a href="about.html" data-i18n="footer-about">О проекте</a>
+        <a href="privacy.html" class="active-link" data-i18n="footer-privacy">Конфиденциальность</a>
+        <a href="contact.html" data-i18n="footer-contact">Контакты</a>
+    </nav>
+
+    <main class="privacy-main">
+        <div class="privacy-container">
+            <h1 class="section-title" data-i18n="privacy-title">Политика конфиденциальности</h1>
+
+            <div class="text-block">
+                <p data-i18n="privacy-date">Дата последнего обновления: 18 января 2026</p>
+
+                <h3 data-i18n="privacy-sec1-title">1. Общие положения</h3>
+                <p data-i18n="privacy-sec1-desc">Мы серьезно относимся к вашей конфиденциальности. Этот документ
+                    описывает, как WeatherAI обрабатывает
+                    данные при использовании нашего веб-приложения.</p>
+
+                <h3 data-i18n="privacy-sec2-title">2. Сбор и использование данных</h3>
+                <p><strong data-i18n="privacy-sec2-strong">Мы не собираем личные данные.</strong> <span
+                        data-i18n="privacy-sec2-desc">WeatherAI работает преимущественно на стороне клиента.</span>
+                </p>
+                <ul class="feature-list">
+                    <li><strong data-i18n="privacy-geo-title">Геолокация:</strong> <span
+                            data-i18n="privacy-geo-desc">Используется только для получения данных о погоде в вашем
+                            текущем
+                            местоположении. Координаты отправляются в API Open-Meteo, но не сохраняются на наших
+                            серверах.</span>
+                    </li>
+                    <li><strong data-i18n="privacy-local-title">Локальное хранилище:</strong> <span
+                            data-i18n="privacy-local-desc">Мы используем LocalStorage вашего браузера для сохранения
+                            ваших настроек (тема, язык) и истории поиска городов. Эти данные хранятся только на вашем
+                            устройстве.</span></li>
+                </ul>
+
+                <h3 data-i18n="privacy-sec3-title">3. Сторонние сервисы</h3>
+                <p data-i18n="privacy-sec3-desc">Мы используем следующие сторонние сервисы, которые могут собирать
+                    технические данные:</p>
+                <ul class="tech-list">
+                    <li><strong data-i18n="privacy-api-title">Open-Meteo API:</strong> <span
+                            data-i18n="privacy-api-desc">Для получения погодных данных.</span></li>
+                    <li><strong data-i18n="privacy-map-title">OpenStreetMap & Leaflet:</strong> <span
+                            data-i18n="privacy-map-desc">Для отображения карт.</span></li>
+                </ul>
+
+                <h3 data-i18n="privacy-sec4-title">4. Cookies</h3>
+                <p data-i18n="privacy-sec4-desc">Мы не используем отслеживающие куки (tracking cookies). Мы используем
+                    только технически необходимые
+                    механизмы для сохранения ваших предпочтений.</p>
+
+                <h3 data-i18n="privacy-sec5-title">5. Контакты</h3>
+                <p data-i18n="privacy-sec5-desc">Если у вас есть вопросы по поводу нашей политики конфиденциальности,
+                    пожалуйста, свяжитесь с нами.
+                </p>
+
+                <div class="cta-block">
+                    <a href="../index.html" class="back-btn">
+                        <i data-lucide="arrow-left"></i>
+                        <span data-i18n="btn-back-home">Вернуться на главную</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top" aria-label="Вернуться наверх">
+        <i data-lucide="arrow-up"></i>
+    </button>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <p>&copy; 2026 <strong>Weather<span class="brand-highlight">AI</span></strong>. <span
+                        data-i18n="footer-rights">Все права защищены.</span></p>
+            </div>
+            <nav class="footer-links">
+                <a href="about.html" data-i18n="footer-about">О проекте</a>
+                <a href="privacy.html" class="active-link" data-i18n="footer-privacy">Конфиденциальность</a>
+                <a href="contact.html" data-i18n="footer-contact">Контакты</a>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- Translation files -->
+    <script src="locales/ru.js"></script>
+    <script src="locales/kk.js"></script>
+    <script src="locales/en.js"></script>
+
+    <!-- Core scripts -->
+    <script src="../js/theme.js"></script>
+    <script src="../js/language.js"></script>
+    <script src="../js/scroll.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            initTheme();
+            initLanguage();
+        });
+    </script>
+
+</body>
+
+</html>

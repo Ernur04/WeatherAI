@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherAI – Gardener's Calendar</title>
+
+    <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <a href="../index.html"
+                style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="cloud-sun" class="logo-icon"></i>
+                <span><span class="brand-text">Weather</span><span class="brand-highlight">AI</span></span>
+            </a>
+        </div>
+        <div class="header-controls">
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i data-lucide="moon"></i>
+            </button>
+            <select id="lang-select" class="lang-picker">
+                <option value="ru">RU</option>
+                <option value="kk">KK</option>
+                <option value="en">EN</option>
+            </select>
+            <div class="header-menu-container">
+                <button id="menu-toggle" class="theme-btn" aria-label="Toggle menu">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div id="menu-dropdown" class="menu-dropdown">
+                    <ul>
+                        <li><a href="lunar-calendar.html" data-i18n="menu-lunar">Лунный календарь</a></li>
+                        <li><a href="horoscope.html" data-i18n="menu-horoscope">Гороскоп</a></li>
+                        <li><a href="garden-calendar.html" data-i18n="menu-garden">Лунный календарь садовода и
+                                огородника</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="search-container">
+            <h2 class="hero-title" data-i18n="page-garden-title">Лунный календарь садовода и огородника</h2>
+            <!-- Additional content for Gardener's Calendar will go here -->
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <p>&copy; 2026 <strong>Weather<span class="brand-highlight">AI</span></strong>. <span
+                        data-i18n="footer-rights">Все права защищены.</span></p>
+            </div>
+            <nav class="footer-links">
+                <a href="about.html" data-i18n="footer-about">О проекте</a>
+                <a href="privacy.html" data-i18n="footer-privacy">Конфиденциальность</a>
+                <a href="contact.html" data-i18n="footer-contact">Контакты</a>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top" aria-label="Вернуться наверх">
+        <i data-lucide="arrow-up"></i>
+    </button>
+
+    <!-- Core scripts -->
+    <script src="../js/theme.js"></script>
+    <script src="../js/language.js"></script>
+    <script src="../js/scroll.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Initialize Language and Theme
+        document.addEventListener('DOMContentLoaded', () => {
+            initLanguage();
+            initTheme();
+
+            // Menu toggle logic
+            const menuBtn = document.getElementById('menu-toggle');
+            const menuDropdown = document.getElementById('menu-dropdown');
+
+            if (menuBtn && menuDropdown) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    menuDropdown.classList.toggle('active');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!menuBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+                        menuDropdown.classList.remove('active');
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>

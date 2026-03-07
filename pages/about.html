@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О проекте – WeatherAI</title>
+
+    <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header>
+        <a href="../index.html" class="logo">
+            <i data-lucide="cloud-sun" class="logo-icon"></i>
+            <span><span class="brand-text">Weather</span><span class="brand-highlight">AI</span></span>
+        </a>
+        <div class="header-controls">
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i data-lucide="moon"></i>
+            </button>
+            <select id="lang-select" class="lang-picker">
+                <option value="ru">RU</option>
+                <option value="kk">KK</option>
+                <option value="en">EN</option>
+            </select>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <a href="about.html" class="active-link" data-i18n="footer-about">О проекте</a>
+        <a href="privacy.html" data-i18n="footer-privacy">Конфиденциальность</a>
+        <a href="contact.html" data-i18n="footer-contact">Контакты</a>
+    </nav>
+
+    <main class="about-main">
+        <div class="about-container">
+            <h1 class="section-title" data-i18n="about-header-title">О проекте WeatherAI</h1>
+
+            <div class="text-block">
+                <p data-i18n="about-desc">WeatherAI — это современное приложение для отслеживания погоды, которое
+                    использует передовые
+                    технологии и искусственный интеллект для предоставления точных данных и персонализированных
+                    рекомендаций.</p>
+
+                <h3 data-i18n="about-mission-title">Наша миссия</h3>
+                <p data-i18n="about-mission-desc">Мы стремимся сделать информацию о погоде не только точной, но и
+                    понятной, полезной и красивой. Наша
+                    цель — помочь вам планировать свой день, одеваться по погоде и быть готовыми к любым природным
+                    сюрпризам.</p>
+
+                <h3 data-i18n="about-features-title">Функционал</h3>
+                <ul class="feature-list">
+                    <li><strong data-i18n="feat-prec-title">Точный прогноз:</strong> <span
+                            data-i18n="feat-prec-desc">Текущая погода и прогноз на 7 дней.</span></li>
+                    <li><strong data-i18n="feat-ai-title">ИИ Анализ:</strong> <span data-i18n="feat-ai-desc">Умные
+                            рекомендации по одежде и необходимости зонта.</span></li>
+                    <li><strong data-i18n="feat-comp-title">Сравнение:</strong> <span
+                            data-i18n="feat-comp-desc">Возможность сравнить погоду в двух городах.</span></li>
+                    <li><strong data-i18n="feat-det-title">Детализация:</strong> <span data-i18n="feat-det-desc">Данные
+                            о влажности, ветре, давлении, UV-индексе и др.</span></li>
+                    <li><strong data-i18n="feat-viz-title">Визуализация:</strong> <span
+                            data-i18n="feat-viz-desc">Интерактивные графики и карты.</span></li>
+                </ul>
+
+                <h3 data-i18n="about-tech-title">Технологии</h3>
+                <p data-i18n="about-tech-desc">Проект построен с использованием современных веб-технологий:</p>
+                <ul class="tech-list">
+                    <li data-i18n="tech-1">HTML5 & CSS3 (Custom Properties, Flexbox, Grid)</li>
+                    <li data-i18n="tech-2">Vanilla JavaScript (ES6+)</li>
+                    <li data-i18n="tech-3">Open-Meteo API для данных погоды</li>
+                    <li data-i18n="tech-4">Chart.js для графиков</li>
+                    <li data-i18n="tech-5">Leaflet для карт</li>
+                    <li data-i18n="tech-6">Lucide Icons для иконографии</li>
+                </ul>
+
+                <div class="cta-block">
+                    <a href="../index.html" class="back-btn">
+                        <i data-lucide="arrow-left"></i>
+                        <span data-i18n="btn-back-weather">Вернуться к погоде</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top" aria-label="Вернуться наверх">
+        <i data-lucide="arrow-up"></i>
+    </button>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <p>&copy; 2026 <strong>Weather<span class="brand-highlight">AI</span></strong>. <span
+                        data-i18n="footer-rights">Все права защищены.</span></p>
+            </div>
+            <nav class="footer-links">
+                <a href="about.html" class="active-link" data-i18n="footer-about">О проекте</a>
+                <a href="privacy.html" data-i18n="footer-privacy">Конфиденциальность</a>
+                <a href="contact.html" data-i18n="footer-contact">Контакты</a>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- Translation files -->
+    <script src="locales/ru.js"></script>
+    <script src="locales/kk.js"></script>
+    <script src="locales/en.js"></script>
+
+    <!-- Core scripts -->
+    <!-- Not including api.js and script.js full logic to avoid errors on this page, or partial include -->
+    <!-- Including theme and language is safe, they depend on IDs present in header -->
+    <script src="../js/theme.js"></script>
+    <script src="../js/language.js"></script>
+    <script src="../js/scroll.js"></script>
+    <script>
+        // Init minimal scripts for this page
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            initTheme();
+            initLanguage();
+        });
+    </script>
+
+</body>
+
+</html>

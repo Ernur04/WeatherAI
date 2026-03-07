@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты – WeatherAI</title>
+
+    <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <a href="../index.html" class="logo">
+            <i data-lucide="cloud-sun" class="logo-icon"></i>
+            <span><span class="brand-text">Weather</span><span class="brand-highlight">AI</span></span>
+        </a>
+        <div class="header-controls">
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i data-lucide="moon"></i>
+            </button>
+            <select id="lang-select" class="lang-picker">
+                <option value="ru">RU</option>
+                <option value="kk">KK</option>
+                <option value="en">EN</option>
+            </select>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <a href="about.html" data-i18n="footer-about">О проекте</a>
+        <a href="privacy.html" data-i18n="footer-privacy">Конфиденциальность</a>
+        <a href="contact.html" class="active-link" data-i18n="footer-contact">Контакты</a>
+    </nav>
+
+    <main class="contact-main">
+        <div class="contact-container">
+            <h1 class="section-title" data-i18n="contact-title">Контакты</h1>
+
+            <div class="contact-grid">
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <p class="contact-desc" data-i18n="contact-desc">Есть вопросы или предложения? Мы всегда рады
+                        помочь! Свяжитесь с нами любым
+                        удобным способом.</p>
+
+                    <div class="info-list">
+                        <div class="info-item-row">
+                            <div class="icon-box"><i data-lucide="mail"></i></div>
+                            <div>
+                                <span class="label" data-i18n="contact-email">Email</span>
+                                <a href="mailto:ernur7887aw@gmail.com" class="value">ernur7887aw@gmail.com</a>
+                            </div>
+                        </div>
+
+                        <div class="info-item-row">
+                            <div class="icon-box"><i data-lucide="phone"></i></div>
+                            <div>
+                                <span class="label" data-i18n="contact-phone">Телефон</span>
+                                <a href="tel:+77475001531" class="value">+7 (747) 500-15-31</a>
+                            </div>
+                        </div>
+
+                        <div class="info-item-row">
+                            <div class="icon-box"><i data-lucide="map-pin"></i></div>
+                            <div>
+                                <span class="label" data-i18n="contact-address">Адрес</span>
+                                <span class="value" data-i18n="contact-address-value">г. Тараз, Бауыржан Момышулы 3-Й
+                                    Переулок, 19</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/ernur2004internet?igsh=MWRlYXIyNndtczA3Zg=="
+                            class="social-btn"><i data-lucide="instagram"></i></a>
+                        <a href="https://t.me/god2075" class="social-btn"><i data-lucide="send"></i></a>
+                        <a href="https://github.com/Ernur04" class="social-btn"><i data-lucide="github"></i></a>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <form class="contact-form" id="contact-form">
+                    <div class="form-group">
+                        <label for="name" data-i18n="form-name">Ваше имя</label>
+                        <input type="text" id="name" name="name" placeholder="Иван Иванов" required
+                            data-i18n-placeholder="placeholder-name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" data-i18n="form-email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="ivan@example.com" required
+                            data-i18n-placeholder="placeholder-email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message" data-i18n="form-message">Сообщение</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Ваш вопрос или предложение..."
+                            required data-i18n-placeholder="placeholder-message"></textarea>
+                    </div>
+
+                    <button type="submit" class="search-btn submit-btn" data-i18n="btn-submit">Отправить</button>
+                </form>
+            </div>
+            <div class="cta-block">
+                <a href="../index.html" class="back-btn">
+                    <i data-lucide="arrow-left"></i>
+                    <span data-i18n="btn-back-weather">Вернуться к погоде</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <p>&copy; 2026 <strong>Weather<span class="brand-highlight">AI</span></strong>. <span
+                        data-i18n="footer-rights">Все права защищены.</span></p>
+            </div>
+            <nav class="footer-links">
+                <a href="about.html" data-i18n="footer-about">О проекте</a>
+                <a href="privacy.html" data-i18n="footer-privacy">Конфиденциальность</a>
+                <a href="contact.html" class="active-link" data-i18n="footer-contact">Контакты</a>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- Translation files -->
+    <script src="locales/ru.js"></script>
+    <script src="locales/kk.js"></script>
+    <script src="locales/en.js"></script>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/language.js"></script>
+    <script src="../js/scroll.js"></script>
+    <script>
+        // Инициализация основных функций
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            if (typeof initTheme === 'function') initTheme();
+            if (typeof initLanguage === 'function') initLanguage();
+        });
+
+        // Инициализация верным ключом из вашего скриншота
+        emailjs.init("19hajHSEQw-4Br9Re");
+
+        document.getElementById('contact-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Отправка...';
+            submitBtn.disabled = true;
+
+            const templateParams = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                message: document.getElementById('message').value,
+                title: "WeatherAI: Новое сообщение",
+                time: new Date().toLocaleString()
+            };
+
+            // Используйте ваш ID сервиса и ID шаблона
+            emailjs.send('service_cz4pisk', 'template_wtcu0ig', templateParams)
+                .then(() => {
+                    alert('Успешно отправлено!');
+                    document.getElementById('contact-form').reset();
+                }, (err) => {
+                    alert('Ошибка: ' + JSON.stringify(err));
+                })
+                .finally(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                });
+        });
+    </script>
+
+</body>
+
+</html>

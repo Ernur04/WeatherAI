@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherAI – Прогноз погоды с ИИ</title>
+
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/map.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <i data-lucide="cloud-sun" class="logo-icon"></i>
+            <span><span class="brand-text">Weather</span><span class="brand-highlight">AI</span></span>
+        </div>
+        <div class="header-controls">
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i data-lucide="moon"></i>
+            </button>
+            <select id="lang-select" class="lang-picker">
+                <option value="ru">RU</option>
+                <option value="kk">KK</option>
+                <option value="en">EN</option>
+            </select>
+            <div class="header-menu-container">
+                <button id="menu-toggle" class="theme-btn" aria-label="Toggle menu">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div id="menu-dropdown" class="menu-dropdown">
+                    <ul>
+                        <li><a href="pages/lunar-calendar.html" data-i18n="menu-lunar">Лунный календарь</a></li>
+                        <li><a href="pages/horoscope.html" data-i18n="menu-horoscope">Гороскоп</a></li>
+                        <li><a href="pages/garden-calendar.html" data-i18n="menu-garden">Лунный календарь садовода и
+                                огородника</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="search-container">
+            <h2 class="hero-title">
+                <span data-i18n="hero-title-part1">Узнайте погоду с</span> <span
+                    class="brand-highlight">WeatherAI</span>
+            </h2>
+            <p class="hero-subtitle" data-i18n="hero-subtitle">Точные данные и глубокий анализ нейросетью для вашего
+                комфорта</p>
+
+            <form class="search-form" id="weather-search">
+                <div class="input-wrapper">
+                    <i data-lucide="search" class="search-icon-svg" size="22"></i>
+                    <input type="text" placeholder="Введите ваш город..." id="city-input" autocomplete="off"
+                        data-i18n-placeholder="input-placeholder">
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="search-btn" data-i18n="btn-find">Найти</button>
+                    
+                </div>
+            </form>
+        </div>
+
+        <div class="search-actions">
+            <button class="action-btn" id="btn-location">
+                <i data-lucide="map-pin"></i> <span data-i18n="btn-location">Местоположение</span>
+            </button>
+            <button class="action-btn" id="btn-compare">
+                <i data-lucide="scale"></i> <span data-i18n="btn-compare">Сравнить</span>
+            </button>
+            <button class="action-btn" id="btn-share">
+                <i data-lucide="share-2"></i> <span data-i18n="btn-share">Поделиться</span>
+            </button>
+        </div>
+
+        <div class="quick-tips-container">
+            <p class="quick-tips-title" data-i18n="tips-title">Популярные направления</p>
+
+            <div class="quick-tips-grid">
+                <div class="quick-tips-group">
+                    <span class="group-label" data-i18n="label-kz">Казахстан</span>
+                    <div class="buttons-wrap">
+                        <button type="button" class="tip-btn" data-i18n="city-almaty">Алматы</button>
+                        <button type="button" class="tip-btn" data-i18n="city-astana">Астана</button>
+                        <button type="button" class="tip-btn" data-i18n="city-taraz">Тараз</button>
+                        <button type="button" class="tip-btn" data-i18n="city-shymkent">Шымкент</button>
+                        <button type="button" class="tip-btn" data-i18n="city-aktau">Актау</button>
+                        <button type="button" class="tip-btn" data-i18n="city-karaganda">Караганда</button>
+                        <button type="button" class="tip-btn" data-i18n="city-atyrau">Атырау</button>
+                    </div>
+                </div>
+
+                <div class="quick-tips-group">
+                    <span class="group-label" data-i18n="label-world">Мир</span>
+                    <div class="buttons-wrap">
+                        <button type="button" class="tip-btn" data-i18n="city-moscow">Москва</button>
+                        <button type="button" class="tip-btn" data-i18n="city-dubai">Дубай</button>
+                        <button type="button" class="tip-btn" data-i18n="city-london">Лондон</button>
+                        <button type="button" class="tip-btn" data-i18n="city-tokyo">Токио</button>
+                        <button type="button" class="tip-btn" data-i18n="city-paris">Париж</button>
+                        <button type="button" class="tip-btn" data-i18n="city-newyork">Нью-Йорк</button>
+                        <button type="button" class="tip-btn" data-i18n="city-istanbul">Стамбул</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weather Section (Hidden by default) -->
+        <section class="weather-section" id="weather-section" style="display: none;">
+            <div class="weather-grid">
+                <!-- Main Weather Card -->
+                <div class="weather-card main-card">
+                    <div class="card-header">
+                        <h2><i data-lucide="cloud-sun"></i> <span data-i18n="weather-current-title">Текущая
+                                погода</span></h2>
+                        <button class="refresh-btn" id="refresh-weather" title="Обновить">
+                            <i data-lucide="refresh-cw"></i>
+                        </button>
+                    </div>
+
+                    <div class="weather-main">
+                        <div class="weather-icon-wrapper">
+                            <i data-lucide="cloud-sun" class="weather-icon-large" id="weather-icon" size="180"></i>
+                        </div>
+                        <div class="weather-main-info">
+                            <div class="temperature" id="temperature">--°C</div>
+                            <div class="location-info">
+                                <h3 class="city-name" id="city-name">--</h3>
+                                <p class="country-name" id="country-name">--</p>
+                            </div>
+                            <div class="description" id="description">--</div>
+                            <div class="update-time" id="update-time">
+                                <i data-lucide="clock"></i> <span data-i18n="weather-updated">Обновлено:</span> --
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weather-details">
+                        <div class="detail-item">
+                            <i data-lucide="thermometer" class="detail-icon"></i>
+                            <div class="detail-content">
+                                <div class="detail-label" data-i18n="detail-feels">Ощущается</div>
+                                <div class="detail-value" id="feels-like">--°C</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i data-lucide="droplets" class="detail-icon"></i>
+                            <div class="detail-content">
+                                <div class="detail-label" data-i18n="detail-humidity">Влажность</div>
+                                <div class="detail-value" id="humidity">--%</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i data-lucide="wind" class="detail-icon"></i>
+                            <div class="detail-content">
+                                <div class="detail-label" data-i18n="detail-wind">Ветер</div>
+                                <div class="detail-value" id="wind">-- м/с</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i data-lucide="gauge" class="detail-icon"></i>
+                            <div class="detail-content">
+                                <div class="detail-label" data-i18n="detail-pressure">Давление</div>
+                                <div class="detail-value" id="pressure">-- мм</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i data-lucide="eye" class="detail-icon"></i>
+                            <div class="detail-content">
+                                <div class="detail-label" data-i18n="detail-visibility">Видимость</div>
+                                <div class="detail-value" id="visibility">-- км</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i data-lucide="sun" class="detail-icon"></i>
+                            <div class="detail-content">
+                                <div class="detail-label" data-i18n="detail-uv">UV индекс</div>
+                                <div class="detail-value" id="uv-index">--</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Temperature Chart -->
+                    <div class="chart-container-inline">
+                        <h3><i data-lucide="chart-line"></i> <span data-i18n="chart-title">Температура (7 дней)</span>
+                        </h3>
+                        <canvas id="temperature-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Additional Info Card -->
+                <div class="weather-card info-card">
+                    <h3><i data-lucide="info"></i> <span data-i18n="info-title">Дополнительная информация</span></h3>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <i data-lucide="sunrise" class="info-icon"></i>
+                            <div class="info-content">
+                                <div class="info-label" data-i18n="info-sunrise">Восход</div>
+                                <div class="info-value" id="sunrise">--:--</div>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <i data-lucide="sunset" class="info-icon"></i>
+                            <div class="info-content">
+                                <div class="info-label" data-i18n="info-sunset">Закат</div>
+                                <div class="info-value" id="sunset">--:--</div>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <i data-lucide="cloud" class="info-icon"></i>
+                            <div class="info-content">
+                                <div class="info-label" data-i18n="info-clouds">Облачность</div>
+                                <div class="info-value" id="clouds">--%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Recommendations -->
+                    <div class="ai-recommendations">
+                        <h4><i data-lucide="bot"></i> <span data-i18n="ai-title">Рекомендации AI</span></h4>
+                        <div class="recommendation-list">
+                            <div class="recommendation-item">
+                                <i data-lucide="shirt"></i>
+                                <p id="clothing-advice" data-i18n="ai-advice-clothing">Рекомендуем лёгкую куртку</p>
+                            </div>
+                            <div class="recommendation-item">
+                                <i data-lucide="umbrella"></i>
+                                <p id="umbrella-advice" data-i18n="ai-advice-umbrella">Зонт не понадобится</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Forecast Section (Hidden by default) -->
+        <section id="forecast" class="forecast-section" style="display: none;">
+            <!-- Hourly Forecast -->
+            <div class="hourly-forecast-container">
+                <h3 class="subsection-title"><i data-lucide="clock"></i> <span data-i18n="hourly-title">Почасовой
+                        прогноз</span></h3>
+                <div class="hourly-grid" id="hourly-grid">
+                    <!-- Hourly items will be injected here -->
+                </div>
+            </div>
+
+            <h2 class="section-title"><i data-lucide="calendar"></i> <span data-i18n="forecast-title">Прогноз на 7
+                    дней</span></h2>
+            <div class="forecast-grid" id="forecast-grid"></div>
+        </section>
+
+        <!-- Map Section (Hidden by default) -->
+        <section id="map-section" class="map-section" style="display: none;">
+            <h2 class="section-title"><i data-lucide="map"></i> <span data-i18n="map-title">Интерактивная карта</span>
+            </h2>
+            <div class="map-container-wrapper">
+                <div id="weather-map" class="weather-map-container"></div>
+                <!-- Map Controls -->
+                <div class="map-controls">
+                    <button class="map-btn" data-layer="precipitation">
+                        <i data-lucide="cloud-rain"></i> <span data-i18n="map-btn-precip">Осадки</span>
+                    </button>
+                    <button class="map-btn" data-layer="wind">
+                        <i data-lucide="wind"></i> <span data-i18n="map-btn-wind">Ветер</span>
+                    </button>
+                    <button class="map-btn" data-layer="temp">
+                        <i data-lucide="thermometer"></i> <span data-i18n="map-btn-temp">Температура</span>
+                    </button>
+                    <button class="map-btn" data-layer="clouds">
+                        <i data-lucide="cloud"></i> <span data-i18n="map-btn-clouds">Облачно</span>
+                    </button>
+                    <button class="map-btn" data-layer="snow">
+                        <i data-lucide="snowflake"></i> <span data-i18n="map-btn-snow">Снег</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Locations in KZ Section -->
+        <section id="kz-locations" class="kz-locations-section" style="display: none;">
+            <h2 class="section-title"><i data-lucide="map-pin"></i> <span data-i18n="kz-title">Популярное в
+                    Казахстане</span></h2>
+            <div class="kz-grid" id="kz-grid">
+                <!-- Cards will be injected here -->
+            </div>
+        </section>
+
+        <!-- Use this section for the modal (hidden by default) -->
+        <div id="compare-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2 data-i18n="compare-title">Сравнить погоду</h2>
+                <div class="compare-input-group">
+                    <input type="text" id="compare-city-input" data-i18n-placeholder="compare-input-placeholder"
+                        placeholder="Введите второй город">
+                    <button id="compare-submit-btn" class="search-btn" data-i18n="btn-compare">Сравнить</button>
+                </div>
+                <div id="comparison-results" class="comparison-results" style="display: none;">
+                    <div class="comparison-grid">
+                        <div class="comparison-header">
+                            <h3 id="compare-city-1-name">City 1</h3>
+                            <span class="vs-badge" data-i18n="vs">VS</span>
+                            <h3 id="compare-city-2-name">City 2</h3>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comp-val" id="c1-temp">--</div>
+                            <div class="comp-label"><i data-lucide="thermometer"></i></div>
+                            <div class="comp-val" id="c2-temp">--</div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comp-val" id="c1-feels">--</div>
+                            <div class="comp-label"><i data-lucide="user"></i></div>
+                            <div class="comp-val" id="c2-feels">--</div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comp-val" id="c1-humidity">--</div>
+                            <div class="comp-label"><i data-lucide="droplets"></i></div>
+                            <div class="comp-val" id="c2-humidity">--</div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comp-val" id="c1-wind">--</div>
+                            <div class="comp-label"><i data-lucide="wind"></i></div>
+                            <div class="comp-val" id="c2-wind">--</div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comp-val" id="c1-pressure">--</div>
+                            <div class="comp-label"><i data-lucide="gauge"></i></div>
+                            <div class="comp-val" id="c2-pressure">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <p>&copy; 2026 <strong>Weather<span class="brand-highlight">AI</span></strong>. <span
+                        data-i18n="footer-rights">Все права защищены.</span></p>
+            </div>
+            <nav class="footer-links">
+                <a href="pages/about.html" data-i18n="footer-about">О проекте</a>
+                <a href="pages/privacy.html" data-i18n="footer-privacy">Конфиденциальность</a>
+                <a href="pages/contact.html" data-i18n="footer-contact">Контакты</a>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top" aria-label="Вернуться наверх">
+        <i data-lucide="arrow-up"></i>
+    </button>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Core scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/scroll.js"></script>
+    <script type="module" src="js/map.js"></script>
+    <script type="module" src="js/script.js"></script>
+
+</body>
+
+</html>
+
+</html>

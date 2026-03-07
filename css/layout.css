@@ -1,0 +1,118 @@
+/* Main Layout */
+header {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: var(--bg-card);
+    box-shadow: 0 2px 10px var(--shadow);
+    z-index: 10;
+    transition: background-color 0.3s ease;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text-main);
+}
+
+.logo-icon {
+    color: var(--primary);
+}
+
+.brand-text {
+    color: var(--text-main);
+}
+
+.brand-highlight {
+    color: var(--primary);
+}
+
+.header-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+main {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 5%;
+    gap: 40px;
+    /* Added to align grid content */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Footer */
+footer {
+    flex: 0 0 auto;
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border);
+    padding: 30px 5%;
+    transition: background-color 0.3s ease;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-info p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 25px;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+
+.footer-links a:hover {
+    color: var(--primary);
+}
+
+/* Main Navigation (After Header) */
+.main-nav {
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 15px 5%;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.2s ease;
+}
+
+.main-nav a:hover,
+.main-nav a.active-link {
+    color: var(--primary);
+}
