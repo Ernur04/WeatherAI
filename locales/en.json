@@ -60,6 +60,7 @@
         "Fri",
         "Sat"
     ],
+    "btn-telegram": "Telegram Bot",
     "btn-location": "Location",
     "btn-compare": "Compare",
     "btn-share": "Share",

@@ -37,6 +37,7 @@ function initEventListeners() {
     const locationBtn = document.getElementById('btn-location');
     const shareBtn = document.getElementById('btn-share');
     const compareBtn = document.getElementById('btn-compare');
+    const telegramBtn = document.getElementById('btn-telegram');
     const scrollToTopBtn = document.getElementById('scroll-to-top');
 
     // Кнопки быстрого поиска
@@ -77,6 +78,14 @@ function initEventListeners() {
     // Поделиться
     if (shareBtn) {
         shareBtn.addEventListener('click', shareWeather);
+    }
+
+    // Telegram Бот
+    if (telegramBtn) {
+        telegramBtn.addEventListener('click', () => {
+            // Замените YOUR_BOT_USERNAME на реальное имя пользователя вашего телеграм бота
+            window.open('https://t.me/weatherai_bot', '_blank');
+        });
     }
 
     // Сравнить
@@ -708,17 +717,15 @@ function getCurrentLocation() {
             const { latitude, longitude } = position.coords;
 
             try {
-                const response = await fetch(
-                    `https://geocoding-api.open-meteo.com/v1/search?latitude=${latitude}&longitude=${longitude}&count=1&language=${lang}&format=json`
-                );
-                const data = await response.json();
+                // Используем OpenWeatherMap Reverse Geocoding API
+                const geoResult = await reverseGeocode(latitude, longitude, lang);
 
                 let cityName = 'Ваше местоположение';
                 let country = '';
 
-                if (data.results && data.results.length > 0) {
-                    cityName = data.results[0].name;
-                    country = data.results[0].country;
+                if (geoResult) {
+                    cityName = geoResult.name;
+                    country = geoResult.country;
                 }
 
                 currentCityCoords = {
@@ -741,13 +748,14 @@ function getCurrentLocation() {
         (error) => {
             console.error('Ошибка геолокации:', error);
             const messages = {
-                ru: 'Не удалось определить местоположение',
+                ru: 'Не удалось определить местоположение (возможно, отключен GPS или истекло время)',
                 kk: 'Орынды анықтау мүмкін болмады',
-                en: 'Unable to determine location'
+                en: 'Unable to determine location (GPS may be disabled or timed out)'
             };
             showNotification(messages[lang] || messages.ru, 'error');
             showLoading(false);
-        }
+        },
+        { timeout: 10000, enableHighAccuracy: true, maximumAge: 0 }
     );
 }
 
