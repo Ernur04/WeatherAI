@@ -1,28 +1,70 @@
 const API_BASE_URL = 'https://api.open-meteo.com/v1/forecast';
-const GEOCODING_API_URL = 'https://geocoding-api.open-meteo.com/v1/search';
+
+// OpenWeatherMap Geocoding API
+const OW_GEOCODING_URL = 'https://api.openweathermap.org/geo/1.0/direct';
+const OW_REVERSE_GEOCODING_URL = 'https://api.openweathermap.org/geo/1.0/reverse';
+
+// ⚠️ Замените на ваш API-ключ OpenWeatherMap
+const OW_API_KEY = 'd46762a188a1302d09e6e50bfa7d7dcb';
 
 /**
- * Fetches coordinates for a given city name.
+ * Fetches coordinates for a given city name using OpenWeatherMap Geocoding API.
  * @param {string} city - The name of the city.
- * @returns {Promise<Object|null>} - Returns an object with name, lat, lon, or null if not found.
+ * @returns {Promise<Object|null>} - Returns an object with name, lat, lon, country, or null if not found.
  */
 async function getCoordinates(city) {
     try {
-        const response = await fetch(`${GEOCODING_API_URL}?name=${encodeURIComponent(city)}&count=1&language=ru&format=json`);
+        const response = await fetch(
+            `${OW_GEOCODING_URL}?q=${encodeURIComponent(city)}&limit=1&appid=${OW_API_KEY}`
+        );
         const data = await response.json();
 
-        if (data.results && data.results.length > 0) {
-            const result = data.results[0];
+        if (data && data.length > 0) {
+            const result = data[0];
             return {
-                name: result.name,
-                lat: result.latitude,
-                lon: result.longitude,
+                name: result.local_names?.ru || result.local_names?.en || result.name,
+                lat: result.lat,
+                lon: result.lon,
                 country: result.country
             };
         }
         return null;
     } catch (error) {
         console.error('Error fetching coordinates:', error);
+        return null;
+    }
+}
+
+/**
+ * Reverse geocoding: gets city name from coordinates using OpenWeatherMap.
+ * @param {number} lat - Latitude.
+ * @param {number} lon - Longitude.
+ * @param {string} lang - Language code ('ru', 'en', 'kk').
+ * @returns {Promise<Object|null>} - Returns { name, country } or null.
+ */
+async function reverseGeocode(lat, lon, lang = 'ru') {
+    try {
+        const response = await fetch(
+            `${OW_REVERSE_GEOCODING_URL}?lat=${lat}&lon=${lon}&limit=1&appid=${OW_API_KEY}`
+        );
+        const data = await response.json();
+
+        if (data && data.length > 0) {
+            const result = data[0];
+            // OpenWeather provides local_names for various languages
+            const name =
+                result.local_names?.[lang] ||
+                result.local_names?.ru ||
+                result.local_names?.en ||
+                result.name;
+            return {
+                name,
+                country: result.country
+            };
+        }
+        return null;
+    } catch (error) {
+        console.error('Error reverse geocoding:', error);
         return null;
     }
 }
@@ -48,22 +90,6 @@ async function getWeatherData(lat, lon) {
  * Helper to map WMO weather codes to Lucide icon names and descriptions
  */
 function getWeatherInfo(code) {
-    // WMO Weather interpretation codes (WW)
-    // Code	Description
-    // 0	Clear sky
-    // 1, 2, 3	Mainly clear, partly cloudy, and overcast
-    // 45, 48	Fog and depositing rime fog
-    // 51, 53, 55	Drizzle: Light, moderate, and dense intensity
-    // 56, 57	Freezing Drizzle: Light and dense intensity
-    // 61, 63, 65	Rain: Slight, moderate and heavy intensity
-    // 66, 67	Freezing Rain: Light and heavy intensity
-    // 71, 73, 75	Snow fall: Slight, moderate, and heavy intensity
-    // 77	Snow grains
-    // 80, 81, 82	Rain showers: Slight, moderate, and violent
-    // 85, 86	Snow showers slight and heavy
-    // 95 *	Thunderstorm: Slight or moderate
-    // 96, 99 *	Thunderstorm with slight and heavy hail
-
     const map = {
         0: { icon: 'sun', desc: 'clear' },
         1: { icon: 'sun-dim', desc: 'mostly-clear' },
@@ -97,3 +123,4 @@ function getWeatherInfo(code) {
 
     return map[code] || { icon: 'help-circle', desc: 'unknown' };
 }
+
