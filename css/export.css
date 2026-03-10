@@ -1,0 +1,135 @@
+/**
+ * WeatherAI - Export Constructor Styles
+ */
+
+.export-modal-content {
+    max-width: 550px;
+    width: 95%;
+    position: relative; /* For absolute positioning of close button */
+}
+
+.export-modal-content .close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.export-modal-content .close-modal:hover {
+    color: var(--primary);
+}
+
+.export-options-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+    margin: 20px 0 30px 0;
+}
+
+.export-option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.group-label {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.group-label i {
+    width: 18px;
+    height: 18px;
+    color: var(--primary);
+}
+
+.export-select, .export-date-input {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 12px;
+    border-radius: 12px;
+    font-family: 'Manrope', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.export-select:focus, .export-date-input:focus {
+    border-color: var(--primary);
+}
+
+/* Checkbox & Radio styling */
+.checkbox-group, .radio-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+}
+
+.checkbox-item, .radio-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+.checkbox-item input, .radio-item input {
+    accent-color: var(--primary);
+    width: 18px;
+    height: 18px;
+}
+
+/* Format Chips */
+.format-chips {
+    display: flex;
+    gap: 10px;
+}
+
+.format-btn {
+    flex: 1;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.format-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.export-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.export-main-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+@media (max-width: 480px) {
+    .checkbox-group, .radio-group {
+        grid-template-columns: 1fr 1fr;
+    }
+}

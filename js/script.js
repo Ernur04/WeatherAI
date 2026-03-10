@@ -5,6 +5,10 @@ let currentWeatherData = null;
 let currentCityCoords = null;
 let weatherChart = null;
 
+// Expose data to window for other modules
+window.getCurrentWeatherData = () => currentWeatherData;
+window.getCurrentCityCoords = () => currentCityCoords;
+
 // ========================================
 // ИНИЦИАЛИЗАЦИЯ
 // ========================================
@@ -115,16 +119,14 @@ function initEventListeners() {
     // Using event delegation for closes or multiple handlers
     document.querySelectorAll('.close-modal').forEach(btn => {
         btn.onclick = function () {
-            if (compareModal) compareModal.style.display = "none";
-
+            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
         }
     });
 
     window.onclick = function (event) {
-        if (event.target == compareModal) {
-            compareModal.style.display = "none";
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = "none";
         }
-
     }
 
     // Compare submit

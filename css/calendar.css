@@ -471,3 +471,129 @@
         height: 200px !important;
     }
 }
+
+/* Mini Calendar Popup Styles */
+.calendar-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.calendar-popup {
+    position: absolute;
+    top: calc(100% + 15px);
+    right: 0;
+    width: 300px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 15px;
+    box-shadow: 0 10px 30px var(--shadow);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    animation: fadeIn 0.3s ease;
+}
+
+.calendar-popup.active {
+    display: flex;
+}
+
+.calendar-header-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.calendar-header-nav h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-main);
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: var(--text-main);
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.nav-btn:hover {
+    background: var(--tip-bg);
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.calendar-weekdays .weekend {
+    color: #ff6b6b;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+    color: var(--text-main);
+}
+
+.calendar-day:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.calendar-day.today {
+    background: var(--primary);
+    color: white;
+    font-weight: 800;
+}
+
+.calendar-day.holiday {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+    font-weight: 700;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.calendar-day.holiday:hover {
+    background: #ff6b6b;
+    color: white;
+}
+
+.calendar-day.empty {
+    cursor: default;
+}
+
+.calendar-day.empty:hover {
+    background: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

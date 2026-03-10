@@ -39,6 +39,18 @@ async function initLanguage() {
                 el.placeholder = window.translations[lang][key];
             }
         });
+
+        // Translate document title
+        const titleEl = document.querySelector('[data-i18n-page-title]');
+        if (titleEl) {
+            const key = titleEl.getAttribute('data-i18n-page-title');
+            if (window.translations[lang] && window.translations[lang][key]) {
+                document.title = window.translations[lang][key];
+            }
+        }
+
+        // Dispatch global event for other modules
+        window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang: lang } }));
     }
 
     const savedLang = localStorage.getItem('preferredLang') || 'ru';
