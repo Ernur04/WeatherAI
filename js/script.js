@@ -43,6 +43,7 @@ function initEventListeners() {
     const telegramBtn = document.getElementById('btn-telegram');
     const scrollToTopBtn = document.getElementById('scroll-to-top');
     const aiBtn = document.getElementById('btn-ai');
+    const compareBtn = document.getElementById('btn-compare');
 
     // Кнопки быстрого поиска
     tipButtons.forEach(button => {
@@ -98,7 +99,7 @@ function initEventListeners() {
     if (telegramBtn) {
         telegramBtn.addEventListener('click', () => {
             // Замените YOUR_BOT_USERNAME на реальное имя пользователя вашего телеграм бота
-            window.open('https://t.me/weatherai_bot', '_blank');
+            window.open('https://t.me/WeatherAI_v2_bot', '_blank');
         });
     }
 

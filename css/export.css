@@ -3,14 +3,15 @@
  */
 
 .export-modal-content {
-    max-width: 550px;
+    max-width: 900px;
     width: 95%;
-    position: relative; /* For absolute positioning of close button */
+    position: relative;
+    padding: 30px;
 }
 
 .export-modal-content .close-modal {
     position: absolute;
-    top: 15px;
+    top: 20px;
     right: 20px;
     font-size: 24px;
     cursor: pointer;
@@ -23,11 +24,51 @@
     color: var(--primary);
 }
 
-.export-options-grid {
+.export-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-right: 30px; /* Space for close button */
+}
+
+.export-lang-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-card);
+    padding: 5px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+}
+
+.export-lang-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.lang-picker {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Layout Grid */
+.export-layout {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.export-options-grid {
+    display: flex;
+    flex-direction: column;
     gap: 25px;
-    margin: 20px 0 30px 0;
 }
 
 .export-option-group {
@@ -57,7 +98,7 @@
     color: var(--text-main);
     padding: 12px;
     border-radius: 12px;
-    font-family: 'Manrope', sans-serif;
+    font-family: inherit;
     outline: none;
     transition: border-color 0.2s;
 }
@@ -66,26 +107,72 @@
     border-color: var(--primary);
 }
 
-/* Checkbox & Radio styling */
-.checkbox-group, .radio-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 12px;
+.custom-range-inputs {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 5px;
 }
 
-.checkbox-item, .radio-item {
+.custom-range-inputs.active {
+    display: flex;
+}
+
+/* Checkboxes */
+.checkbox-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.checkbox-chip {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    padding: 10px 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     gap: 10px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: var(--text-main);
 }
 
-.checkbox-item input, .radio-item input {
+.checkbox-chip:hover {
+    border-color: var(--primary);
+}
+
+.checkbox-chip input {
     accent-color: var(--primary);
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
+}
+
+/* Toggle Chips Group */
+.toggle-chips-group {
+    display: flex;
+    gap: 10px;
+    background: var(--bg-input);
+    padding: 5px;
+    border-radius: 15px;
+    border: 1px solid var(--border);
+}
+
+.toggle-chip {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.toggle-chip.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
 }
 
 /* Format Chips */
@@ -96,40 +183,203 @@
 
 .format-btn {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
     background: var(--bg-input);
     border: 1px solid var(--border);
     color: var(--text-main);
-    padding: 10px;
-    border-radius: 10px;
+    padding: 15px 10px;
+    border-radius: 15px;
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s ease;
+    position: relative;
+}
+
+.format-btn i {
+    width: 24px;
+    height: 24px;
+    color: var(--text-muted);
+    transition: color 0.3s;
 }
 
 .format-btn.active {
-    background: var(--primary);
-    color: white;
+    background: var(--bg-background);
     border-color: var(--primary);
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    color: var(--primary);
+    box-shadow: inset 0 0 0 1px var(--primary), 0 4px 12px rgba(0, 123, 255, 0.1);
 }
 
-.export-footer {
+.format-btn.active i {
+    color: var(--primary);
+}
+
+/* Tooltips */
+.has-tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    z-index: 100;
+    font-weight: 400;
+    pointer-events: none;
+}
+
+.has-tooltip:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(0,0,0,0.8);
+    pointer-events: none;
+}
+
+/* Preview Column */
+.export-preview-col {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.export-main-btn {
-    width: 100%;
-    padding: 15px;
-    font-size: 1rem;
+.export-preview-box {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 250px;
+}
+
+.export-preview-placeholder {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    padding: 20px;
+    text-align: center;
 }
 
-@media (max-width: 480px) {
-    .checkbox-group, .radio-group {
+.export-preview-content {
+    margin: 0;
+    padding: 20px;
+    background: #1e1e1e;
+    color: #e4e4e4;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    overflow-y: auto;
+    flex: 1;
+    white-space: pre-wrap;
+    border-radius: 15px;
+}
+
+/* Footer & Buttons */
+.export-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    margin-top: 10px;
+}
+
+.export-footer-right {
+    display: flex;
+    gap: 15px;
+}
+
+.export-secondary-btn {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 12px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.export-secondary-btn:hover {
+    background: var(--bg-card);
+    border-color: #ff6b6b; /* Red tint for reset, maybe handle preview differently if needed via classes */
+}
+
+#preview-export-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.export-main-btn {
+    padding: 12px 25px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 12px;
+}
+
+.btn-loading {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+}
+
+.btn-loading::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spinner 0.8s linear infinite;
+}
+
+@keyframes spinner {
+    to { transform: rotate(360deg); }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .export-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .export-preview-box {
+        min-height: 200px;
+    }
+    
+    .export-footer {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .export-footer-left, .export-footer-right {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .export-footer-right {
         grid-template-columns: 1fr 1fr;
     }
 }

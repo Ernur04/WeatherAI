@@ -28,7 +28,11 @@ async function initLanguage() {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             if (window.translations[lang] && window.translations[lang][key]) {
-                el.textContent = window.translations[lang][key];
+                if (el.tagName.toLowerCase() === 'optgroup') {
+                    el.label = window.translations[lang][key];
+                } else {
+                    el.textContent = window.translations[lang][key];
+                }
             }
         });
 
@@ -37,6 +41,14 @@ async function initLanguage() {
             const key = el.getAttribute('data-i18n-placeholder');
             if (window.translations[lang] && window.translations[lang][key]) {
                 el.placeholder = window.translations[lang][key];
+            }
+        });
+
+        // Translate tooltips
+        document.querySelectorAll('[data-i18n-tooltip]').forEach(el => {
+            const key = el.getAttribute('data-i18n-tooltip');
+            if (window.translations[lang] && window.translations[lang][key]) {
+                el.setAttribute('data-tooltip', window.translations[lang][key]);
             }
         });
 
