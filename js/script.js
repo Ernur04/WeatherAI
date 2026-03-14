@@ -296,12 +296,14 @@ async function loadWeatherData(lat, lon, cityName, country) {
         // Обновляем UI
         updateCurrentWeather(weather, cityName, country);
         updateForecast(weather);
+        updateLunarCalendar(weather);
         updateHourlyForecast(weather);
         updateChart(weather);
         if (window.initInteractiveMap) {
             window.initInteractiveMap(lat, lon, cityName);
         }
         updateAIRecommendations(weather);
+        updateHealthAndSpace(weather);
 
         // Показываем секции
         document.getElementById('weather-section').style.display = 'block';
@@ -404,6 +406,76 @@ function updateForecast(weather) {
             </div>
         `;
         forecastGrid.insertAdjacentHTML('beforeend', cardHtml);
+    }
+}
+
+// ========================================
+// ОБНОВЛЕНИЕ ЛУННОГО КАЛЕНДАРЯ
+// ========================================
+function updateLunarCalendar(weather) {
+    const lunarGrid = document.getElementById('lunar-grid');
+    if (!lunarGrid) return;
+    lunarGrid.innerHTML = '';
+
+    const lang = document.getElementById('lang-select').value;
+    const weekdays = translations[lang].weekdays || ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+    const todayText = translations[lang]['forecast-today'] || 'Сегодня';
+
+    const daily = weather.daily;
+    const knownNewMoon = new Date('2024-01-11T11:57:00Z').getTime();
+    const lunarCycle = 29.53058867 * 24 * 60 * 60 * 1000;
+
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(daily.time[i]);
+        const dayName = i === 0 ? todayText : weekdays[date.getDay()];
+        
+        // Calculate moon phase for each day at noon
+        date.setHours(12, 0, 0, 0);
+        const targetTime = date.getTime();
+        const phaseValue = ((targetTime - knownNewMoon) % lunarCycle) / lunarCycle;
+
+        let moonName = '';
+        let moonIcon = 'moon';
+        let illumination = 0;
+
+        if (phaseValue < 0.03 || phaseValue > 0.97) {
+            moonName = { ru: 'Новолуние', kk: 'Жаңа ай', en: 'New Moon' };
+            illumination = 0;
+        } else if (phaseValue < 0.22) {
+            moonName = { ru: 'Растущая', kk: 'Өсіп келе жатқан', en: 'Waxing' };
+            illumination = phaseValue * 2 * 100;
+        } else if (phaseValue < 0.28) {
+            moonName = { ru: 'I четверть', kk: 'I ширек', en: 'First Qtr' };
+            illumination = 50;
+        } else if (phaseValue < 0.47) {
+            moonName = { ru: 'Растущая', kk: 'Өсіп келе жатқан', en: 'Waxing' };
+            illumination = phaseValue * 2 * 100;
+        } else if (phaseValue < 0.53) {
+            moonName = { ru: 'Полнолуние', kk: 'Толық ай', en: 'Full Moon' };
+            illumination = 100;
+        } else if (phaseValue < 0.72) {
+            moonName = { ru: 'Убывающая', kk: 'Кеміп бара жатқан', en: 'Waning' };
+            illumination = (1 - phaseValue) * 2 * 100;
+        } else if (phaseValue < 0.78) {
+            moonName = { ru: 'III четверть', kk: 'III ширек', en: 'Last Qtr' };
+            illumination = 50;
+        } else {
+            moonName = { ru: 'Убывающая', kk: 'Кеміп бара жатқан', en: 'Waning' };
+            illumination = (1 - phaseValue) * 2 * 100;
+        }
+
+        const mName = moonName[lang] || moonName.ru;
+        const illumText = Math.round(illumination) + '%';
+
+        const cardHtml = `
+            <div class="forecast-card lunar-card">
+                <div class="forecast-day">${dayName}</div>
+                <div class="lunar-icon"><i data-lucide="${moonIcon}"></i></div>
+                <div class="lunar-name">${mName}</div>
+                <div class="lunar-illum">${illumText}</div>
+            </div>
+        `;
+        lunarGrid.insertAdjacentHTML('beforeend', cardHtml);
     }
 }
 
@@ -611,10 +683,16 @@ async function updateKZLocations() {
             // Select city name based on language, fallback to Russian if missing
             const cityName = city.name[lang] || city.name.ru;
 
+            let tempClass = 'temp-cool';
+            if (temp < 0) tempClass = 'temp-cold';
+            else if (temp < 15) tempClass = 'temp-cool';
+            else if (temp < 25) tempClass = 'temp-warm';
+            else tempClass = 'temp-hot';
+
             const cardHtml = `
-                <div class="kz-card" onclick="document.getElementById('city-input').value='${cityName}'; document.getElementById('weather-search').dispatchEvent(new Event('submit'));">
+                <div class="kz-card ${tempClass}" onclick="document.getElementById('city-input').value='${cityName}'; document.getElementById('weather-search').dispatchEvent(new Event('submit'));">
                     <div class="kz-city-name">${cityName}</div>
-                    <div class="kz-icon"><i data-lucide="${weatherInfo.icon}" style="width: 48px; height: 48px;"></i></div>
+                    <div class="kz-icon"><i data-lucide="${weatherInfo.icon}" style="width: 54px; height: 54px;"></i></div>
                     <div class="kz-temp">${temp}°C</div>
                     <div class="kz-desc">${desc}</div>
                 </div>
@@ -705,6 +783,97 @@ function updateAIRecommendations(weather) {
 
     document.getElementById('clothing-advice').textContent = clothingAdvice[lang] || clothingAdvice.ru;
     document.getElementById('umbrella-advice').textContent = umbrellaAdvice[lang] || umbrellaAdvice.ru;
+}
+
+// ========================================
+// ЗДОРОВЬЕ И КОСМОС
+// ========================================
+function updateHealthAndSpace(weather) {
+    const daily = weather.daily;
+    const lang = document.getElementById('lang-select').value;
+
+    // --- UV Index ---
+    const uvMax = daily.uv_index_max[0] || daily.uv_index_clear_sky_max?.[0] || 0;
+    const uvValEl = document.getElementById('uv-health-val');
+    const uvDescEl = document.getElementById('uv-health-desc');
+    const uvIconEl = document.getElementById('uv-health-icon');
+
+    uvValEl.textContent = uvMax.toFixed(1);
+
+    let uvDesc = '';
+    let iconColor = '';
+    if (uvMax <= 2) {
+        uvDesc = { ru: 'Низкий. Защита не нужна.', kk: 'Төмен. Қорғау қажет емес.', en: 'Low. No protection needed.' };
+        iconColor = '#10b981'; // green
+    } else if (uvMax <= 5) {
+        uvDesc = { ru: 'Умеренный. Нужна защита.', kk: 'Орташа. Қорғау қажет.', en: 'Moderate. Protection needed.' };
+        iconColor = '#fbbf24'; // yellow
+    } else if (uvMax <= 7) {
+        uvDesc = { ru: 'Высокий. Нужна защита от солнца!', kk: 'Жоғары. Күннен қорғау қажет!', en: 'High. Sun protection essential!' };
+        iconColor = '#f59e0b'; // orange
+    } else if (uvMax <= 10) {
+        uvDesc = { ru: 'Очень высокий. Меньше будьте на солнце.', kk: 'Өте жоғары. Күн көзінде аз болыңыз.', en: 'Very High. Minimize sun exposure.' };
+        iconColor = '#ef4444'; // red
+    } else {
+        uvDesc = { ru: 'Экстремальный. Оставайтесь в тени.', kk: 'Төтенше. Көлеңкеде қалыңыз.', en: 'Extreme. Stay in the shade.' };
+        iconColor = '#8b5cf6'; // purple
+    }
+
+    uvDescEl.textContent = uvDesc[lang] || uvDesc.ru;
+    uvIconEl.style.color = iconColor;
+
+    // --- Moon Phase (Simple heuristic) ---
+    // Calculate days since a known New Moon (e.g. Jan 11, 2024 at 11:57 UTC)
+    const knownNewMoon = new Date('2024-01-11T11:57:00Z').getTime();
+    const now = new Date().getTime();
+    const lunarCycle = 29.53058867 * 24 * 60 * 60 * 1000; // milliseconds in a lunar cycle
+    const phaseValue = ((now - knownNewMoon) % lunarCycle) / lunarCycle;
+
+    // 8 Phases
+    let moonName = '';
+    let moonIcon = 'moon';
+    // Illumination %
+    let illumination = 0;
+
+    if (phaseValue < 0.03 || phaseValue > 0.97) {
+        moonName = { ru: 'Новолуние', kk: 'Жаңа ай', en: 'New Moon' };
+        illumination = 0;
+    } else if (phaseValue < 0.22) {
+        moonName = { ru: 'Растущий серп', kk: 'Өсіп келе жатқан ай', en: 'Waxing Crescent' };
+        illumination = phaseValue * 2 * 100;
+    } else if (phaseValue < 0.28) {
+        moonName = { ru: 'Первая четверть', kk: 'Бірінші ширек', en: 'First Quarter' };
+        illumination = 50;
+    } else if (phaseValue < 0.47) {
+        moonName = { ru: 'Растущая луна', kk: 'Өсіп келе жатқан толық ай', en: 'Waxing Gibbous' };
+        illumination = phaseValue * 2 * 100;
+    } else if (phaseValue < 0.53) {
+        moonName = { ru: 'Полнолуние', kk: 'Толық ай', en: 'Full Moon' };
+        illumination = 100;
+    } else if (phaseValue < 0.72) {
+        moonName = { ru: 'Убывающая луна', kk: 'Кеміп бара жатқан толық ай', en: 'Waning Gibbous' };
+        illumination = (1 - phaseValue) * 2 * 100;
+    } else if (phaseValue < 0.78) {
+        moonName = { ru: 'Последняя четверть', kk: 'Соңғы ширек', en: 'Last Quarter' };
+        illumination = 50;
+    } else {
+        moonName = { ru: 'Убывающий серп', kk: 'Кеміп бара жатқан ай', en: 'Waning Crescent' };
+        illumination = (1 - phaseValue) * 2 * 100;
+    }
+
+    document.getElementById('moon-phase-name').textContent = moonName[lang] || moonName.ru;
+    
+    // Formatting text and updating it for the translations
+    const illumText = Math.round(illumination) + '% ' + (
+        lang === 'ru' ? 'освещено' : 
+        lang === 'kk' ? 'жарық' : 
+        'illuminated'
+    );
+    document.getElementById('moon-illumination').textContent = illumText;
+    
+    // Update the icon
+    const moonIconContainer = document.getElementById('moon-phase-icon');
+    moonIconContainer.innerHTML = `<i data-lucide="${moonIcon}"></i>`;
 }
 
 // ========================================

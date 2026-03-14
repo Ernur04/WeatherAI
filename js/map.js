@@ -59,6 +59,11 @@ export async function switchMapLayer(layerType) {
 
     currentLayerType = layerType;
 
+    if (layerType === 'none') {
+        showLoadingToast('Возврат к обычной карте...');
+        return; // Layer is already removed above.
+    }
+
     if (layerType === 'precipitation') {
         showLoadingToast('Загрузка осадков...');
         await loadRainViewerLayer();
@@ -106,15 +111,15 @@ async function loadGridLayer(type) {
     const east = bounds.getEast();
     const west = bounds.getWest();
 
-    // Create a 5x5 grid
-    const latStep = (north - south) / 5;
-    const lonStep = (east - west) / 5;
+    // Create a thicker 7x7 grid for better visual density
+    const latStep = (north - south) / 7;
+    const lonStep = (east - west) / 7;
 
     const lats = [];
     const lons = [];
 
-    for (let i = 0; i < 5; i++) {
-        for (let j = 0; j < 5; j++) {
+    for (let i = 0; i < 7; i++) {
+        for (let j = 0; j < 7; j++) {
             lats.push(south + i * latStep + latStep / 2);
             lons.push(west + j * lonStep + lonStep / 2);
         }
@@ -124,7 +129,7 @@ async function loadGridLayer(type) {
     const params = new URLSearchParams({
         latitude: lats.join(','),
         longitude: lons.join(','),
-        current: 'temperature_2m,wind_speed_10m,wind_direction_10m,cloud_cover,snowfall',
+        current: 'temperature_2m,wind_speed_10m,wind_direction_10m,cloud_cover,snowfall,precipitation',
         wind_speed_unit: 'ms'
     });
 
@@ -142,46 +147,59 @@ async function loadGridLayer(type) {
             const lon = lons[index];
             const current = point.current;
 
+            if (!current) return;
+
             let iconHtml = '';
+            let popupHtml = '';
 
             if (type === 'temp') {
                 const temp = Math.round(current.temperature_2m);
                 const color = getTempColor(temp);
-                iconHtml = `<div class="weather-marker-icon" style="background-color: ${color}; width: 30px; height: 30px;">${temp}°</div>`;
+                iconHtml = `<div class="weather-marker-icon" style="background-color: ${color}; width: 34px; height: 34px;">${temp}°</div>`;
+                popupHtml = `<b>Температура:</b> ${temp}°C`;
             } else if (type === 'wind') {
                 const speed = Math.round(current.wind_speed_10m);
                 const deg = current.wind_direction_10m;
                 // Color scale for wind: Green -> Yellow -> Red
                 const color = getWindColor(speed);
                 iconHtml = `
-                    <div style="transform: rotate(${deg}deg); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                    <div style="transform: rotate(${deg}deg); width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;">
                         <div class="wind-arrow" style="border-bottom-color: ${color};"></div>
                     </div>
-                    <div class="marker-label" style="text-shadow: 1px 1px 2px black; color: white; font-weight: bold;">${speed}</div>
+                    <div class="marker-label" style="text-shadow: 1px 1px 3px black; color: white; font-weight: 800; font-size: 14px;">${speed}</div>
                 `;
+                popupHtml = `<b>Ветер:</b> ${speed} м/с<br><b>Направление:</b> ${deg}°`;
             } else if (type === 'clouds') {
                 const cover = current.cloud_cover;
-                const alpha = Math.max(0.2, cover / 100);
-                iconHtml = `<div class="weather-marker-icon" style="background-color: rgba(100, 100, 100, ${alpha}); width: 30px; height: 30px;">
-                    <i data-lucide="cloud" style="width: 16px; height: 16px;"></i>
-                </div>`;
+                const alpha = Math.max(0.3, cover / 100);
+                if (cover > 5) {
+                    iconHtml = `<div class="weather-marker-icon" style="background-color: rgba(140, 150, 160, ${alpha}); width: 34px; height: 34px;">
+                        <i data-lucide="cloud" style="width: 18px; height: 18px;"></i>
+                    </div>`;
+                    popupHtml = `<b>Облачность:</b> ${cover}%`;
+                }
             } else if (type === 'snow') {
                 const snow = current.snowfall;
                 if (snow > 0) {
-                    iconHtml = `<div class="weather-marker-icon" style="background-color: #a0d8ef; width: 30px; height: 30px;">
-                        <i data-lucide="snowflake" style="width: 16px; height: 16px;"></i>
+                    iconHtml = `<div class="weather-marker-icon" style="background-color: #74b9ff; width: 34px; height: 34px;">
+                        <i data-lucide="snowflake" style="width: 18px; height: 18px;"></i>
                     </div>`;
+                    popupHtml = `<b>Снег:</b> ${snow} мм`;
                 }
             }
 
             if (iconHtml) {
                 const icon = L.divIcon({
                     html: iconHtml,
-                    className: 'custom-weather-marker',
-                    iconSize: [30, 30],
-                    iconAnchor: [15, 15]
+                    className: 'custom-weather-marker animate-marker',
+                    iconSize: [34, 34],
+                    iconAnchor: [17, 17]
                 });
-                markersGroup.addLayer(L.marker([lat, lon], { icon: icon }));
+                const marker = L.marker([lat, lon], { icon: icon });
+                if(popupHtml) {
+                    marker.bindPopup(popupHtml);
+                }
+                markersGroup.addLayer(marker);
             }
         });
 

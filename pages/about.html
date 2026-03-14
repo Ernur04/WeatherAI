@@ -14,6 +14,7 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/calendar.css">
 
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -29,6 +30,22 @@
             <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
                 <i data-lucide="moon"></i>
             </button>
+            <div class="calendar-container">
+                <button id="calendar-toggle" class="theme-btn" aria-label="Open calendar">
+                    <i data-lucide="calendar"></i>
+                </button>
+                <div id="calendar-popup" class="calendar-popup">
+                    <div class="calendar-header-nav">
+                        <button id="prev-month" class="nav-btn"><i data-lucide="chevron-left"></i></button>
+                        <h3 id="calendar-month-year"></h3>
+                        <button id="next-month" class="nav-btn"><i data-lucide="chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-weekdays">
+                        <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div class="weekend">Сб</div><div class="weekend">Вс</div>
+                    </div>
+                    <div id="calendar-days" class="calendar-days"></div>
+                </div>
+            </div>
             <select id="lang-select" class="lang-picker">
                 <option value="ru">RU</option>
                 <option value="kk">KK</option>
@@ -71,6 +88,10 @@
                             о влажности, ветре, давлении, UV-индексе и др.</span></li>
                     <li><strong data-i18n="feat-viz-title">Визуализация:</strong> <span
                             data-i18n="feat-viz-desc">Интерактивные графики и карты.</span></li>
+                    <li><strong data-i18n="feat-export-title">Экспорт данных:</strong> <span
+                            data-i18n="feat-export-desc">Выгрузка истории и прогнозов в JSON, CSV, Excel.</span></li>
+                    <li><strong data-i18n="feat-extra-title">Полезные сервисы:</strong> <span
+                            data-i18n="feat-extra-desc">Лунный календарь, гороскоп и Telegram-бот.</span></li>
                 </ul>
 
                 <h3 data-i18n="about-tech-title">Технологии</h3>
@@ -123,6 +144,7 @@
     <!-- Including theme and language is safe, they depend on IDs present in header -->
     <script src="../js/theme.js"></script>
     <script src="../js/language.js"></script>
+    <script src="../js/calendar.js"></script>
     <script src="../js/scroll.js"></script>
     <script>
         // Init minimal scripts for this page

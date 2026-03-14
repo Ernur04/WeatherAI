@@ -279,12 +279,41 @@
                             </div>
                             <div class="recommendation-item">
                                 <i data-lucide="umbrella"></i>
-                                <p id="umbrella-advice" data-i18n="ai-advice-umbrella">Зонт не понадобится</p>
+                                <p id="umbrella-advice" data-i18n="ai-advice-umbrella">Зонт не нужен</p>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div> <!-- End weather-cards grid -->
+
+            <!-- Health & Space Section -->
+            <div class="health-space-grid">
+                <div class="weather-card health-card">
+                    <h3><i data-lucide="heart-pulse"></i> <span data-i18n="health-title">Здоровье и комфорт</span></h3>
+                    <div class="health-item">
+                        <div class="health-icon" id="uv-health-icon"><i data-lucide="sun"></i></div>
+                        <div class="health-info">
+                            <span class="health-label" data-i18n="uv-index-label">УФ-индекс</span>
+                            <span class="health-value" id="uv-health-val">--</span>
+                        </div>
+                        <div class="health-desc" id="uv-health-desc">...</div>
+                    </div>
+                </div>
+                
+                <div class="weather-card moon-card">
+                    <h3><i data-lucide="moon"></i> <span data-i18n="moon-title">Фаза Луны</span></h3>
+                    <div class="moon-item">
+                        <div class="moon-icon-container" id="moon-phase-icon">
+                            <i data-lucide="moon"></i>
+                        </div>
+                        <div class="moon-info">
+                            <span class="moon-phase-name" id="moon-phase-name">--</span>
+                            <span class="moon-illumination" id="moon-illumination">--</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
         </section>
 
         <!-- Forecast Section (Hidden by default) -->
@@ -301,6 +330,9 @@
             <h2 class="section-title"><i data-lucide="calendar"></i> <span data-i18n="forecast-title">Прогноз на 7
                     дней</span></h2>
             <div class="forecast-grid" id="forecast-grid"></div>
+
+            <h2 class="section-title" style="margin-top: 40px;"><i data-lucide="moon"></i> <span data-i18n="lunar-calendar-title">Лунный Календарь на 7 дней</span></h2>
+            <div class="forecast-grid" id="lunar-grid"></div>
         </section>
 
         <!-- Map Section (Hidden by default) -->
@@ -311,6 +343,9 @@
                 <div id="weather-map" class="weather-map-container"></div>
                 <!-- Map Controls -->
                 <div class="map-controls">
+                    <button class="map-btn active" data-layer="none">
+                        <i data-lucide="map"></i> <span data-i18n="map-btn-none">Обычная</span>
+                    </button>
                     <button class="map-btn" data-layer="precipitation">
                         <i data-lucide="cloud-rain"></i> <span data-i18n="map-btn-precip">Осадки</span>
                     </button>
