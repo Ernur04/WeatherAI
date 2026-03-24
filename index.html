@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="css/map.css">
     <link rel="stylesheet" href="css/calendar.css">
     <link rel="stylesheet" href="css/export.css">
+    <link rel="stylesheet" href="css/ai-modal.css">
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -555,6 +556,68 @@
                 </div>
             </div>
         </div>
+
+        <!-- AI Analysis Modal -->
+        <div id="ai-modal" class="modal">
+            <div class="modal-content ai-modal-content">
+                <div class="ai-modal-header">
+                    <h2 class="ai-modal-title"><i data-lucide="sparkles"></i> <span data-i18n="ai-modal-title">ИИ Анализ Погоды</span></h2>
+                    <button class="ai-close-btn" id="close-ai-modal" aria-label="Close AI"><i data-lucide="x"></i></button>
+                </div>
+                
+                <!-- Tabs Navigation -->
+                <div class="ai-tabs">
+                    <button class="ai-tab-btn active" data-tab="tab-chat"><i data-lucide="message-square"></i> Чат с ИИ</button>
+                    <button class="ai-tab-btn" data-tab="tab-cities"><i data-lucide="globe"></i> Города</button>
+                </div>
+
+                <!-- Tab: AI Chat -->
+                <div id="tab-chat" class="ai-tab-content active">
+                    <div class="ai-chat-container">
+                        <div class="ai-chat-controls">
+                            <span class="ai-chat-subtitle">Диалог с ИИ</span>
+                            <button id="ai-clear-chat" class="ai-clear-btn" title="Очистить историю"><i data-lucide="trash-2"></i></button>
+                        </div>
+                        <div class="ai-chat-messages" id="ai-chat-messages">
+                            <!-- Messages will be injected here -->
+                        </div>
+                        <div class="ai-quick-prompts" id="ai-quick-prompts">
+                            <button class="ai-prompt-chip">Что надеть сегодня?</button>
+                            <button class="ai-prompt-chip">Нужен ли зонт?</button>
+                            <button class="ai-prompt-chip">Стоит ли идти гулять?</button>
+                            <button class="ai-prompt-chip">Какая сейчас влажность?</button>
+                        </div>
+                        <div class="ai-chat-input-area" style="position: relative;">
+                            <!-- Dropdown for Text Suggestions -->
+                            <div id="ai-chat-suggestions" class="ai-chat-suggestions">
+                                <div class="ai-suggestion-item">Какая погода в </div>
+                                <div class="ai-suggestion-item">Погода в </div>
+                                <div class="ai-suggestion-item">Что сейчас с погодой в </div>
+                                <div class="ai-suggestion-item">Нужен ли сегодня зонт?</div>
+                                <div class="ai-suggestion-item">Что лучше надеть на улицу?</div>
+                            </div>
+
+                            <button id="ai-voice-btn" class="ai-voice-btn" title="Голосовой ввод"><i data-lucide="mic"></i></button>
+                            <input type="text" id="ai-chat-input" class="ai-chat-input" placeholder="Спросите ИИ о погоде..." autocomplete="off">
+                            <button id="ai-chat-send" class="ai-chat-send-btn" title="Отправить"><i data-lucide="send"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: AI Cities -->
+                <div id="tab-cities" class="ai-tab-content">
+                    <div class="ai-compare-header">
+                        <h3><i data-lucide="map-pin"></i> Прогноз городов Казахстана</h3>
+                        <p>ИИ в реальном времени собирает и анализирует погоду во всех областных центрах и крупных городах РК.</p>
+                    </div>
+                    <div class="ai-cities-grid" id="ai-cities-list">
+                        <div class="ai-city-loading"><i data-lucide="loader-2" class="spin"></i> Загрузка прогнозов...</div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
     </main>
 
     <footer>
@@ -587,6 +650,7 @@
     <script src="js/calendar.js"></script>
     <script src="js/export.js"></script>
     <script src="js/scroll.js"></script>
+    <script src="js/ai-modal.js"></script>
     <script type="module" src="js/map.js"></script>
     <script type="module" src="js/script.js"></script>
 
