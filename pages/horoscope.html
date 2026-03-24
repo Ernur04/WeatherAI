@@ -14,6 +14,7 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/calendar.css">
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -33,6 +34,22 @@
             <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
                 <i data-lucide="moon"></i>
             </button>
+            <div class="calendar-container">
+                <button id="calendar-toggle" class="theme-btn" aria-label="Open calendar">
+                    <i data-lucide="calendar"></i>
+                </button>
+                <div id="calendar-popup" class="calendar-popup">
+                    <div class="calendar-header-nav">
+                        <button id="prev-month" class="nav-btn"><i data-lucide="chevron-left"></i></button>
+                        <h3 id="calendar-month-year"></h3>
+                        <button id="next-month" class="nav-btn"><i data-lucide="chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-weekdays">
+                        <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div class="weekend">Сб</div><div class="weekend">Вс</div>
+                    </div>
+                    <div id="calendar-days" class="calendar-days"></div>
+                </div>
+            </div>
             <select id="lang-select" class="lang-picker">
                 <option value="ru">RU</option>
                 <option value="kk">KK</option>
@@ -46,8 +63,6 @@
                     <ul>
                         <li><a href="lunar-calendar.html" data-i18n="menu-lunar">Лунный календарь</a></li>
                         <li><a href="horoscope.html" data-i18n="menu-horoscope">Гороскоп</a></li>
-                        <li><a href="garden-calendar.html" data-i18n="menu-garden">Лунный календарь садовода и
-                                огородника</a></li>
                     </ul>
                 </div>
             </div>
@@ -83,6 +98,7 @@
     <!-- Core scripts -->
     <script src="../js/theme.js"></script>
     <script src="../js/language.js"></script>
+    <script src="../js/calendar.js"></script>
     <script src="../js/scroll.js"></script>
     <script>
         // Initialize Lucide icons

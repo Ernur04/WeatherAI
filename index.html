@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="css/calendar.css">
     <link rel="stylesheet" href="css/export.css">
     <link rel="stylesheet" href="css/ai-modal.css">
+    <link rel="stylesheet" href="css/info.css">
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -37,6 +38,9 @@
             <span><span class="brand-text">Weather</span><span class="brand-highlight">AI</span></span>
         </div>
         <div class="header-controls">
+            <button id="info-toggle" class="theme-btn" aria-label="Как пользоваться сайтом" title="Как пользоваться сайтом">
+                <i data-lucide="info"></i>
+            </button>
             <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
                 <i data-lucide="moon"></i>
             </button>
@@ -69,8 +73,6 @@
                     <ul>
                         <li><a href="pages/lunar-calendar.html" data-i18n="menu-lunar">Лунный календарь</a></li>
                         <li><a href="pages/horoscope.html" data-i18n="menu-horoscope">Гороскоп</a></li>
-                        <li><a href="pages/garden-calendar.html" data-i18n="menu-garden">Лунный календарь садовода и
-                                огородника</a></li>
                     </ul>
                 </div>
             </div>
@@ -620,6 +622,89 @@
         </div>
     </main>
 
+    <!-- Info Modal -->
+    <div id="info-modal" class="modal"> <!-- Use base modal class -->
+        <div class="modal-content ai-modal-content info-modal-container"> <!-- Reuse ai-modal-content for dark theme popup style -->
+            <div class="ai-modal-header">
+                <h2 class="ai-modal-title"><i data-lucide="help-circle"></i> Инструкция: Как пользоваться сайтом?</h2>
+                <button class="ai-close-btn" id="close-info-modal"><i data-lucide="x"></i></button>
+            </div>
+            
+            <div class="ai-modal-body" style="padding: 1rem 1.5rem 2rem;">
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                    WeatherAI — это мощный инструмент для отслеживания погоды. Вот список основных функций, которые помогут вам получить максимум пользы:
+                </p>
+                <div class="info-sections">
+                    <div class="info-card">
+                        <i data-lucide="search" class="info-icon"></i>
+                        <h4>Поиск погоды</h4>
+                        <p>Введите название любого города в строку поиска на главной странице. Используйте кнопку геолокации (прицел) для автоматического определения вашего города.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <i data-lucide="bot" class="info-icon"></i>
+                        <h4>ИИ-Ассистент</h4>
+                        <p>Нажмите большую фиолетовую кнопку с искорками в поиске, чтобы задать вопрос умному помощнику или получить прогноз для нескольких городов сразу.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <i data-lucide="map" class="info-icon"></i>
+                        <h4>Интерактивная карта</h4>
+                        <p>На карте (внизу страницы) можно отслеживать погоду в реальном времени. Используйте иконку "Слои" справа на карте для переключения данных (осадки, ветер, облака).</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <i data-lucide="download" class="info-icon"></i>
+                        <h4>Экспорт данных</h4>
+                        <p>Нажмите значок загрузки (стрелка вниз) в верхнем правом углу, чтобы скачать исторические данные или прогноз в форматах Excel (.xlsx), CSV или JSON.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <i data-lucide="calendar-heart" class="info-icon"></i>
+                        <h4>Доп. сервисы</h4>
+                        <p>Через бургер-меню (☰) в правом верхнем углу вы можете открыть детальный Лунный календарь, Гороскоп и Календарь садовода.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <i data-lucide="send" class="info-icon"></i>
+                        <h4>Telegram Бот</h4>
+                        <p>В блоке с основными показателями (по центру) есть круглая кнопка Telegram. Нажав её, вы перейдете в официального бота для быстрого просмотра прогнозов.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <i data-lucide="bar-chart-2" class="info-icon"></i>
+                        <h4>Графики температур</h4>
+                        <p>Под прогнозом на день мы строим красивый график. Вы можете сравнивать дневную и ночную температуру наглядно. Наведите мышкой (или нажмите) на точки графика.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <i data-lucide="globe" class="info-icon"></i>
+                        <h4>Языки и Тема</h4>
+                        <p>В самой верхней панели (шапке сайта) вы можете менять светлую/тёмную тему оформления и переключать языки (Русский, Казахский, Английский).</p>
+                    </div>
+
+                    <div class="info-card">
+                        <i data-lucide="layers" class="info-icon"></i>
+                        <h4>Сравнение городов</h4>
+                        <p>Нажмите кнопку "Сравнить", чтобы посмотреть погоду одновременно в двух выбранных вами городах и сравнить их показатели.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <i data-lucide="calendar" class="info-icon"></i>
+                        <h4>Мини-календарь</h4>
+                        <p>Рядом с кнопкой переключения темы есть иконка календаря. Нажав её, вы сможете посмотреть удобный календарь на текущий месяц для планирования.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <i data-lucide="navigation" class="info-icon"></i>
+                        <h4>Моё местоположение</h4>
+                        <p>Нажмите на кнопку с иконкой "прицела" (возле поиска или в блоке карточки), чтобы наш сервис автоматически нашел вас по GPS и показал самую точную погоду.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div class="footer-content">
             <div class="footer-info">
@@ -650,6 +735,7 @@
     <script src="js/calendar.js"></script>
     <script src="js/export.js"></script>
     <script src="js/scroll.js"></script>
+    <script src="js/info-modal.js"></script>
     <script src="js/ai-modal.js"></script>
     <script type="module" src="js/map.js"></script>
     <script type="module" src="js/script.js"></script>

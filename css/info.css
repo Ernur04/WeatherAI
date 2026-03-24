@@ -1,0 +1,76 @@
+.info-sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+@media (min-width: 768px) {
+    .info-sections {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.info-card {
+    background: var(--bg-body);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-color: var(--primary);
+}
+
+.info-icon {
+    color: var(--primary);
+    width: 32px;
+    height: 32px;
+    margin-bottom: 1rem;
+    background: rgba(168, 85, 247, 0.1);
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.info-card h4 {
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+    font-size: 1.1rem;
+}
+
+.info-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.info-modal-container {
+    max-width: 800px;
+    max-height: 90vh; /* Предотвращаем выход за пределы экрана */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Принудительная прокрутка для тела модального окна */
+.info-modal-container .ai-modal-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding-bottom: 2rem;
+}
+
+/* Custom Scrollbar for Info Modal */
+.info-modal-container .ai-modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.info-modal-container .ai-modal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.info-modal-container .ai-modal-body::-webkit-scrollbar-thumb {
+    background: rgba(168, 85, 247, 0.4);
+    border-radius: 10px;
+}
