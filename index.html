@@ -626,81 +626,100 @@
     <div id="info-modal" class="modal"> <!-- Use base modal class -->
         <div class="modal-content ai-modal-content info-modal-container"> <!-- Reuse ai-modal-content for dark theme popup style -->
             <div class="ai-modal-header">
-                <h2 class="ai-modal-title"><i data-lucide="help-circle"></i> Инструкция: Как пользоваться сайтом?</h2>
+                <h2 class="ai-modal-title"><i data-lucide="help-circle"></i> <span data-i18n="info-modal-title">Инструкция: Как пользоваться сайтом?</span></h2>
                 <button class="ai-close-btn" id="close-info-modal"><i data-lucide="x"></i></button>
             </div>
             
             <div class="ai-modal-body" style="padding: 1rem 1.5rem 2rem;">
-                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;" data-i18n="info-modal-desc">
                     WeatherAI — это мощный инструмент для отслеживания погоды. Вот список основных функций, которые помогут вам получить максимум пользы:
                 </p>
                 <div class="info-sections">
                     <div class="info-card">
                         <i data-lucide="search" class="info-icon"></i>
-                        <h4>Поиск погоды</h4>
-                        <p>Введите название любого города в строку поиска на главной странице. Используйте кнопку геолокации (прицел) для автоматического определения вашего города.</p>
+                        <h4 data-i18n="info-card-search-title">Поиск погоды</h4>
+                        <p data-i18n="info-card-search-desc">Введите название любого города в строку поиска на главной странице. Используйте кнопку геолокации (прицел) для автоматического определения вашего города.</p>
                     </div>
                     
                     <div class="info-card">
                         <i data-lucide="bot" class="info-icon"></i>
-                        <h4>ИИ-Ассистент</h4>
-                        <p>Нажмите большую фиолетовую кнопку с искорками в поиске, чтобы задать вопрос умному помощнику или получить прогноз для нескольких городов сразу.</p>
+                        <h4 data-i18n="info-card-ai-title">ИИ-Ассистент</h4>
+                        <p data-i18n="info-card-ai-desc">Нажмите большую фиолетовую кнопку с искорками в поиске, чтобы задать вопрос умному помощнику или получить прогноз для нескольких городов сразу.</p>
                     </div>
                     
                     <div class="info-card">
                         <i data-lucide="map" class="info-icon"></i>
-                        <h4>Интерактивная карта</h4>
-                        <p>На карте (внизу страницы) можно отслеживать погоду в реальном времени. Используйте иконку "Слои" справа на карте для переключения данных (осадки, ветер, облака).</p>
+                        <h4 data-i18n="info-card-map-title">Интерактивная карта</h4>
+                        <p data-i18n="info-card-map-desc">На карте (внизу страницы) можно отслеживать погоду в реальном времени. Используйте иконку "Слои" справа на карте для переключения данных (осадки, ветер, облака).</p>
                     </div>
                     
                     <div class="info-card">
                         <i data-lucide="download" class="info-icon"></i>
-                        <h4>Экспорт данных</h4>
-                        <p>Нажмите значок загрузки (стрелка вниз) в верхнем правом углу, чтобы скачать исторические данные или прогноз в форматах Excel (.xlsx), CSV или JSON.</p>
+                        <h4 data-i18n="info-card-export-title">Экспорт данных</h4>
+                        <p data-i18n="info-card-export-desc">Нажмите значок загрузки (стрелка вниз) в верхнем правом углу, чтобы скачать исторические данные или прогноз в форматах Excel (.xlsx), CSV или JSON.</p>
                     </div>
                     
                     <div class="info-card">
                         <i data-lucide="calendar-heart" class="info-icon"></i>
-                        <h4>Доп. сервисы</h4>
-                        <p>Через бургер-меню (☰) в правом верхнем углу вы можете открыть детальный Лунный календарь, Гороскоп и Календарь садовода.</p>
+                        <h4 data-i18n="info-card-services-title">Доп. сервисы</h4>
+                        <p data-i18n="info-card-services-desc">Через бургер-меню (☰) в правом верхнем углу вы можете открыть детальный Лунный календарь, Гороскоп и Календарь садовода.</p>
                     </div>
 
                     <div class="info-card">
                         <i data-lucide="send" class="info-icon"></i>
-                        <h4>Telegram Бот</h4>
-                        <p>В блоке с основными показателями (по центру) есть круглая кнопка Telegram. Нажав её, вы перейдете в официального бота для быстрого просмотра прогнозов.</p>
+                        <h4 data-i18n="info-card-tg-title">Telegram Бот</h4>
+                        <p data-i18n="info-card-tg-desc">В блоке с основными показателями (по центру) есть круглая кнопка Telegram. Нажав её, вы перейдете в официального бота для быстрого просмотра прогнозов.</p>
                     </div>
 
                     <div class="info-card">
                         <i data-lucide="bar-chart-2" class="info-icon"></i>
-                        <h4>Графики температур</h4>
-                        <p>Под прогнозом на день мы строим красивый график. Вы можете сравнивать дневную и ночную температуру наглядно. Наведите мышкой (или нажмите) на точки графика.</p>
+                        <h4 data-i18n="info-card-chart-title">Графики температур</h4>
+                        <p data-i18n="info-card-chart-desc">Под прогнозом на день мы строим красивый график. Вы можете сравнивать дневную и ночную температуру наглядно. Наведите мышкой (или нажмите) на точки графика.</p>
                     </div>
 
                     <div class="info-card">
                         <i data-lucide="globe" class="info-icon"></i>
-                        <h4>Языки и Тема</h4>
-                        <p>В самой верхней панели (шапке сайта) вы можете менять светлую/тёмную тему оформления и переключать языки (Русский, Казахский, Английский).</p>
+                        <h4 data-i18n="info-card-lang-title">Языки и Тема</h4>
+                        <p data-i18n="info-card-lang-desc">В самой верхней панели (шапке сайта) вы можете менять светлую/тёмную тему оформления и переключать языки (Русский, Казахский, Английский).</p>
                     </div>
 
                     <div class="info-card">
                         <i data-lucide="layers" class="info-icon"></i>
-                        <h4>Сравнение городов</h4>
-                        <p>Нажмите кнопку "Сравнить", чтобы посмотреть погоду одновременно в двух выбранных вами городах и сравнить их показатели.</p>
+                        <h4 data-i18n="info-card-compare-title">Сравнение городов</h4>
+                        <p data-i18n="info-card-compare-desc">Нажмите кнопку "Сравнить", чтобы посмотреть погоду одновременно в двух выбранных вами городах и сравнить их показатели.</p>
                     </div>
 
                     <div class="info-card">
                         <i data-lucide="calendar" class="info-icon"></i>
-                        <h4>Мини-календарь</h4>
-                        <p>Рядом с кнопкой переключения темы есть иконка календаря. Нажав её, вы сможете посмотреть удобный календарь на текущий месяц для планирования.</p>
+                        <h4 data-i18n="info-card-calendar-title">Мини-календарь</h4>
+                        <p data-i18n="info-card-calendar-desc">Рядом с кнопкой переключения темы есть иконка календаря. Нажав её, вы сможете посмотреть удобный календарь на текущий месяц для планирования.</p>
                     </div>
 
                     <div class="info-card">
                         <i data-lucide="navigation" class="info-icon"></i>
-                        <h4>Моё местоположение</h4>
-                        <p>Нажмите на кнопку с иконкой "прицела" (возле поиска или в блоке карточки), чтобы наш сервис автоматически нашел вас по GPS и показал самую точную погоду.</p>
+                        <h4 data-i18n="info-card-location-title">Моё местоположение</h4>
+                        <p data-i18n="info-card-location-desc">Нажмите на кнопку с иконкой "прицела" (возле поиска или в блоке карточки), чтобы наш сервис автоматически нашел вас по GPS и показал самую точную погоду.</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="error-modal" class="modal">
+        <div class="modal-content ai-modal-content error-modal-container">
+            <div class="ai-modal-header" style="background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);">
+                <h2 class="ai-modal-title"><i data-lucide="alert-triangle"></i> <span id="error-modal-title" data-i18n="error-title">Ошибка</span></h2>
+                <button class="ai-close-btn close-modal" id="close-error-modal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ai-modal-body" style="padding: 2rem; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
+                <div class="error-icon-large" style="color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 1.5rem; border-radius: 50%; margin-bottom: 0.5rem;">
+                    <i data-lucide="alert-circle" style="width: 64px; height: 64px;"></i>
+                </div>
+                <p id="error-modal-text" style="font-size: 1.1rem; color: var(--text-main); margin: 0; max-width: 400px;">Произошла непредвиденная ошибка.</p>
+                <button class="search-btn close-modal" style="margin-top: 1.5rem; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main);" onclick="document.getElementById('error-modal').style.display='none'">
+                    Понятно
+                </button>
             </div>
         </div>
     </div>

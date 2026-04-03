@@ -183,7 +183,7 @@ async function handleComparison() {
     try {
         const coords = await getCoordinates(secondCity);
         if (!coords) {
-            showNotification('Город не найден', 'error');
+            showErrorModal('Ошибка поиска', 'Город не найден');
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
             return;
@@ -197,7 +197,7 @@ async function handleComparison() {
         }
     } catch (e) {
         console.error(e);
-        showNotification('Ошибка', 'error');
+        showErrorModal('Ошибка', 'Произошла ошибка при сравнении');
     }
 
     submitBtn.textContent = originalText;
@@ -249,7 +249,7 @@ async function searchWeather(city) {
                 kk: `"${city}" қаласы табылмады`,
                 en: `City "${city}" not found`
             };
-            showNotification(messages[lang] || messages.ru, 'error');
+            showErrorModal('Ошибка поиска', messages[lang] || messages.ru);
             showLoading(false);
             return;
         }
@@ -274,7 +274,7 @@ async function searchWeather(city) {
 
     } catch (error) {
         console.error('Ошибка поиска:', error);
-        showNotification('Ошибка при загрузке данных', 'error');
+        showErrorModal('Ошибка', 'Ошибка при загрузке данных');
         showLoading(false);
     }
 }
@@ -287,7 +287,7 @@ async function loadWeatherData(lat, lon, cityName, country) {
         const weather = await getWeatherData(lat, lon);
 
         if (!weather) {
-            showNotification('Не удалось загрузить данные погоды', 'error');
+            showErrorModal('Ошибка', 'Не удалось загрузить данные погоды');
             return;
         }
 
@@ -317,7 +317,7 @@ async function loadWeatherData(lat, lon, cityName, country) {
 
     } catch (error) {
         console.error('Ошибка загрузки погоды:', error);
-        showNotification('Ошибка при обработке данных', 'error');
+        showErrorModal('Ошибка', 'Ошибка при обработке данных');
     }
 }
 
@@ -888,7 +888,7 @@ function getCurrentLocation() {
             kk: 'Геолокация браузеріңізде қолдау көрсетілмейді',
             en: 'Geolocation is not supported by your browser'
         };
-        showNotification(messages[lang] || messages.ru, 'error');
+        showErrorModal('Ошибка геопозиции', messages[lang] || messages.ru);
         return;
     }
 
@@ -934,7 +934,7 @@ function getCurrentLocation() {
                 kk: 'Орынды анықтау мүмкін болмады',
                 en: 'Unable to determine location (GPS may be disabled or timed out)'
             };
-            showNotification(messages[lang] || messages.ru, 'error');
+            showErrorModal('Ошибка геолокации', messages[lang] || messages.ru);
             showLoading(false);
         },
         { timeout: 10000, enableHighAccuracy: true, maximumAge: 0 }
@@ -1094,4 +1094,24 @@ style.textContent = `
         to { transform: rotate(360deg); }
     }
 `;
-document.head.appendChild(style)
+document.head.appendChild(style);
+
+// ========================================
+// ОКНО ОШИБКИ
+// ========================================
+function showErrorModal(title, message) {
+    const modal = document.getElementById('error-modal');
+    const titleEl = document.getElementById('error-modal-title');
+    const textEl = document.getElementById('error-modal-text');
+    
+    if (modal && titleEl && textEl) {
+        titleEl.textContent = title;
+        textEl.textContent = message;
+        modal.style.display = 'block';
+    } else {
+        // Fallback to old notification if HTML is missing
+        showNotification(`${title}: ${message}`, 'error');
+    }
+}
+
+window.showErrorModal = showErrorModal;
