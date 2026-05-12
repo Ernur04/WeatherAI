@@ -61,6 +61,14 @@ async function initLanguage() {
             }
         }
 
+        // Translate titles
+        document.querySelectorAll('[data-i18n-title]').forEach(el => {
+            const key = el.getAttribute('data-i18n-title');
+            if (window.translations[lang] && window.translations[lang][key]) {
+                el.title = window.translations[lang][key];
+            }
+        });
+
         // Dispatch global event for other modules
         window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang: lang } }));
     }

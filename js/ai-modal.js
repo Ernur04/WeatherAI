@@ -27,7 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
         aiModal.style.display = 'block';
         // Add a small initial welcome message if empty
         if(chatMessages.children.length === 0) {
-            simulateAiTyping("Привет! Я ИИ-ассистент WeatherAI. Я могу проанализировать погоду, дать советы, что надеть, или подсказать, стоит ли брать зонт. Что вас интересует?");
+            const lang = localStorage.getItem('preferredLang') || 'ru';
+            const t = window.translations ? window.translations[lang] || {} : {};
+            simulateAiTyping(t['ai-welcome'] || "Привет! Я ИИ-ассистент WeatherAI. Я могу проанализировать погоду, дать советы, что надеть, или подсказать, стоит ли брать зонт. Что вас интересует?");
         }
     });
 
@@ -308,7 +310,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (clearChatBtn) {
         clearChatBtn.addEventListener('click', () => {
             chatMessages.innerHTML = '';
-            simulateAiTyping("Привет! Я ИИ-ассистент WeatherAI. Я могу проанализировать погоду, дать советы, что надеть, или подсказать, стоит ли брать зонт. Что вас интересует?");
+            const lang = localStorage.getItem('preferredLang') || 'ru';
+            const t = window.translations ? window.translations[lang] || {} : {};
+            simulateAiTyping(t['ai-welcome'] || "Привет! Я ИИ-ассистент WeatherAI. Я могу проанализировать погоду, дать советы, что надеть, или подсказать, стоит ли брать зонт. Что вас интересует?");
         });
     }
 
@@ -439,26 +443,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Pre-defined coordinates for major cities of Kazakhstan
             const targetCities = [
-                { name: 'Астана', lat: 51.1694, lon: 71.4491 },
-                { name: 'Алматы', lat: 43.2389, lon: 76.8897 },
-                { name: 'Шымкент', lat: 42.3155, lon: 69.5869 },
-                { name: 'Караганда', lat: 49.8018, lon: 73.1021 },
-                { name: 'Актобе', lat: 50.2839, lon: 57.1670 },
-                { name: 'Тараз', lat: 42.9000, lon: 71.3667 },
-                { name: 'Павлодар', lat: 52.3000, lon: 76.9500 },
-                { name: 'Усть-Каменогорск', lat: 49.9500, lon: 82.6167 },
-                { name: 'Семей', lat: 50.4111, lon: 80.2275 },
-                { name: 'Атырау', lat: 47.1167, lon: 51.8833 },
-                { name: 'Кызылорда', lat: 44.8528, lon: 65.5097 },
-                { name: 'Уральск', lat: 51.2333, lon: 51.3667 },
-                { name: 'Костанай', lat: 53.2000, lon: 63.6333 },
-                { name: 'Петропавловск', lat: 54.8833, lon: 69.1500 },
-                { name: 'Актау', lat: 43.6500, lon: 51.1500 },
-                { name: 'Туркестан', lat: 43.3000, lon: 68.2403 },
-                { name: 'Кокшетау', lat: 53.2833, lon: 69.3833 },
-                { name: 'Талдыкорган', lat: 45.0167, lon: 78.3667 },
-                { name: 'Жезказган', lat: 47.7778, lon: 67.7111 },
-                { name: 'Конаев', lat: 43.8761, lon: 77.0683 }
+                { key: 'city-astana', name: 'Астана', lat: 51.1694, lon: 71.4491 },
+                { key: 'city-almaty', name: 'Алматы', lat: 43.2389, lon: 76.8897 },
+                { key: 'city-shymkent', name: 'Шымкент', lat: 42.3155, lon: 69.5869 },
+                { key: 'city-karaganda', name: 'Караганда', lat: 49.8018, lon: 73.1021 },
+                { key: 'city-aktobe', name: 'Актобе', lat: 50.2839, lon: 57.1670 },
+                { key: 'city-taraz', name: 'Тараз', lat: 42.9000, lon: 71.3667 },
+                { key: 'city-pavlodar', name: 'Павлодар', lat: 52.3000, lon: 76.9500 },
+                { key: 'city-oskemen', name: 'Усть-Каменогорск', lat: 49.9500, lon: 82.6167 },
+                { key: 'city-semey', name: 'Семей', lat: 50.4111, lon: 80.2275 },
+                { key: 'city-atyrau', name: 'Атырау', lat: 47.1167, lon: 51.8833 },
+                { key: 'city-kyzylorda', name: 'Кызылорда', lat: 44.8528, lon: 65.5097 },
+                { key: 'city-uralsk', name: 'Уральск', lat: 51.2333, lon: 51.3667 },
+                { key: 'city-kostanay', name: 'Костанай', lat: 53.2000, lon: 63.6333 },
+                { key: 'city-petropavlovsk', name: 'Петропавловск', lat: 54.8833, lon: 69.1500 },
+                { key: 'city-aktau', name: 'Актау', lat: 43.6500, lon: 51.1500 },
+                { key: 'city-turkestan', name: 'Туркестан', lat: 43.3000, lon: 68.2403 },
+                { key: 'city-kokshetau', name: 'Кокшетау', lat: 53.2833, lon: 69.3833 },
+                { key: 'city-taldykorgan', name: 'Талдыкорган', lat: 45.0167, lon: 78.3667 },
+                { key: 'city-zhezkazgan', name: 'Жезказган', lat: 47.7778, lon: 67.7111 },
+                { key: 'city-konaev', name: 'Конаев', lat: 43.8761, lon: 77.0683 }
             ];
 
             let html = '';
@@ -478,6 +482,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const results = await Promise.all(fetchPromises);
 
+            const lang = localStorage.getItem('preferredLang') || 'ru';
+            const t = window.translations && window.translations[lang] ? window.translations[lang] : {};
+
             for (const res of results) {
                 if (!res) continue;
                 
@@ -485,11 +492,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const code = res.data.weather_code;
                 const info = window.getWeatherInfo ? window.getWeatherInfo(code) : { icon: 'cloud', desc: 'unknown' };
                 
-                let comment = "Погода стабильная.";
-                if (temp < 0) comment = "Достаточно холодно, одевайтесь теплее.";
-                if (temp > 25) comment = "В городе жарко, пейте больше воды.";
-                if (info.desc.includes('rain')) comment = "Ожидаются осадки, возьмите зонт.";
-                if (info.desc.includes('snow')) comment = "Идет снег, возможна гололедица.";
+                let comment = t['ai-city-stable'] || "Погода стабильная.";
+                if (temp < 0) comment = t['ai-city-cold'] || "Достаточно холодно, одевайтесь теплее.";
+                if (temp > 25) comment = t['ai-city-hot'] || "В городе жарко, пейте больше воды.";
+                if (info.desc.includes('rain')) comment = t['ai-city-rain'] || "Ожидаются осадки, возьмите зонт.";
+                if (info.desc.includes('snow')) comment = t['ai-city-snow'] || "Идет снег, возможна гололедица.";
+
+                const cityName = t[res.city.key] || res.city.name;
 
                 html += `
                 <div class="ai-city-card">
@@ -498,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="ai-city-info">
                         <div class="ai-city-header">
-                            <h4>${res.city.name}</h4>
+                            <h4>${cityName}</h4>
                             <span class="ai-city-temp">${temp > 0 ? '+'+temp : temp}°C</span>
                         </div>
                         <p>${comment}</p>
@@ -507,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (html === '') {
-                html = '<p>Не удалось загрузить данные городов. Проверьте интернет.</p>';
+                html = `<p>${t['ai-city-error'] || 'Не удалось загрузить данные городов. Проверьте интернет.'}</p>`;
             }
 
             citiesList.innerHTML = html;
