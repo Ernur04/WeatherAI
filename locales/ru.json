@@ -346,5 +346,8 @@
     "city-kokshetau": "Кокшетау",
     "city-taldykorgan": "Талдыкорган",
     "city-zhezkazgan": "Жезказган",
-    "city-konaev": "Конаев"
+    "city-konaev": "Конаев",
+    "menu-main": "Погода",
+    "menu-map": "Карта",
+    "menu-cities":"Список городов и стран"
 }
