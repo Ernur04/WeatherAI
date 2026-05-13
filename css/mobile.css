@@ -109,16 +109,17 @@
     }
 
     .calendar-popup {
-        position: fixed;
-        top: 56px;        /* под шапкой */
-        right: 8px;
-        left: 8px;
-        width: auto;      /* растягивается между left и right */
-        max-width: 340px;
-        margin: 0 auto;
+        position: fixed !important;
+        top: 56px !important;        /* под шапкой */
+        right: 0 !important;
+        left: 0 !important;
+        width: auto !important;      /* растягивается между left и right */
+        max-width: calc(100% - 16px) !important;
+        margin: 0 auto !important;
         z-index: 9998;
         border-radius: 16px;
         box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+        box-sizing: border-box !important;
     }
 
     .calendar-days {
@@ -477,6 +478,7 @@
         margin: auto;
         max-height: 92vh;
         overflow-y: auto;
+        box-sizing: border-box !important;
     }
 
     .modal-content h2 {
@@ -938,8 +940,7 @@
 
     /* Календарь popup — почти полная ширина */
     .calendar-popup {
-        right: 4px;
-        left: 4px;
+        max-width: calc(100% - 8px) !important;
     }
 }
 
