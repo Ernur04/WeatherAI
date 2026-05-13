@@ -22,52 +22,116 @@
 
     /* ────────────────────────────────────────
        2. ШАПКА / HEADER
+       Проблема на скрине: иконки + KK + ☰ не помещаются
+       Решение: сжимаем кнопки, прячем текст языка
        ──────────────────────────────────────── */
     header {
-        padding: 10px 4%;
-        flex-wrap: wrap;
-        gap: 8px;
+        padding: 8px 3%;
+        flex-wrap: nowrap;        /* одна строка, без переноса */
+        gap: 4px;
         justify-content: space-between;
         position: sticky;
         top: 0;
-        z-index: 100;
+        z-index: 200;
     }
 
     .logo {
-        font-size: 20px;
-        gap: 7px;
+        font-size: 18px;
+        gap: 6px;
+        flex-shrink: 0;
     }
 
     .logo-icon svg {
-        width: 22px;
-        height: 22px;
+        width: 20px;
+        height: 20px;
     }
 
     .header-controls {
-        gap: 6px;
+        display: flex;
+        gap: 2px;
         flex-wrap: nowrap;
+        align-items: center;
+        flex-shrink: 0;
     }
 
+    /* Все кнопки-иконки в шапке — компактные */
     .theme-btn {
-        padding: 7px;
-        width: 36px;
-        height: 36px;
+        width: 34px;
+        height: 34px;
+        padding: 6px;
+        flex-shrink: 0;
     }
 
-    .theme-btn i,
-    .theme-btn svg {
-        width: 18px;
-        height: 18px;
+    .theme-btn svg,
+    .theme-btn i {
+        width: 17px;
+        height: 17px;
     }
 
+    /* Язык: только аббревиатура, без лишних отступов */
     .lang-picker {
-        padding: 6px 8px;
-        font-size: 12px;
-        border-radius: 8px;
+        padding: 5px 4px;
+        font-size: 11px;
+        border-radius: 7px;
+        min-width: 38px;
+        max-width: 46px;
+        flex-shrink: 0;
+    }
+
+    /* Меню-дропдаун: всегда прилипает к правому краю экрана */
+    .header-menu-container {
+        position: static;  /* убираем relative чтобы dropdown позиционировался от экрана */
+    }
+
+    .menu-dropdown {
+        position: fixed;
+        top: 56px;        /* высота шапки */
+        right: 8px;
+        left: auto;
+        min-width: 200px;
+        z-index: 9999;
+        border-radius: 14px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+
+    .menu-dropdown a {
+        padding: 14px 20px;
+        font-size: 15px;
     }
 
     /* ────────────────────────────────────────
-       3. НАВИГАЦИЯ (main-nav)
+       3. МИНИ-КАЛЕНДАРЬ POPUP
+       Проблема: выходит за правый край, перекрывает контент
+       Решение: позиционируем от левого края, ограничиваем ширину
+       ──────────────────────────────────────── */
+    .calendar-container {
+        position: static;
+    }
+
+    .calendar-popup {
+        position: fixed;
+        top: 56px;        /* под шапкой */
+        right: 8px;
+        left: 8px;
+        width: auto;      /* растягивается между left и right */
+        max-width: 340px;
+        margin: 0 auto;
+        z-index: 9998;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    }
+
+    .calendar-days {
+        gap: 4px;
+    }
+
+    .calendar-day {
+        font-size: 0.82rem;
+        border-radius: 7px;
+    }
+
+    /* ────────────────────────────────────────
+       4. НАВИГАЦИЯ (main-nav)
        ──────────────────────────────────────── */
     .main-nav {
         padding: 10px 4%;
@@ -97,7 +161,7 @@
     }
 
     /* ────────────────────────────────────────
-       4. MAIN / HERO / ПОИСК
+       5. MAIN / HERO / ПОИСК
        ──────────────────────────────────────── */
     main {
         padding: 16px 4%;
@@ -132,7 +196,7 @@
 
     #city-input {
         padding: 12px 12px 12px 44px;
-        font-size: 16px; /* предотвращает зум на iOS */
+        font-size: 16px;
         border-radius: 12px;
         width: 100%;
         box-sizing: border-box;
@@ -159,16 +223,22 @@
     }
 
     /* ────────────────────────────────────────
-       5. КНОПКИ ДЕЙСТВИЙ (action buttons)
+       6. КНОПКИ ДЕЙСТВИЙ (action buttons)
+       Проблема: "Экспортау" обрезается справа
+       Решение: горизонтальный скролл без wrap
        ──────────────────────────────────────── */
     .search-actions {
+        display: flex;
         gap: 8px;
         margin-bottom: 16px;
         justify-content: flex-start;
         overflow-x: auto;
-        flex-wrap: nowrap;
-        padding-bottom: 4px;
+        flex-wrap: nowrap;   /* НЕ переносить! */
+        padding-bottom: 6px;
+        padding-left: 0;
+        padding-right: 4px;
         scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
     }
 
     .search-actions::-webkit-scrollbar {
@@ -176,21 +246,22 @@
     }
 
     .action-btn {
-        padding: 8px 14px;
+        padding: 9px 14px;
         font-size: 0.82rem;
         border-radius: 16px;
-        flex-shrink: 0;
-        white-space: nowrap;
+        flex-shrink: 0;       /* не сжиматься */
+        white-space: nowrap;  /* текст в одну строку */
     }
 
-    .action-btn i,
-    .action-btn svg {
+    .action-btn svg,
+    .action-btn i {
         width: 15px;
         height: 15px;
+        flex-shrink: 0;
     }
 
     /* ────────────────────────────────────────
-       6. БЫСТРЫЕ ПОДСКАЗКИ (quick tips)
+       7. БЫСТРЫЕ ПОДСКАЗКИ (quick tips)
        ──────────────────────────────────────── */
     .quick-tips-container {
         padding: 16px;
@@ -209,7 +280,7 @@
     }
 
     /* ────────────────────────────────────────
-       7. БЛОК ПОГОДЫ (weather-section, weather-grid)
+       8. БЛОК ПОГОДЫ
        ──────────────────────────────────────── */
     .weather-section {
         width: 100%;
@@ -234,7 +305,6 @@
         font-size: 1.1rem;
     }
 
-    /* Главная температура */
     .weather-main {
         flex-direction: column;
         align-items: center;
@@ -269,7 +339,6 @@
         font-size: 0.8rem;
     }
 
-    /* Детали погоды */
     .weather-details {
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
@@ -288,7 +357,7 @@
     }
 
     /* ────────────────────────────────────────
-       8. ПОЧАСОВОЙ ПРОГНОЗ
+       9. ПОЧАСОВОЙ ПРОГНОЗ
        ──────────────────────────────────────── */
     .hourly-forecast-container {
         padding: 14px;
@@ -319,7 +388,7 @@
     }
 
     /* ────────────────────────────────────────
-       9. ПРОГНОЗ НА 7 ДНЕЙ (forecast-grid)
+       10. ПРОГНОЗ НА 7 ДНЕЙ
        ──────────────────────────────────────── */
     .forecast-section {
         width: 100%;
@@ -336,21 +405,19 @@
         gap: 10px;
     }
 
-    /* Если прогноз — горизонтальный список */
     .forecast-card {
         padding: 14px 10px;
         border-radius: 14px;
     }
 
     /* ────────────────────────────────────────
-       10. КАРТА (map section)
+       11. КАРТА
        ──────────────────────────────────────── */
     .map-container-wrapper {
         height: 280px;
         border-radius: 16px;
     }
 
-    /* map-controls уже есть в map.css, усиливаем */
     .map-controls {
         bottom: 8px;
         width: 96%;
@@ -369,18 +436,18 @@
         display: none;
     }
 
-    .map-btn i,
-    .map-btn svg {
+    .map-btn svg,
+    .map-btn i {
         width: 18px;
         height: 18px;
         margin: 0;
     }
 
     /* ────────────────────────────────────────
-       11. ГОРОДА КАЗАХСТАНА (kz-locations)
+       12. ГОРОДА КАЗАХСТАНА
        ──────────────────────────────────────── */
     .kz-locations-section {
-        padding: 0 0px;
+        padding: 0;
         margin: 20px 0;
     }
 
@@ -396,7 +463,9 @@
     }
 
     /* ────────────────────────────────────────
-       12. МОДАЛЬНОЕ ОКНО — СРАВНЕНИЕ
+       13. МОДАЛКА — СРАВНЕНИЕ ГОРОДОВ
+       Проблема: два города рядом не помещаются
+       Решение: колонки вертикально
        ──────────────────────────────────────── */
     .modal {
         padding: 12px;
@@ -434,7 +503,6 @@
         border-radius: 12px;
     }
 
-    /* Сетка сравнения двух городов */
     .compare-results {
         flex-direction: column;
         gap: 14px;
@@ -446,30 +514,48 @@
     }
 
     /* ────────────────────────────────────────
-       13. МОДАЛЬНОЕ ОКНО — ЭКСПОРТ
+       14. МОДАЛКА — ЭКСПОРТ ДАННЫХ
+       Проблема: двухколоночный layout не помещается
+       Решение: одна колонка, компактные кнопки
        ──────────────────────────────────────── */
     .export-modal-content {
         padding: 18px 14px;
         border-radius: 20px;
         max-height: 92vh;
         overflow-y: auto;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .export-header-row {
         flex-direction: column;
-        gap: 12px;
+        gap: 10px;
         align-items: flex-start;
         margin-bottom: 16px;
         padding-right: 30px;
     }
 
+    .export-header-row h2 {
+        font-size: 1.15rem;
+    }
+
     .export-layout {
-        grid-template-columns: 1fr;
-        gap: 18px;
+        grid-template-columns: 1fr !important;
+        gap: 16px;
     }
 
     .export-preview-box {
         min-height: 160px;
+    }
+
+    .export-option-group {
+        gap: 10px;
+    }
+
+    .export-select,
+    .export-date-input {
+        font-size: 16px; /* предотвращает zoom на iOS */
     }
 
     .export-footer {
@@ -489,22 +575,19 @@
         grid-template-columns: 1fr 1fr;
     }
 
-    /* ────────────────────────────────────────
-       14. МОДАЛЬНОЕ ОКНО — AI АНАЛИЗ
-       ──────────────────────────────────────── */
-    .ai-modal-content {
+    /* Кнопки экспорта — полная ширина */
+    .export-btn,
+    .export-download-btn {
         width: 100%;
-        max-width: 100%;
-        border-radius: 20px 20px 0 0;
-        max-height: 90vh;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: 0;
+        justify-content: center;
+        padding: 13px;
+        font-size: 14px;
     }
 
-    /* Центрируем модалку */
+    /* ────────────────────────────────────────
+       15. МОДАЛКА — AI АНАЛИЗ
+       Решение: шторка снизу (bottom sheet)
+       ──────────────────────────────────────── */
     #ai-modal.modal,
     #info-modal.modal,
     #error-modal.modal {
@@ -512,9 +595,29 @@
         padding: 0;
     }
 
+    .ai-modal-content {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 22px 22px 0 0;
+        max-height: 90vh;
+        position: relative;
+        margin: 0;
+    }
+
     .ai-modal-header {
         padding: 16px 18px;
-        border-radius: 20px 20px 0 0;
+        border-radius: 22px 22px 0 0;
+    }
+
+    /* Ручка-индикатор для bottom sheet */
+    .ai-modal-header::before {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 4px;
+        background: rgba(255,255,255,0.4);
+        border-radius: 2px;
+        margin: 0 auto 12px;
     }
 
     .ai-modal-title {
@@ -522,14 +625,14 @@
         gap: 8px;
     }
 
-    .ai-modal-title i,
-    .ai-modal-title svg {
+    .ai-modal-title svg,
+    .ai-modal-title i {
         width: 20px;
         height: 20px;
     }
 
     .ai-tabs {
-        padding: 0 10px;
+        padding: 0 8px;
         overflow-x: auto;
         scrollbar-width: none;
         flex-wrap: nowrap;
@@ -540,8 +643,8 @@
     }
 
     .ai-tab-btn {
-        padding: 12px 14px;
-        font-size: 0.88rem;
+        padding: 12px 12px;
+        font-size: 0.85rem;
         flex-shrink: 0;
         white-space: nowrap;
     }
@@ -554,7 +657,6 @@
         font-size: 0.92rem;
     }
 
-    /* AI Cities compare */
     .ai-compare-header {
         flex-direction: column;
         gap: 10px;
@@ -568,37 +670,74 @@
     }
 
     /* ────────────────────────────────────────
-       15. МОДАЛЬНОЕ ОКНО — INFO
+       16. МОДАЛКА — НҰСҚАУЛЫҚ (INFO)
+       Проблема: карточки очень большие, нет прокрутки
+       Решение: bottom sheet + компактные карточки
        ──────────────────────────────────────── */
     .info-modal-container {
+        width: 100%;
         max-width: 100%;
-        border-radius: 20px 20px 0 0;
+        border-radius: 22px 22px 0 0;
         max-height: 90vh;
+        display: flex;
+        flex-direction: column;
     }
 
+    /* Прокрутка содержимого */
+    .info-modal-container .ai-modal-body {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        flex: 1;
+    }
+
+    /* Карточки инструкций — горизонтальный layout */
     .info-sections {
         grid-template-columns: 1fr;
-        gap: 12px;
-        padding: 0.25rem;
+        gap: 10px;
+        padding: 0;
     }
 
     .info-card {
-        padding: 1rem;
+        display: flex;
+        flex-direction: row;   /* иконка слева, текст справа */
+        align-items: flex-start;
+        gap: 14px;
+        padding: 14px 16px;
         border-radius: 14px;
     }
 
     .info-icon {
-        width: 36px;
-        height: 36px;
-        margin-bottom: 0.75rem;
+        width: 40px;
+        height: 40px;
+        min-width: 40px;       /* не сжимать */
+        margin-bottom: 0;
+        border-radius: 10px;
+    }
+
+    .info-icon svg {
+        width: 20px;
+        height: 20px;
     }
 
     .info-card h4 {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+    }
+
+    .info-card p {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+
+    /* Вводный текст в нұсқаулық */
+    .info-modal-container .ai-modal-body > p {
+        font-size: 0.92rem !important;
+        text-align: left !important;
+        margin-bottom: 1.2rem !important;
     }
 
     /* ────────────────────────────────────────
-       16. ФУТЕР / FOOTER
+       17. ФУТЕР
        ──────────────────────────────────────── */
     footer {
         padding: 20px 4%;
@@ -621,7 +760,7 @@
     }
 
     /* ────────────────────────────────────────
-       17. СТРАНИЦА ABOUT / PRIVACY / CONTACT
+       18. СТРАНИЦЫ ABOUT / PRIVACY / CONTACT
        ──────────────────────────────────────── */
     .about-container,
     .privacy-container,
@@ -648,7 +787,7 @@
     }
 
     /* ────────────────────────────────────────
-       18. СТРАНИЦА LUNAR CALENDAR
+       19. LUNAR CALENDAR PAGE
        ──────────────────────────────────────── */
     .lunar-hero {
         padding: 2rem 1rem;
@@ -671,27 +810,12 @@
     }
 
     /* ────────────────────────────────────────
-       19. СТРАНИЦА HOROSCOPE
+       20. HOROSCOPE PAGE
        ──────────────────────────────────────── */
     .horoscope-grid,
     .zodiac-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
-    }
-
-    /* ────────────────────────────────────────
-       20. ОБЩИЕ СЕКЦИИ И КАРТОЧКИ
-       ──────────────────────────────────────── */
-    .weather-card .section-title,
-    h2.section-title {
-        font-size: 1.1rem;
-    }
-
-    .calendar-popup {
-        width: calc(100vw - 32px);
-        right: -10px;
-        left: auto;
-        border-radius: 18px;
     }
 }
 
@@ -700,22 +824,31 @@
    ============================================================ */
 @media (max-width: 480px) {
     header {
-        padding: 9px 3%;
+        padding: 7px 2.5%;
     }
 
     .logo {
-        font-size: 18px;
+        font-size: 16px;
+    }
+
+    /* Шапка совсем тесная — прячем текст языка, оставляем только аббревиатуру */
+    .lang-picker {
+        padding: 5px 3px;
+        font-size: 10px;
+        min-width: 34px;
+        max-width: 40px;
     }
 
     .theme-btn {
-        width: 32px;
-        height: 32px;
-        padding: 6px;
+        width: 30px;
+        height: 30px;
+        padding: 5px;
     }
 
-    .lang-picker {
-        padding: 5px 7px;
-        font-size: 11px;
+    .theme-btn svg,
+    .theme-btn i {
+        width: 16px;
+        height: 16px;
     }
 
     main {
@@ -742,7 +875,7 @@
     }
 
     .action-btn {
-        padding: 7px 11px;
+        padding: 8px 12px;
         font-size: 0.78rem;
     }
 
@@ -777,7 +910,6 @@
         min-width: 62px;
     }
 
-    /* Модалки — полный экран на маленьких */
     .modal-content {
         max-height: 95vh;
         border-radius: 16px;
@@ -805,10 +937,16 @@
     .footer-links a {
         font-size: 12px;
     }
+
+    /* Календарь popup — почти полная ширина */
+    .calendar-popup {
+        right: 4px;
+        left: 4px;
+    }
 }
 
 /* ============================================================
-   ОЧЕНЬ МАЛЕНЬКИЕ УСТРОЙСТВА (≤ 360px — iPhone SE, старые Android)
+   ОЧЕНЬ МАЛЕНЬКИЕ (≤ 360px — iPhone SE, старые Android)
    ============================================================ */
 @media (max-width: 360px) {
     .hero-title {
@@ -827,26 +965,24 @@
         grid-template-columns: 1fr;
     }
 
-    .weather-details {
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-    }
-
     .action-btn {
-        padding: 6px 10px;
-        font-size: 0.74rem;
+        padding: 7px 10px;
+        font-size: 0.72rem;
     }
 
     main {
         padding: 10px 3%;
     }
+
+    .logo .brand-text {
+        display: none; /* оставляем только "AI" + иконку на совсем маленьких */
+    }
 }
 
 /* ============================================================
-   TOUCH-УЛУЧШЕНИЯ — применяются ко всем мобильным
+   TOUCH-УЛУЧШЕНИЯ
    ============================================================ */
 @media (hover: none) and (pointer: coarse) {
-    /* Убираем hover-анимации на тач-устройствах */
     .detail-item:hover,
     .kz-card:hover,
     .hourly-card:hover,
@@ -854,18 +990,18 @@
     .search-btn:hover,
     .tip-btn:hover {
         transform: none;
+        box-shadow: none;
     }
 
-    /* Увеличиваем зону нажатия */
     .theme-btn,
     .action-btn,
     .tip-btn,
     .map-btn,
-    .footer-links a {
-        min-height: 40px;
+    .footer-links a,
+    .menu-dropdown a {
+        min-height: 44px;  /* рекомендация Apple для touch-целей */
     }
 
-    /* Убираем hover на навигации */
     .main-nav a:hover {
         background: none;
         color: var(--text-main);
