@@ -1,0 +1,163 @@
+/* Mobile Responsiveness Styles */
+
+@media (max-width: 768px) {
+    /* Header Adjustments */
+    header {
+        padding: 10px 5%;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center; /* Center the items if they wrap */
+    }
+
+    .logo {
+        font-size: 22px;
+        flex: 1 1 100%;
+        justify-content: center;
+        margin-bottom: 5px;
+    }
+
+    .header-controls {
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .theme-btn {
+        padding: 6px;
+    }
+    
+    .theme-btn i {
+        width: 20px;
+        height: 20px;
+    }
+
+    .lang-picker {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+
+    /* Footer Adjustments */
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    /* Main Section Adjustments */
+    main {
+        padding: 20px 5%;
+        gap: 25px;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 25px;
+    }
+
+    /* Search Form Adjustments */
+    .search-form {
+        flex-direction: column;
+        padding: 15px;
+        border-radius: 20px;
+    }
+
+    #city-input {
+        padding: 12px 12px 12px 45px;
+        font-size: 16px;
+    }
+
+    .search-icon-svg {
+        left: 15px;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .button-group > button {
+        flex: 1;
+        padding: 12px 10px;
+        font-size: 14px;
+        border-radius: 12px;
+        justify-content: center;
+    }
+
+    /* Action Buttons Adjustments */
+    .search-actions {
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .action-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        border-radius: 16px;
+    }
+
+    .action-btn i {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Quick Tips Adjustments */
+    .quick-tips-container {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .tip-btn {
+        padding: 6px 14px;
+        font-size: 13px;
+        border-radius: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 10px 3%;
+    }
+    
+    .header-controls {
+        gap: 6px;
+    }
+    
+    .lang-picker {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+    
+    .logo {
+        font-size: 20px;
+    }
+
+    .hero-title {
+        font-size: 1.75rem;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .button-group > button {
+        width: 100%;
+    }
+    
+    .action-btn {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+    }
+}
