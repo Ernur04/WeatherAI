@@ -791,6 +791,31 @@
         padding: 12px 0;
     }
 
+    /* Исправление: на мобильных делаем список функционала в колонку (2 ряда) */
+    .feature-list li {
+        flex-direction: column;
+        gap: 6px;
+        align-items: flex-start;
+    }
+
+    .feature-list li strong {
+        min-width: auto;
+        margin-right: 0;
+        display: inline-block;
+        color: var(--primary);
+    }
+
+    .cta-block {
+        margin-top: 24px;
+        width: 100%;
+    }
+
+    .back-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 14px;
+    }
+
     /* Contact Page */
     .contact-grid {
         gap: 24px;
