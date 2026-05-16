@@ -473,29 +473,17 @@
        ──────────────────────────────────────── */
     .modal {
         padding: 12px;
-        box-sizing: border-box;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start; /* Изменено с center на flex-start, чтобы окно не обрезалось сверху */
-        overflow-y: auto; /* Разрешаем скролл самому фону модалки, если окно слишком длинное */
-        position: fixed; /* Гарантирует, что модалка перекроет весь экран */
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.5); /* Затемнение фона, если его не было */
     }
 
     .modal-content {
         padding: 20px 16px;
         border-radius: 20px;
-        width: 90%; 
-        max-width: 450px; /* Для окон ошибок лучше делать max-width поменьше (например, 400-450px) */
-        margin: 40px auto; /* Задаем отступ сверху и снизу (40px), чтобы окно не прилипало к краям экрана */
+        width: 100%;
+        max-width: 100%;
+        margin: auto;
+        max-height: 92vh;
+        overflow-y: auto;
         box-sizing: border-box !important;
-        background: #fff; /* Белый фон самого окошка */
-        position: relative;
-        /* Убираем max-height и overflow-y отсюда, перенося скролл на родителя. Так шапка не уплывет */
     }
 
     .modal-content h2 {
@@ -503,51 +491,31 @@
         margin-bottom: 16px;
     }
 
-    /* Группа ввода (инпуты и кнопка) */
     .compare-input-group {
-        display: flex;
-        flex-direction: row; /* На ПК элементы будут в строку */
+        flex-direction: column;
         gap: 10px;
     }
 
     .compare-input-group input {
-        flex: 1; /* Инпут заберет всё свободное место */
+        width: 100%;
         box-sizing: border-box;
         font-size: 16px;
     }
 
     .compare-input-group .search-btn {
-        width: auto; /* Кнопка станет по размеру своего текста */
-        padding: 13px 24px;
+        width: 100%;
+        padding: 13px;
         border-radius: 12px;
     }
 
-    /* Результаты сравнения */
     .compare-results {
-        display: flex;
-        flex-direction: row; /* На ПК колонки будут стоять рядом друг с другом */
+        flex-direction: column;
         gap: 14px;
     }
 
     .compare-col,
     .compare-column {
-        flex: 1; /* Обе колонки сравнения будут одинаковой ширины */
-        min-width: 0; /* Защита от вылезания контента */
-    }
-
-    /* АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ ТЕЛЕФОНОВ (Экран меньше 768px) */
-    @media (max-width: 768px) {
-        .compare-input-group {
-            flex-direction: column; /* На смартфонах инпут и кнопка встанут друг под друга */
-        }
-        
-        .compare-input-group .search-btn {
-            width: 100%; /* Кнопка растянется на всю ширину */
-        }
-
-        .compare-results {
-            flex-direction: column; /* Колонки сравнения на смартфонах встанут друг под друга */
-        }
+        width: 100%;
     }
 
     /* ────────────────────────────────────────
