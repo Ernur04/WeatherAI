@@ -471,51 +471,142 @@
        Проблема: два города рядом не помещаются
        Решение: колонки вертикально
        ──────────────────────────────────────── */
+    /* ============================================================
+       УЛУЧШЕННОЕ МОДАЛЬНОЕ ОКНО СРАВНЕНИЯ ДЛЯ ТЕЛЕФОНОВ
+       ============================================================ */
     .modal {
         padding: 12px;
+        display: flex;
+        align-items: center; /* Центрируем окно по вертикали на экране смартфона */
+        justify-content: center;
     }
 
     .modal-content {
-        padding: 20px 16px;
+        padding: 24px 16px 20px 16px;
         border-radius: 20px;
         width: 100%;
         max-width: 100%;
         margin: auto;
-        max-height: 92vh;
-        overflow-y: auto;
+        max-height: 90vh; /* Окно не выйдет за пределы экрана */
+        overflow-y: auto; /* Если контент не влезает, появится аккуратный скролл */
         box-sizing: border-box !important;
     }
 
     .modal-content h2 {
-        font-size: 1.2rem;
-        margin-bottom: 16px;
+        font-size: 1.3rem;
+        margin-top: 0;
+        margin-bottom: 18px;
+        text-align: center;
     }
 
+    /* Обертка инпутов: выстраиваем Город 1 -> VS -> Город 2 строго вертикально */
+    .compare-inputs-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+
+    /* Каждая группа (лейбл + инпут + подсказки) */
     .compare-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        position: relative; /* Чтобы выпадающие подсказки позиционировались ровно под инпутом */
+    }
+
+    .compare-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* Стилизация самих полей ввода для удобного нажатия пальцем */
+    #compare-city-1-input, 
+    #compare-city-2-input {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 16px; /* Защита от авто-зума (iOS/Android не будут увеличивать экран при фокусе) */
+        border-radius: 12px;
+        box-sizing: border-box;
+    }
+
+    /* Маленький разделитель VS на мобилке */
+    .compare-divider {
+        display: flex;
+        justify-content: center;
+        margin: 2px 0;
+    }
+
+    .vs-badge-small {
+        padding: 4px 12px;
+        font-size: 0.75rem;
+    }
+
+    /* Мобильная адаптация выпадающих подсказок городов */
+    .compare-suggestions {
+        max-height: 140px; /* Ограничиваем высоту, чтобы не перекрывать всё окно */
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Главная кнопка "Сравнить" на весь экран */
+    #compare-submit-btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 1rem;
+        border-radius: 12px;
+        margin-top: 10px !important;
+    }
+
+    /* Сетка результатов сравнения */
+    .comparison-results {
+        margin-top: 20px;
+    }
+
+    .comparison-grid {
+        display: flex;
         flex-direction: column;
         gap: 10px;
     }
 
-    .compare-input-group input {
-        width: 100%;
-        box-sizing: border-box;
-        font-size: 16px;
+    /* Шапка результатов (Название городов) */
+    .comparison-header h3 {
+        font-size: 1rem;
+        word-break: break-word; /* Если название города длинное, оно перенесется, а не сломает верстку */
     }
 
-    .compare-input-group .search-btn {
-        width: 100%;
-        padding: 13px;
-        border-radius: 12px;
+    .vs-badge {
+        padding: 4px 10px;
+        font-size: 0.75rem;
+        margin: 0 6px;
     }
 
-    .compare-results {
-        flex-direction: column;
-        gap: 14px;
+    /* Строки с параметрами погоды */
+    .comparison-row {
+        padding: 8px 6px;
+        gap: 4px;
     }
 
-    .compare-col,
-    .compare-column {
-        width: 100%;
+    /* Значения погоды (°C, %, м/с) */
+    .comp-val {
+        font-size: 0.95rem;
+    }
+
+    /* Круглая иконка параметра по центру */
+    .comp-label {
+        width: 34px;
+        height: 34px;
+        flex-shrink: 0; /* Иконка гарантированно останется круглой и не сожмется */
+    }
+
+    .comp-label i,
+    .comp-label svg {
+        width: 15px;
+        height: 15px;
     }
 
     /* ────────────────────────────────────────
