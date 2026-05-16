@@ -10,16 +10,219 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/map.css">
     <link rel="stylesheet" href="../css/calendar.css">
-
     <link rel="stylesheet" href="../css/info.css">
-    <!-- Leaflet CSS -->
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <!-- Chart.js -->
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* Прижимаем футер к низу экрана (Sticky Footer паттерн) */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Секция карты заберет все свободное место, выталкивая футер вниз */
+        .map-section {
+            padding: 20px;
+            font-family: 'Manrope', 'Segoe UI', sans-serif;
+            flex: 1 0 auto; /* Растягивается и заполняет пустоту, фиксируя футер внизу */
+            transition: color 0.3s ease;
+        }
+
+        /* Запрещаем футеру сжиматься */
+        footer {
+            flex-shrink: 0;
+        }
+
+        /* Заголовок секции */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #1e293b; /* Цвет для светлой темы */
+            transition: color 0.3s ease;
+        }
+
+        /* АВТОМАТИЧЕСКИЙ ТЕМНЫЙ РЕЖИМ ДЛЯ ЗАГОЛОВКА */
+        body.dark-theme .section-title {
+            color: #f1f5f9; /* Светлый цвет, отлично видимый в темной теме */
+        }
+
+        /* Главный контейнер-сетка: выстраивает панель и карту в один ряд */
+        .map-layout-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            align-items: stretch; /* Делает панель и карту одинаковой высоты */
+        }
+
+        /* Боковая панель управления (СНАРУЖИ карты) */
+        .map-controls {
+            width: 300px;
+            background: #1e293b; /* Плотный темно-синий цвет */
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0; /* Панель не будет сжиматься */
+        }
+
+        /* Контейнер-обертка карты (справа) */
+        .map-container-wrapper {
+            flex: 1; /* Карта занимает всё оставшееся пространство */
+            height: 600px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            transition: border-color 0.3s ease;
+        }
+
+        body.dark-theme .map-container-wrapper {
+            border-color: #334155; /* Темная рамка карты для темной темы */
+        }
+
+        /* Сам блок карты */
+        .weather-map-container {
+            width: 100%;
+            height: 100%;
+            background-color: #f8fafc;
+        }
+
+        /* Блок поиска городов */
+        .map-search {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+
+        #map-search-input {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px 14px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        #map-search-input:focus {
+            border-color: #3b82f6;
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        #map-search-input::placeholder {
+            color: #94a3b8;
+        }
+
+        /* Кнопка поиска */
+        .map-btn-search {
+            background: #3b82f6;
+            border: none;
+            border-radius: 10px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .map-btn-search:hover {
+            background: #2563eb;
+        }
+
+        /* Разделитель внутри панели */
+        .controls-divider {
+            border: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+            margin: 6px 0;
+        }
+
+        /* Кнопки слоев */
+        .map-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            padding: 12px 14px;
+            color: #e2e8f0; /* Повышенная контрастность текста в боковой панели */
+            font-size: 0.95rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .map-btn i {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            color: #cbd5e1; /* Контрастные иконки */
+        }
+
+        .map-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+        }
+
+        .map-btn:hover i {
+            color: #ffffff;
+        }
+
+        /* Активное состояние кнопки (Выбранный слой) */
+        .map-btn.active {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: #3b82f6;
+            color: #60a5fa; /* Яркий неоново-голубой для идеальной читаемости */
+            font-weight: 600;
+        }
+
+        .map-btn.active i {
+            color: #60a5fa;
+        }
+
+        /* Стилизация иконок Lucide */
+        [data-lucide] {
+            display: inline-block;
+            stroke-width: 2;
+        }
+
+        /* Адаптивность под мобильные экраны */
+        @media (max-width: 768px) {
+            .map-layout-container {
+                flex-direction: column; /* На телефонах панель управления встанет над картой */
+            }
+            .map-controls {
+                width: 100%;
+            }
+            .map-container-wrapper {
+                height: 450px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
     <header>
@@ -69,35 +272,47 @@
         </div>
     </header>
 
-    <main>
-        <section id="map-section" class="map-section">
-            <h2 class="section-title"><i data-lucide="map"></i> <span data-i18n="map-title">Интерактивная карта</span></h2>
-            <div class="map-container-wrapper">
-                <div id="weather-map" class="weather-map-container"></div>
-                <!-- Map Controls -->
-                <div class="map-controls">
-                    <button class="map-btn active" data-layer="none">
-                        <i data-lucide="map"></i> <span data-i18n="map-btn-none">Обычная</span>
-                    </button>
-                    <button class="map-btn" data-layer="precipitation">
-                        <i data-lucide="cloud-rain"></i> <span data-i18n="map-btn-precip">Осадки</span>
-                    </button>
-                    <button class="map-btn" data-layer="wind">
-                        <i data-lucide="wind"></i> <span data-i18n="map-btn-wind">Ветер</span>
-                    </button>
-                    <button class="map-btn" data-layer="temp">
-                        <i data-lucide="thermometer"></i> <span data-i18n="map-btn-temp">Температура</span>
-                    </button>
-                    <button class="map-btn" data-layer="clouds">
-                        <i data-lucide="cloud"></i> <span data-i18n="map-btn-clouds">Облачно</span>
-                    </button>
-                    <button class="map-btn" data-layer="snow">
-                        <i data-lucide="snowflake"></i> <span data-i18n="map-btn-snow">Снег</span>
+    <section id="map-section" class="map-section">
+        <h2 class="section-title"><i data-lucide="map"></i> <span data-i18n="map-title">Интерактивная карта</span></h2>
+        
+        <div class="map-layout-container">
+            
+            <div class="map-controls">
+                <div class="map-search">
+                    <input type="text" id="map-search-input" placeholder="Поиск города..." data-i18n="[placeholder]map-search-placeholder">
+                    <button id="map-search-btn" class="map-btn-search">
+                        <i data-lucide="search"></i>
                     </button>
                 </div>
+                
+                <hr class="controls-divider">
+
+                <button class="map-btn active" data-layer="none">
+                    <i data-lucide="map"></i> <span data-i18n="map-btn-none">Обычная карта</span>
+                </button>
+                <button class="map-btn" data-layer="precipitation">
+                    <i data-lucide="cloud-rain"></i> <span data-i18n="map-btn-precip">Осадки</span>
+                </button>
+                <button class="map-btn" data-layer="wind">
+                    <i data-lucide="wind"></i> <span data-i18n="map-btn-wind">Ветер</span>
+                </button>
+                <button class="map-btn" data-layer="temp">
+                    <i data-lucide="thermometer"></i> <span data-i18n="map-btn-temp">Температура</span>
+                </button>
+                <button class="map-btn" data-layer="clouds">
+                    <i data-lucide="cloud"></i> <span data-i18n="map-btn-clouds">Облачность</span>
+                </button>
+                <button class="map-btn" data-layer="snow">
+                    <i data-lucide="snowflake"></i> <span data-i18n="map-btn-snow">Снег</span>
+                </button>
             </div>
-        </section>
-    </main>
+
+            <div class="map-container-wrapper">
+                <div id="weather-map" class="weather-map-container"></div>
+            </div>
+
+        </div>
+    </section>
 
     <footer>
         <div class="footer-content">
@@ -112,41 +327,129 @@
         </div>
     </footer>
 
-    <!-- Scroll to Top Button -->
     <button id="scroll-to-top" class="scroll-to-top" aria-label="Вернуться наверх">
         <i data-lucide="arrow-up"></i>
     </button>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <!-- Core scripts -->
+    
     <script src="../js/api.js"></script>
     <script src="../js/theme.js"></script>
     <script src="../js/language.js"></script>
     <script src="../js/calendar.js"></script>
     <script src="../js/scroll.js"></script>
-
     <script src="../js/info-modal.js"></script>
     <script src="../js/ai-modal.js"></script>
     <script type="module" src="../js/map.js"></script>
     <script type="module" src="../js/script.js"></script>
+    
     <script>
-    // Локальный инициализатор для меню, если вдруг не срабатывает основной script.js
-    document.addEventListener('DOMContentLoaded', function () {
-        const menuToggle = document.getElementById('menu-toggle');
-        const menuDropdown = document.getElementById('menu-dropdown');
-        if (menuToggle && menuDropdown) {
-            menuToggle.addEventListener('click', function (e) {
-                e.stopPropagation();
-                menuDropdown.classList.toggle('active');
+        document.addEventListener('DOMContentLoaded', function () {
+            // 1. Активация Lucide иконок
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+            // 2. Инициализация карты Leaflet
+            const map = L.map('weather-map').setView([55.7558, 37.6173], 4);
+
+            // Базовый слой OpenStreetMap
+            const baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Погодные слои OpenWeatherMap
+            const OWM_KEY = ''; // Поместите сюда ваш API ключ OWM при необходимости
+            const layers = {
+                'precipitation': L.tileLayer('https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=' + OWM_KEY, {opacity: 0.7}),
+                'wind': L.tileLayer('https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=' + OWM_KEY, {opacity: 0.7}),
+                'temp': L.tileLayer('https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=' + OWM_KEY, {opacity: 0.7}),
+                'clouds': L.tileLayer('https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=' + OWM_KEY, {opacity: 0.7}),
+                'snow': L.tileLayer('https://tile.openweathermap.org/map/snow_new/{z}/{x}/{y}.png?appid=' + OWM_KEY, {opacity: 0.7})
+            };
+            let currentLayer = null;
+
+            // Корректировка размеров Leaflet под Flexbox-контейнер
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 300);
+
+            // 3. Логика работы поиска городов ( Nominatim API )
+            const searchInput = document.getElementById('map-search-input');
+            const searchBtn = document.getElementById('map-search-btn');
+
+            function performSearch() {
+                const query = searchInput.value.trim();
+                if (!query) return;
+
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.length > 0) {
+                            const result = data[0];
+                            const lat = parseFloat(result.lat);
+                            const lon = parseFloat(result.lon);
+                            map.setView([lat, lon], 10);
+                            L.marker([lat, lon])
+                                .addTo(map)
+                                .bindPopup(`<b>${result.display_name.split(',')[0]}</b>`)
+                                .openPopup();
+                        } else {
+                            alert('Город не найден, попробуйте еще раз.');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Ошибка поиска:', err);
+                        alert('Произошла ошибка при поиске.');
+                    });
+            }
+
+            if (searchBtn) {
+                searchBtn.addEventListener('click', performSearch);
+            }
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        performSearch();
+                    }
+                });
+            }
+
+            // 4. Логика переключения погодных слоев
+            const layerButtons = document.querySelectorAll('.map-btn[data-layer]');
+            layerButtons.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    layerButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const layer = btn.getAttribute('data-layer');
+
+                    if (currentLayer) {
+                        map.removeLayer(currentLayer);
+                        currentLayer = null;
+                    }
+
+                    if (layer !== 'none' && layers[layer]) {
+                        currentLayer = layers[layer];
+                        map.addLayer(currentLayer);
+                    }
+                });
             });
-            document.addEventListener('click', function (e) {
-                if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
-                    menuDropdown.classList.remove('active');
-                }
-            });
-        }
-    });
+
+            // 5. Выпадающее навигационное меню (бургер)
+            const menuToggle = document.getElementById('menu-toggle');
+            const menuDropdown = document.getElementById('menu-dropdown');
+            if (menuToggle && menuDropdown) {
+                menuToggle.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    menuDropdown.classList.toggle('active');
+                });
+                document.addEventListener('click', function (e) {
+                    if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
+                        menuDropdown.classList.remove('active');
+                    }
+                });
+            }
+        });
     </script>
 
 </body>
