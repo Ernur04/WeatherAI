@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта | WeatherAI</title>
+    <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/map.css">
+    <link rel="stylesheet" href="../css/calendar.css">
+
+    <link rel="stylesheet" href="../css/info.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <i data-lucide="cloud-sun" class="logo-icon"></i>
+            <span><span class="brand-text">Weather</span><span class="brand-highlight">AI</span></span>
+        </div>
+        <div class="header-controls">
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i data-lucide="moon"></i>
+            </button>
+            <div class="calendar-container">
+                <button id="calendar-toggle" class="theme-btn" aria-label="Open calendar">
+                    <i data-lucide="calendar"></i>
+                </button>
+                <div id="calendar-popup" class="calendar-popup">
+                    <div class="calendar-header-nav">
+                        <button id="prev-month" class="nav-btn"><i data-lucide="chevron-left"></i></button>
+                        <h3 id="calendar-month-year"></h3>
+                        <button id="next-month" class="nav-btn"><i data-lucide="chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-weekdays">
+                        <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div class="weekend">Сб</div><div class="weekend">Вс</div>
+                    </div>
+                    <div id="calendar-days" class="calendar-days"></div>
+                </div>
+            </div>
+            <select id="lang-select" class="lang-picker">
+                <option value="ru">RU</option>
+                <option value="kk">KK</option>
+                <option value="en">EN</option>
+            </select>
+            <div class="header-menu-container">
+                <button id="menu-toggle" class="theme-btn" aria-label="Toggle menu">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div id="menu-dropdown" class="menu-dropdown">
+                    <ul>
+                        <li><a href="../index.html" data-i18n="menu-main">Погода</a></li>
+                        <li><a href="lunar-calendar.html" data-i18n="menu-lunar">Лунный календарь</a></li>
+                        <li><a href="horoscope.html" data-i18n="menu-horoscope">Гороскоп</a></li>
+                        <li><a href="map.html" data-i18n="menu-map">Карта</a></li>
+                        <li><a href="cities-countries.html" data-i18n="menu-cities">Список городов и стран</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="map-section" class="map-section">
+            <h2 class="section-title"><i data-lucide="map"></i> <span data-i18n="map-title">Интерактивная карта</span></h2>
+            <div class="map-container-wrapper">
+                <div id="weather-map" class="weather-map-container"></div>
+                <!-- Map Controls -->
+                <div class="map-controls">
+                    <button class="map-btn active" data-layer="none">
+                        <i data-lucide="map"></i> <span data-i18n="map-btn-none">Обычная</span>
+                    </button>
+                    <button class="map-btn" data-layer="precipitation">
+                        <i data-lucide="cloud-rain"></i> <span data-i18n="map-btn-precip">Осадки</span>
+                    </button>
+                    <button class="map-btn" data-layer="wind">
+                        <i data-lucide="wind"></i> <span data-i18n="map-btn-wind">Ветер</span>
+                    </button>
+                    <button class="map-btn" data-layer="temp">
+                        <i data-lucide="thermometer"></i> <span data-i18n="map-btn-temp">Температура</span>
+                    </button>
+                    <button class="map-btn" data-layer="clouds">
+                        <i data-lucide="cloud"></i> <span data-i18n="map-btn-clouds">Облачно</span>
+                    </button>
+                    <button class="map-btn" data-layer="snow">
+                        <i data-lucide="snowflake"></i> <span data-i18n="map-btn-snow">Снег</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <p>&copy; 2026 <strong>Weather<span class="brand-highlight">AI</span></strong>. <span data-i18n="footer-rights">Все права защищены.</span></p>
+            </div>
+            <nav class="footer-links">
+                <a href="about.html" data-i18n="footer-about">О проекте</a>
+                <a href="privacy.html" data-i18n="footer-privacy">Конфиденциальность</a>
+                <a href="contact.html" data-i18n="footer-contact">Контакты</a>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top" aria-label="Вернуться наверх">
+        <i data-lucide="arrow-up"></i>
+    </button>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Core scripts -->
+    <script src="../js/api.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/language.js"></script>
+    <script src="../js/calendar.js"></script>
+    <script src="../js/scroll.js"></script>
+
+    <script src="../js/info-modal.js"></script>
+    <script src="../js/ai-modal.js"></script>
+    <script type="module" src="../js/map.js"></script>
+    <script type="module" src="../js/script.js"></script>
+    <script>
+    // Локальный инициализатор для меню, если вдруг не срабатывает основной script.js
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuDropdown = document.getElementById('menu-dropdown');
+        if (menuToggle && menuDropdown) {
+            menuToggle.addEventListener('click', function (e) {
+                e.stopPropagation();
+                menuDropdown.classList.toggle('active');
+            });
+            document.addEventListener('click', function (e) {
+                if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
+                    menuDropdown.classList.remove('active');
+                }
+            });
+        }
+    });
+    </script>
+
+</body>
+</html>
