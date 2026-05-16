@@ -361,96 +361,259 @@
 }
 
 /* Comparison Modal Details */
-.compare-input-group {
+/* ==========================================================================
+   Updated Comparison Modal Styles
+   ========================================================================== */
+
+/* Обертка для двух инпутов с разделителем */
+.compare-inputs-wrapper {
     display: flex;
-    gap: 10px;
-    margin: 20px 0;
+    align-items: flex-end;
+    gap: 16px;
+    margin: 24px 0 16px 0;
+    position: relative;
 }
 
-#compare-city-input {
+/* Группа ввода (теперь вертикальная: лейбл + инпут + подсказки) */
+.compare-input-group {
     flex: 1;
-    padding: 12px 15px;
-    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative; /* Важно для абсолютного позиционирования подсказок */
+}
+
+/* Лейблы над инпутами "Город 1" и "Город 2" */
+.compare-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.compare-label i, 
+.compare-label svg {
+    width: 14px;
+    height: 14px;
+    color: #a855f7; /* Цвет иконки локации в тон AI элементам */
+}
+
+/* Стилизация полей ввода */
+#compare-city-1-input,
+#compare-city-2-input {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 14px;
     border: 1px solid var(--border);
-    background: var(--bg-input);
+    background: var(--bg-input, var(--bg-card));
     color: var(--text-main);
     font-size: 1rem;
     outline: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
+#compare-city-1-input:focus,
+#compare-city-2-input:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+}
+
+/* Разделитель "VS" между инпутами */
+.compare-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 14px; /* Выравнивание по центру инпутов, игнорируя высоту лейбла */
+}
+
+.vs-badge-small {
+    background: rgba(168, 85, 247, 0.1);
+    color: #a855f7;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+/* Выпадающие подсказки городов (По аналогии с ai-chat-suggestions) */
+.compare-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    display: none; /* Управляется через JS (display: flex или класс .show) */
+    flex-direction: column;
+    padding: 6px 0;
+    margin-top: 6px;
+    z-index: 110;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+[data-theme="dark"] .compare-suggestions {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.compare-suggestions.show {
+    display: flex;
+}
+
+/* Элемент списка подсказок */
+.compare-suggestions div,
+.suggestion-item { 
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    transition: background 0.2s, color 0.2s;
+}
+
+.compare-suggestions div:hover,
+.suggestion-item:hover {
+    background: var(--bg-body);
+    color: #a855f7;
+}
+
+/* Кнопка "Сравнить" на всю ширину */
+#compare-submit-btn {
+    background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.25);
+}
+
+#compare-submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(168, 85, 247, 0.35);
+}
+
+/* Результаты сравнения */
 .comparison-results {
-    margin-top: 30px;
+    margin-top: 28px;
+    animation: fadeIn 0.4s ease;
 }
 
 .comparison-grid {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
+/* Шапка таблицы результатов (Город 1 VS Город 2) */
 .comparison-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
 }
 
 .comparison-header h3 {
     flex: 1;
     text-align: center;
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
+    font-weight: 700;
     color: var(--text-main);
 }
 
+/* Большой бейдж VS в результатах */
 .vs-badge {
-    background: var(--primary);
+    background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
     color: white;
-    padding: 5px 10px;
+    padding: 6px 14px;
     border-radius: 20px;
     font-weight: 800;
-    font-size: 0.8rem;
-    margin: 0 10px;
+    font-size: 0.85rem;
+    margin: 0 16px;
+    box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3);
 }
 
+/* Строки параметров (Температура, Влажность...) */
 .comparison-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--tip-border);
+    padding: 12px 8px;
+    background: var(--bg-body);
+    border-radius: 12px;
+    border: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.comparison-row:hover {
+    border-color: rgba(168, 85, 247, 0.2);
 }
 
 .comp-val {
     flex: 1;
     text-align: center;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 1.1rem;
     color: var(--text-main);
 }
 
+/* Стилизация центральной иконки */
 .comp-label {
-    width: 40px;
+    width: 42px;
+    height: 42px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 50%;
     display: flex;
+    align-items: center;
     justify-content: center;
-    color: var(--text-muted);
+    color: #a855f7;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
 }
 
+.comp-label i,
+.comp-label svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* ==========================================================================
+   Mobile Responsiveness (Адаптив под смартфоны)
+   ========================================================================== */
 @media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        margin: 10% auto;
-        padding: 20px;
+    .compare-inputs-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .compare-divider {
+        padding-bottom: 0;
+        margin: 4px 0;
+    }
+
+    .vs-badge-small {
+        width: 100%;
+        text-align: center;
+        padding: 4px 0;
     }
 
     .comparison-header h3 {
-        font-size: 1rem;
+        font-size: 1.05rem;
     }
 
     .vs-badge {
-        padding: 6px 12px;
+        padding: 4px 10px;
         font-size: 0.75rem;
         margin: 0 8px;
     }
@@ -458,14 +621,16 @@
     .comp-val {
         font-size: 1rem;
     }
-
+    
     .comp-label {
-        width: 40px;
+        width: 36px;
+        height: 36px;
     }
 
-    .comp-label i {
-        width: 20px;
-        height: 20px;
+    .comp-label i,
+    .comp-label svg {
+        width: 16px;
+        height: 16px;
     }
 }
 

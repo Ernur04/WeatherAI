@@ -385,11 +385,22 @@
             <div class="modal-content">
                 <span class="close-modal">&times;</span>
                 <h2 data-i18n="compare-title">Сравнить погоду</h2>
-                <div class="compare-input-group">
-                    <input type="text" id="compare-city-input" data-i18n-placeholder="compare-input-placeholder"
-                        placeholder="Введите второй город">
-                    <button id="compare-submit-btn" class="search-btn" data-i18n="btn-compare">Сравнить</button>
+                <div class="compare-inputs-wrapper">
+                    <div class="compare-input-group">
+                        <label class="compare-label"><i data-lucide="map-pin"></i> <span data-i18n="compare-city-1">Город 1</span></label>
+                        <input type="text" id="compare-city-1-input" data-i18n-placeholder="compare-input-placeholder"
+                            placeholder="Введите первый город" autocomplete="off">
+                        <div class="compare-suggestions" id="compare-suggestions-1"></div>
+                    </div>
+                    <div class="compare-divider"><span class="vs-badge-small" data-i18n="vs">VS</span></div>
+                    <div class="compare-input-group">
+                        <label class="compare-label"><i data-lucide="map-pin"></i> <span data-i18n="compare-city-2">Город 2</span></label>
+                        <input type="text" id="compare-city-2-input" data-i18n-placeholder="compare-input-placeholder"
+                            placeholder="Введите второй город" autocomplete="off">
+                        <div class="compare-suggestions" id="compare-suggestions-2"></div>
+                    </div>
                 </div>
+                <button id="compare-submit-btn" class="search-btn" style="width: 100%; margin-top: 1rem;" data-i18n="btn-compare">Сравнить</button>
                 <div id="comparison-results" class="comparison-results" style="display: none;">
                     <div class="comparison-grid">
                         <div class="comparison-header">
