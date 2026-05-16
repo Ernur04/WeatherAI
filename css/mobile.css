@@ -471,206 +471,51 @@
        Проблема: два города рядом не помещаются
        Решение: колонки вертикально
        ──────────────────────────────────────── */
-    /* ============================================================
-       УЛУЧШЕННОЕ МОДАЛЬНОЕ ОКНО СРАВНЕНИЯ ДЛЯ ТЕЛЕФОНОВ
-       ============================================================ */
     .modal {
         padding: 12px;
-        display: flex !important;
-        align-items: center !important; /* Центрируем окно по вертикали на экране смартфона */
-        justify-content: center !important;
-        box-sizing: border-box;
     }
 
     .modal-content {
-        padding: 24px 16px 20px 16px !important;
-        border-radius: 20px !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: auto !important;
-        max-height: 88vh !important; /* Окно гарантированно не выйдет за пределы экрана при открытой клавиатуре */
-        overflow-y: auto !important; /* Если контент не влезает, появится аккуратный скролл */
+        padding: 20px 16px;
+        border-radius: 20px;
+        width: 100%;
+        max-width: 100%;
+        margin: auto;
+        max-height: 92vh;
+        overflow-y: auto;
         box-sizing: border-box !important;
-        background: var(--bg-card, #ffffff);
-        color: var(--text-main, #333333);
     }
 
     .modal-content h2 {
-        font-size: 1.25rem !important;
-        margin-top: 0 !important;
-        margin-bottom: 18px !important;
-        text-align: center !important;
-        font-weight: 700;
+        font-size: 1.2rem;
+        margin-bottom: 16px;
     }
 
-    /* Обертка инпутов: выстраиваем Город 1 -> VS -> Город 2 строго вертикально */
-    .compare-inputs-wrapper {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-        gap: 12px !important;
-        margin-bottom: 14px !important;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    /* Каждая группа (лейбл + инпут + подсказки) */
     .compare-input-group {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 6px !important;
-        position: relative !important; /* Чтобы выпадающие подсказки позиционировались ровно под инпутом */
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .compare-input-group input {
         width: 100%;
         box-sizing: border-box;
+        font-size: 16px;
     }
 
-    .compare-label {
-        font-size: 0.85rem !important;
-        font-weight: 600 !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        color: var(--text-muted, #888888);
-        margin: 0;
-        padding-left: 2px;
-    }
-
-    .compare-label i,
-    .compare-label svg {
-        width: 14px;
-        height: 14px;
-        color: #a855f7; /* Красивый фиолетовый акцент для иконки локации */
-    }
-
-    /* Стилизация самих полей ввода для удобного нажатия пальцем */
-    #compare-city-1-input, 
-    #compare-city-2-input {
-        width: 100% !important;
-        padding: 12px 14px !important;
-        font-size: 16px !important; /* Защита от авто-зума страницы на iOS/Android при фокусе */
-        border-radius: 12px !important;
-        border: 1px solid var(--border, #ccc) !important;
-        background: var(--bg-input, var(--bg-card)) !important;
-        color: var(--text-main, #333) !important;
-        box-sizing: border-box !important;
-        outline: none;
-        display: block;
-    }
-
-    /* Маленький разделитель VS на мобилке */
-    .compare-divider {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        margin: 2px 0 !important;
+    .compare-input-group .search-btn {
         width: 100%;
-    }
-
-    .vs-badge-small {
-        padding: 4px 12px !important;
-        font-size: 0.75rem !important;
-        background: rgba(168, 85, 247, 0.1) !important;
-        color: #a855f7 !important;
-        border-radius: 10px !important;
-        border: 1px solid rgba(168, 85, 247, 0.2) !important;
-        font-weight: 700;
-    }
-
-    /* Мобильная адаптация выпадающих подсказок городов */
-    .compare-suggestions {
-        position: absolute !important;
-        top: 100% !important;
-        left: 0 !important;
-        right: 0 !important;
-        max-height: 140px !important; /* Ограничиваем высоту, чтобы подсказки не перекрывали всю область */
-        background: var(--bg-card, #ffffff) !important;
-        border: 1px solid var(--border, #ccc) !important;
-        border-radius: 10px !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
-        z-index: 110 !important; /* Чтобы выпадали поверх нижних элементов */
-    }
-
-    /* Главная кнопка "Сравнить" на весь экран */
-    #compare-submit-btn {
-        width: 100% !important;
-        padding: 14px !important;
-        font-size: 1rem !important;
-        border-radius: 12px !important;
-        margin-top: 12px !important; /* Сделали небольшой отступ сверху, чтобы не липла */
-        box-sizing: border-box !important;
-    }
-
-    /* Сетка результатов сравнения */
-    .comparison-results {
-        margin-top: 22px !important;
-        width: 100%;
-    }
-
-    .comparison-grid {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 10px !important;
-        width: 100%;
-    }
-
-    /* Шапка результатов (Название городов) */
-    .comparison-header {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        width: 100%;
-    }
-
-    .comparison-header h3 {
-        font-size: 1rem !important;
-        word-break: break-word !important; /* Если название города длинное, оно перенесется, а не сломает верстку */
-        margin: 0;
-        flex: 1;
-    }
-
-    .vs-badge {
-        padding: 4px 10px !important;
-        font-size: 0.75rem !important;
-        margin: 0 6px !important;
-    }
-
-    /* Строки с параметрами погоды */
-    .comparison-row {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        padding: 10px 8px !important;
-        gap: 4px !important;
-        background: var(--bg-body, #fafafa);
+        padding: 13px;
         border-radius: 12px;
+    }
+
+    .compare-results {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .compare-col,
+    .compare-column {
         width: 100%;
-        box-sizing: border-box;
-    }
-
-    /* Значения погоды (°C, %, м/с) */
-    .comp-val {
-        font-size: 0.95rem !important;
-        flex: 1;
-    }
-
-    /* Круглая иконка параметра по центру */
-    .comp-label {
-        width: 34px !important;
-        height: 34px !important;
-        flex-shrink: 0 !important; /* Иконка гарантированно останется круглой и не сожмется под давлением текста */
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        background: var(--bg-card, #fff);
-        border: 1px solid var(--border, #eee);
-        border-radius: 50%;
-        color: #a855f7;
-    }
-
-    .comp-label i,
-    .comp-label svg {
-        width: 15px !important;
-        height: 15px !important;
     }
 
     /* ────────────────────────────────────────
