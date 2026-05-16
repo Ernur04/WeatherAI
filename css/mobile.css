@@ -471,53 +471,144 @@
        Проблема: два города рядом не помещаются
        Решение: колонки вертикально
        ──────────────────────────────────────── */
+    /* ==========================================================================
+   ОКНО СРАВНЕНИЯ ПОГОДЫ (Базовые стили для ПК)
+   ========================================================================== */
     .modal {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         padding: 12px;
+        box-sizing: border-box;
     }
 
     .modal-content {
-        padding: 20px 16px;
+        background: var(--bg-card); /* Оставляем ваш фоновый цвет карточки */
+        padding: 24px 20px;
         border-radius: 20px;
         width: 100%;
-        max-width: 100%;
+        max-width: 500px; /* Ограничение ширины на ПК, чтобы не растягивалось слишком сильно */
         margin: auto;
-        max-height: 92vh;
+        max-height: 90vh;
         overflow-y: auto;
         box-sizing: border-box !important;
+        box-shadow: 0 10px 30px var(--shadow);
     }
 
     .modal-content h2 {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
+        margin-top: 0;
         margin-bottom: 16px;
+        color: var(--text-main);
     }
 
+    /* Группа полей ввода на ПК (в одну строчку, если нужно) */
     .compare-input-group {
+        display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
     }
 
     .compare-input-group input {
         width: 100%;
+        padding: 12px 16px;
         box-sizing: border-box;
         font-size: 16px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--bg-body);
+        color: var(--text-main);
     }
 
     .compare-input-group .search-btn {
         width: 100%;
         padding: 13px;
         border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
     }
 
+    /* Отображение результатов сравнения (в две колонки на ПК) */
     .compare-results {
-        flex-direction: column;
+        display: flex;
+        flex-direction: row; 
         gap: 14px;
+        margin-top: 16px;
     }
 
     .compare-col,
     .compare-column {
+        flex: 1;
         width: 100%;
     }
 
+
+    /* ==========================================================================
+    АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (Экран меньше 768px)
+    ========================================================================== */
+    @media (max-width: 768px) {
+        /* Центрируем модалку строго по центру экрана, чтобы она не падала вниз */
+        #compare-modal {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Уменьшаем само белое окошко, чтобы оно стало компактным */
+        #compare-modal .modal-content {
+            max-width: 340px;          /* Делаем ширину аккуратной, под мобильный экран */
+            padding: 16px 14px;        /* Сжимаем внутренние пустые поля */
+            max-height: 85vh;          /* Ограничиваем высоту, чтобы не вылезала вниз */
+        }
+
+        /* Уменьшаем размер заголовка */
+        #compare-modal .modal-content h2 {
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+        }
+
+        /* Ужимаем гигантские внешние отступы блоков обертки */
+        .compare-inputs-wrapper {
+            margin: 12px 0 10px 0 !important;
+            gap: 6px !important;
+        }
+
+        /* Делаем сами поля ввода (Инпуты) аккуратнее и тоньше */
+        #compare-city-1-input,
+        #compare-city-2-input {
+            padding: 10px 14px !important; /* Уменьшили толщину полей */
+            font-size: 0.95rem !important;
+            border-radius: 10px !important;
+        }
+
+        .compare-label {
+            font-size: 0.8rem; /* Уменьшаем надписи "Город 1" и "Город 2" */
+        }
+
+        /* Уменьшаем разделитель "VS" */
+        .compare-divider {
+            margin: 2px 0 !important;
+        }
+        
+        .vs-badge-small {
+            padding: 2px 8px !important;
+            font-size: 0.7rem !important;
+        }
+
+        /* Делаем кнопку "Сравнить" ниже и полностью видимой на экране */
+        #compare-submit-btn {
+            padding: 11px !important;     /* Уменьшили высоту кнопки */
+            font-size: 0.95rem !important;
+            border-radius: 12px !important;
+            margin-top: 6px !important;
+        }
+
+        /* Результаты сравнения на телефонах перестраиваем из строк в ОДИН столбик */
+        .compare-results {
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
     /* ────────────────────────────────────────
        14. МОДАЛКА — ЭКСПОРТ ДАННЫХ
        Проблема: двухколоночный layout не помещается
