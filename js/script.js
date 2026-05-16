@@ -157,10 +157,13 @@ function initEventListeners() {
 // ========================================
 function openCompareModal() {
     const modal = document.getElementById('compare-modal');
-    modal.style.display = "block";
+    if (modal) modal.style.display = "block";
 
-    // Сбрасываем отображение результатов
-    document.getElementById('comparison-results').style.display = 'none';
+    // Сбрасываем отображение результатов (Исправленный ID)
+    const resultsBlock = document.getElementById('comparison-results');
+    if (resultsBlock) {
+        resultsBlock.style.display = 'none';
+    }
     
     // Очищаем оба инпута новой структуры
     const input1 = document.getElementById('compare-city-1-input');
@@ -169,35 +172,47 @@ function openCompareModal() {
     if (input1) input1.value = '';
     if (input2) input2.value = '';
 
-    // Автоматически предзаполняем Первый город текущим открытым городом для удобства
-    const currentCityName = document.getElementById('city-name').textContent;
-    if (currentCityName && input1 && currentCityName !== 'Город' && currentCityName !== '--') {
-        input1.value = currentCityName;
+    // Автоматически предзаполняем Первый город текущим открытым городом
+    const currentCityEl = document.getElementById('city-name');
+    if (currentCityEl && input1) {
+        const currentCityName = currentCityEl.textContent;
+        if (currentCityName && currentCityName !== 'Город' && currentCityName !== '--') {
+            input1.value = currentCityName;
+        }
     }
 }
 
 async function handleComparison() {
-    const firstCity = document.getElementById('compare-city-1-input').value.trim();
-    const secondCity = document.getElementById('compare-city-2-input').value.trim();
+    const firstCityInput = document.getElementById('compare-city-1-input');
+    const secondCityInput = document.getElementById('compare-city-2-input');
     
-    // Проверяем заполненность обоих полей
+    if (!firstCityInput || !secondCityInput) return;
+
+    const firstCity = firstCityInput.value.trim();
+    const secondCity = secondCityInput.value.trim();
+    
     if (!firstCity || !secondCity) {
         showNotification('Пожалуйста, заполните оба города для сравнения', 'warning');
         return;
     }
 
     const submitBtn = document.getElementById('compare-submit-btn');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = '⏳';
-    submitBtn.disabled = true;
+    const originalText = submitBtn ? submitBtn.textContent : 'Сравнить';
+    
+    if (submitBtn) {
+        submitBtn.textContent = '⏳';
+        submitBtn.disabled = true;
+    }
 
     try {
         // 1. Получаем координаты и данные для ПЕРВОГО города
         const coords1 = await getCoordinates(firstCity);
         if (!coords1) {
             showErrorModal('Ошибка поиска', `Первый город "${firstCity}" не найден`);
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
+            if (submitBtn) {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
             return;
         }
         const weather1 = await getWeatherData(coords1.lat, coords1.lon);
@@ -206,51 +221,66 @@ async function handleComparison() {
         const coords2 = await getCoordinates(secondCity);
         if (!coords2) {
             showErrorModal('Ошибка поиска', `Второй город "${secondCity}" не найден`);
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
+            if (submitBtn) {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
             return;
         }
         const weather2 = await getWeatherData(coords2.lat, coords2.lon);
 
-        // Если данные для обоих городов успешно получены — рендерим результат
+        // Если данные получены — рендерим результат
         if (weather1 && weather2) {
             renderComparison(weather1, coords1.name, weather2, coords2.name);
-            document.getElementById('comparison-results').style.display = 'block';
-            lucide.createIcons();
+            
+            const resultsBlock = document.getElementById('comparison-results');
+            if (resultsBlock) {
+                resultsBlock.style.display = 'block';
+            }
+            
+            if (window.lucide) {
+                lucide.createIcons();
+            }
         }
     } catch (e) {
         console.error(e);
         showErrorModal('Ошибка', 'Произошла ошибка при сравнении городов');
     }
 
-    submitBtn.textContent = originalText;
-    submitBtn.disabled = false;
+    if (submitBtn) {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
 }
 
 function renderComparison(weather1, city1Name, weather2, city2Name) {
-    // Устанавливаем корректные названия городов в заголовки результатов
-    document.getElementById('compare-city-1-name').textContent = city1Name;
-    document.getElementById('compare-city-2-name').textContent = city2Name;
+    // Безопасно обновляем заголовки городов
+    const c1NameEl = document.getElementById('compare-city-1-name');
+    const c2NameEl = document.getElementById('compare-city-2-name');
+    if (c1NameEl) c1NameEl.textContent = city1Name;
+    if (c2NameEl) c2NameEl.textContent = city2Name;
 
-    // Сравнение Температуры (Температура 2м)
-    document.getElementById('c1-temp').textContent = Math.round(weather1.current.temperature_2m) + '°C';
-    document.getElementById('c2-temp').textContent = Math.round(weather2.current.temperature_2m) + '°C';
+    // Функция для безопасной вставки значений в элементы
+    const setVal = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+    };
 
-    // Сравнение Ощущается как (Apparent Temperature)
-    document.getElementById('c1-feels').textContent = Math.round(weather1.current.apparent_temperature) + '°C';
-    document.getElementById('c2-feels').textContent = Math.round(weather2.current.apparent_temperature) + '°C';
+    // Заполняем параметры погоды
+    setVal('c1-temp', Math.round(weather1.current.temperature_2m) + '°C');
+    setVal('c2-temp', Math.round(weather2.current.temperature_2m) + '°C');
 
-    // Сравнение Влажности
-    document.getElementById('c1-humidity').textContent = weather1.current.relative_humidity_2m + '%';
-    document.getElementById('c2-humidity').textContent = weather2.current.relative_humidity_2m + '%';
+    setVal('c1-feels', Math.round(weather1.current.apparent_temperature) + '°C');
+    setVal('c2-feels', Math.round(weather2.current.apparent_temperature) + '°C');
 
-    // Сравнение Скорости ветра
-    document.getElementById('c1-wind').textContent = Math.round(weather1.current.wind_speed_10m) + ' м/с';
-    document.getElementById('c2-wind').textContent = Math.round(weather2.current.wind_speed_10m) + ' м/с';
+    setVal('c1-humidity', weather1.current.relative_humidity_2m + '%');
+    setVal('c2-humidity', weather2.current.relative_humidity_2m + '%');
 
-    // Сравнение Атмосферного давления (Перевод из гПа/hPa в мм ртутного столба)
-    document.getElementById('c1-pressure').textContent = Math.round(weather1.current.pressure_msl * 0.750062) + ' мм';
-    document.getElementById('c2-pressure').textContent = Math.round(weather2.current.pressure_msl * 0.750062) + ' мм';
+    setVal('c1-wind', Math.round(weather1.current.wind_speed_10m) + ' м/с');
+    setVal('c2-wind', Math.round(weather2.current.wind_speed_10m) + ' м/с');
+
+    setVal('c1-pressure', Math.round(weather1.current.pressure_msl * 0.750062) + ' мм');
+    setVal('c2-pressure', Math.round(weather2.current.pressure_msl * 0.750062) + ' мм');
 }
 
 // ========================================
