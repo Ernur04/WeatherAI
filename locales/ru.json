@@ -351,5 +351,6 @@
     "menu-map": "Карта",
     "menu-cities":"Список городов и стран",
     "map-title1": "Карта погоды мира",
-    "map-page-title": "WeatherAI – Карта"
+    "map-page-title": "WeatherAI – Карта",
+    "page-title-cities-countries": "WeatherAI – Список городов и стран"
 }
