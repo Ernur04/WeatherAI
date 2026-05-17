@@ -34,7 +34,7 @@
         .map-section {
             padding: 20px;
             font-family: 'Manrope', 'Segoe UI', sans-serif;
-            flex: 1 0 auto; /* Растягивается и заполняет пустоту, фиксируя футер внизу */
+            flex: 1 0 auto;
             transition: color 0.3s ease;
         }
 
@@ -43,183 +43,269 @@
             flex-shrink: 0;
         }
 
-        /* Заголовок секции */
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: #1e293b; /* Цвет для светлой темы */
-            transition: color 0.3s ease;
-        }
-
-        /* АВТОМАТИЧЕСКИЙ ТЕМНЫЙ РЕЖИМ ДЛЯ ЗАГОЛОВКА */
-        body.dark-theme .section-title {
-            color: #f1f5f9; /* Светлый цвет, отлично видимый в темной теме */
-        }
-
-        /* Главный контейнер-сетка: выстраивает панель и карту в один ряд */
-        .map-layout-container {
-            display: flex;
-            gap: 20px;
-            width: 100%;
-            align-items: stretch; /* Делает панель и карту одинаковой высоты */
-        }
-
-        /* Боковая панель управления (СНАРУЖИ карты) */
-        .map-controls {
-            width: 300px;
-            background: #1e293b; /* Плотный темно-синий цвет */
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            flex-shrink: 0; /* Панель не будет сжиматься */
-        }
-
-        /* Контейнер-обертка карты (справа) */
-        .map-container-wrapper {
-            flex: 1; /* Карта занимает всё оставшееся пространство */
-            height: 600px;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            border: 1px solid #e2e8f0;
-            transition: border-color 0.3s ease;
-        }
-
-        body.dark-theme .map-container-wrapper {
-            border-color: #334155; /* Темная рамка карты для темной темы */
-        }
-
-        /* Сам блок карты */
-        .weather-map-container {
-            width: 100%;
-            height: 100%;
-            background-color: #f8fafc;
-        }
-
-        /* Блок поиска городов */
+        /* Контейнер всей поисковой строки */
         .map-search {
             display: flex;
-            gap: 8px;
+            align-items: center;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 4px 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
             width: 100%;
+            box-sizing: border-box;
         }
 
+        /* Фокус на всей строке, когда кликают в инпут */
+        .map-search:focus-within {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        /* Поле ввода текста */
         #map-search-input {
             flex: 1;
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 12px 14px;
-            color: #ffffff;
-            font-size: 0.9rem;
+            border: none;
             outline: none;
-            transition: all 0.2s ease;
+            background: transparent;
+            padding: 8px;
+            font-size: 14px;
+            color: #1e293b;
         }
 
-        #map-search-input:focus {
-            border-color: #3b82f6;
-            background: rgba(15, 23, 42, 0.7);
-        }
-
+        /* Плейсхолдер (текст-подсказка) */
         #map-search-input::placeholder {
             color: #94a3b8;
         }
 
-        /* Кнопка поиска */
+        /* Общие стили для кнопок внутри поиска (и гео, и поиск) */
+        .map-btn-geo, 
         .map-btn-search {
-            background: #3b82f6;
-            border: none;
-            border-radius: 10px;
-            width: 44px;
-            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ffffff;
+            background: none;
+            border: none;
+            padding: 8px;
+            margin-left: 4px;
+            border-radius: 6px;
+            color: #64748b;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
 
+        /* Эффект наведения для кнопки Геолокации */
+        .map-btn-geo:hover {
+            background-color: #f1f5f9;
+            color: #ef4444;
+        }
+
+        /* Эффект наведения для кнопки Поиска */
         .map-btn-search:hover {
-            background: #2563eb;
+            background-color: #f1f5f9;
+            color: #3b82f6;
         }
 
-        /* Разделитель внутри панели */
-        .controls-divider {
-            border: 0;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.08);
-            margin: 6px 0;
-        }
-
-        /* Кнопки слоев */
-        .map-btn {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            border-radius: 10px;
-            padding: 12px 14px;
-            color: #e2e8f0; /* Повышенная контрастность текста в боковой панели */
-            font-size: 0.95rem;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .map-btn i {
+        /* Стилизация иконок внутри кнопок поиска */
+        .map-btn-geo i, 
+        .map-btn-search i {
             width: 18px;
             height: 18px;
-            flex-shrink: 0;
-            color: #cbd5e1; /* Контрастные иконки */
+            display: block;
         }
 
-        .map-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: #ffffff;
+        /* Контейнер для размещения кнопок слоев в один ряд */
+        .map-buttons-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            width: 100%;
         }
 
-        .map-btn:hover i {
-            color: #ffffff;
+        /* Горизонтальные кнопки слоев в виде капсул */
+        .map-buttons-row .map-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: auto;
+            padding: 8px 14px;
+            background-color: transparent;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        /* Активное состояние кнопки (Выбранный слой) */
-        .map-btn.active {
-            background: rgba(59, 130, 246, 0.15);
-            border-color: #3b82f6;
-            color: #60a5fa; /* Яркий неоново-голубой для идеальной читаемости */
+        /* Эффект наведения мыши */
+        .map-buttons-row .map-btn:hover {
+            background-color: #ffffff;
+            color: #0f172a;
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Стиль для активной кнопки (выбранный слой) */
+        .map-buttons-row .map-btn.active {
+            background-color: #f0fdf4;
+            color: #16a34a;
+            border-color: #bbf7d0;
             font-weight: 600;
         }
 
-        .map-btn.active i {
-            color: #60a5fa;
+        /* Иконки Lucide внутри кнопок */
+        .map-buttons-row .map-btn i {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            color: #94a3b8;
+            transition: color 0.2s ease;
         }
 
-        /* Стилизация иконок Lucide */
-        [data-lucide] {
-            display: inline-block;
-            stroke-width: 2;
+        /* Изменение цвета иконки при наведении */
+        .map-buttons-row .map-btn:hover i {
+            color: #475569;
         }
 
-        /* Адаптивность под мобильные экраны */
-        @media (max-width: 768px) {
-            .map-layout-container {
-                flex-direction: column; /* На телефонах панель управления встанет над картой */
-            }
-            .map-controls {
-                width: 100%;
-            }
-            .map-container-wrapper {
-                height: 450px;
-            }
+        /* Изменение цвета иконки у активной кнопки */
+        .map-buttons-row .map-btn.active i {
+            color: #16a34a;
         }
+
+        /* Обертка контейнера карты */
+        .map-container-wrapper {
+            position: relative; /* Важно для абсолютного позиционирования панели поверх */
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            margin-top: 10px;
+        }
+
+        /* Контейнер интерактивной карты */
+        .weather-map-container {
+            width: 100%;
+            height: 500px;
+            background-color: #f1f5f9;
+        }
+
+        .controls-divider {
+            border: 0;
+            border-top: 1px solid #e2e8f0;
+            margin: 12px 0;
+            width: 100%;
+        }
+
+        /* ==========================================================================
+           ПРОФЕССИОНАЛЬНАЯ ИНТЕРАКТИВНАЯ ПАНЕЛЬ (ЛЕГЕНДА + ПРОЗРАЧНОСТЬ)
+           ========================================================================== */
+        .map-overlay-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Поверх карты Leaflet */
+            width: 210px;
+            font-family: 'Manrope', sans-serif;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Скрытие панели, когда выбрана "Обычная карта" */
+        .map-overlay-panel.hidden {
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+        }
+
+        .panel-divider {
+            border-top: 1px solid #e2e8f0;
+            margin: 10px 0;
+        }
+
+        /* Настройка прозрачности слоя */
+        .map-opacity-control {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .map-opacity-control label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .map-opacity-control label i {
+            width: 14px;
+            height: 14px;
+            color: #64748b;
+        }
+
+        #opacity-range {
+            width: 100%;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+            accent-color: #16a34a;
+        }
+
+        /* Стили цветовой шкалы (Легенды) */
+        .legend-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .scale-gradient {
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            transition: background 0.3s ease;
+        }
+
+        .scale-labels {
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 500;
+            margin-top: 6px;
+        }
+
+        /* Уникальные градиенты под специфику тайлов OpenWeatherMap */
+        .gradient-temp {
+            background: linear-gradient(to right, #4a00e0, #00d2ff, #00ff00, #ffff00, #f857a6, #ff5858);
+        }
+        .gradient-precipitation {
+            background: linear-gradient(to right, rgba(224,242,254,0.4), #3b82f6, #1d4ed8, #1e3a8a);
+        }
+        .gradient-wind {
+            background: linear-gradient(to right, #ffffff, #e0f2fe, #7dd3fc, #0284c7, #0369a1);
+        }
+        .gradient-clouds {
+            background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(148,163,184,0.6), #475569);
+        }
+        .gradient-snow {
+            background: linear-gradient(to right, #ffffff, #93c5fd, #2563eb, #1e3a8a);
+        }
+        
     </style>
 </head>
 
@@ -280,6 +366,11 @@
             <div class="map-controls">
                 <div class="map-search">
                     <input type="text" id="map-search-input" placeholder="Поиск города..." data-i18n="[placeholder]map-search-placeholder">
+                    
+                    <button id="map-geolocation-btn" class="map-btn-geo" title="Определить местоположение" data-i18n="[title]map-geo-title">
+                        <i data-lucide="locate-fixed"></i>
+                    </button>
+
                     <button id="map-search-btn" class="map-btn-search">
                         <i data-lucide="search"></i>
                     </button>
@@ -287,28 +378,54 @@
                 
                 <hr class="controls-divider">
 
-                <button class="map-btn active" data-layer="none">
-                    <i data-lucide="map"></i> <span data-i18n="map-btn-none">Обычная карта</span>
-                </button>
-                <button class="map-btn" data-layer="precipitation">
-                    <i data-lucide="cloud-rain"></i> <span data-i18n="map-btn-precip">Осадки</span>
-                </button>
-                <button class="map-btn" data-layer="wind">
-                    <i data-lucide="wind"></i> <span data-i18n="map-btn-wind">Ветер</span>
-                </button>
-                <button class="map-btn" data-layer="temp">
-                    <i data-lucide="thermometer"></i> <span data-i18n="map-btn-temp">Температура</span>
-                </button>
-                <button class="map-btn" data-layer="clouds">
-                    <i data-lucide="cloud"></i> <span data-i18n="map-btn-clouds">Облачность</span>
-                </button>
-                <button class="map-btn" data-layer="snow">
-                    <i data-lucide="snowflake"></i> <span data-i18n="map-btn-snow">Снег</span>
-                </button>
+                <div class="map-buttons-row">
+                    <button class="map-btn active" data-layer="none">
+                        <i data-lucide="map"></i> <span data-i18n="map-btn-none">Обычная карта</span>
+                    </button>
+                    <button class="map-btn" data-layer="precipitation">
+                        <i data-lucide="cloud-rain"></i> <span data-i18n="map-btn-precip">Осадки</span>
+                    </button>
+                    <button class="map-btn" data-layer="wind">
+                        <i data-lucide="wind"></i> <span data-i18n="map-btn-wind">Ветер</span>
+                    </button>
+                    <button class="map-btn" data-layer="temp">
+                        <i data-lucide="thermometer"></i> <span data-i18n="map-btn-temp">Температура</span>
+                    </button>
+                    <button class="map-btn" data-layer="clouds">
+                        <i data-lucide="cloud"></i> <span data-i18n="map-btn-clouds">Облачность</span>
+                    </button>
+                    <button class="map-btn" data-layer="snow">
+                        <i data-lucide="snowflake"></i> <span data-i18n="map-btn-snow">Снег</span>
+                    </button>
+                </div>
             </div>
+
+            <hr class="controls-divider">
 
             <div class="map-container-wrapper">
                 <div id="weather-map" class="weather-map-container"></div>
+
+                <div id="map-overlay-panel" class="map-overlay-panel hidden">
+                    <div class="map-opacity-control">
+                        <label for="opacity-range">
+                            <i data-lucide="sliders"></i> 
+                            <span data-i18n="map-opacity">Прозрачность слоя:</span>
+                        </label>
+                        <input type="range" id="opacity-range" min="0.1" max="1" step="0.1" value="0.7">
+                    </div>
+
+                    <div class="panel-divider"></div>
+
+                    <div class="map-legend">
+                        <div class="legend-title" id="legend-title">Параметр</div>
+                        <div class="scale-gradient" id="legend-gradient"></div>
+                        <div class="scale-labels">
+                            <span id="label-min">Мин</span>
+                            <span id="label-mid">Ср</span>
+                            <span id="label-max">Макс</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -345,21 +462,26 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // 1. Активация Lucide иконок
+            // Инициализация Lucide иконок
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }
 
-            // 2. Инициализация карты Leaflet
+            // Инициализация карты Leaflet
             const map = L.map('weather-map').setView([55.7558, 37.6173], 4);
 
-            // Базовый слой OpenStreetMap
-            const baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            // Базовый слой карты (OpenStreetMap)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
             }).addTo(map);
 
-            // Погодные слои OpenWeatherMap
-            const OWM_KEY = ''; // Поместите сюда ваш API ключ OWM при необходимости
+            // ====================================================================
+            // ВАЖНО: Вставьте ваш рабочий API-ключ OpenWeatherMap между кавычками,
+            // чтобы погодные слои начали отображаться!
+            // ====================================================================
+            const OWM_KEY = 'ВАШ_API_КЛЮЧ'; 
+
+            // Конфигурация погодных слоев
             const layers = {
                 'precipitation': L.tileLayer('https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=' + OWM_KEY, {opacity: 0.7}),
                 'wind': L.tileLayer('https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=' + OWM_KEY, {opacity: 0.7}),
@@ -369,12 +491,12 @@
             };
             let currentLayer = null;
 
-            // Корректировка размеров Leaflet под Flexbox-контейнер
+            // Исправление размеров карты при рендере в Flexbox
             setTimeout(() => {
                 map.invalidateSize();
             }, 300);
 
-            // 3. Логика работы поиска городов ( Nominatim API )
+            // Логика работы Поиска городов (Nominatim API)
             const searchInput = document.getElementById('map-search-input');
             const searchBtn = document.getElementById('map-search-btn');
 
@@ -400,42 +522,112 @@
                     })
                     .catch(err => {
                         console.error('Ошибка поиска:', err);
-                        alert('Произошла ошибка при поиске.');
+                        alert('Произошла ошибка при выполнении поиска.');
                     });
             }
 
-            if (searchBtn) {
-                searchBtn.addEventListener('click', performSearch);
-            }
+            if (searchBtn) searchBtn.addEventListener('click', performSearch);
             if (searchInput) {
                 searchInput.addEventListener('keypress', function (e) {
-                    if (e.key === 'Enter') {
-                        performSearch();
-                    }
+                    if (e.key === 'Enter') performSearch();
                 });
             }
 
-            // 4. Логика переключения погодных слоев
-            const layerButtons = document.querySelectorAll('.map-btn[data-layer]');
+            // Логика кнопки Геолокации
+            const geoBtn = document.getElementById('map-geolocation-btn');
+            if (geoBtn) {
+                geoBtn.addEventListener('click', function () {
+                    if (!navigator.geolocation) {
+                        alert('Геолокация не поддерживается вашим браузером');
+                        return;
+                    }
+
+                    geoBtn.style.opacity = '0.4';
+
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            geoBtn.style.opacity = '1';
+                            const lat = position.coords.latitude;
+                            const lon = position.coords.longitude;
+
+                            map.setView([lat, lon], 11);
+
+                            L.marker([lat, lon])
+                                .addTo(map)
+                                .bindPopup('<b>Вы находитесь здесь</b>')
+                                .openPopup();
+                        },
+                        (error) => {
+                            geoBtn.style.opacity = '1';
+                            console.error('Ошибка геолокации:', error);
+                            alert('Не удалось определить положение. Проверьте разрешения на доступ к геопозиции.');
+                        },
+                        { enableHighAccuracy: true, timeout: 8000 }
+                    );
+                });
+            }
+
+            // Логика переключения погодных слоев и обновления интерактивной Легенды
+            const layerButtons = document.querySelectorAll('.map-buttons-row .map-btn');
+            const overlayPanel = document.getElementById('map-overlay-panel');
+            const legendTitle = document.getElementById('legend-title');
+            const legendGradient = document.getElementById('legend-gradient');
+            const opacityInput = document.getElementById('opacity-range');
+
+            // Данные для кастомизации шкал под каждый тип слоя погоды
+            const legendData = {
+                'temp': { title: 'Температура', class: 'gradient-temp', min: '-40°C', mid: '0°C', max: '+40°C' },
+                'precipitation': { title: 'Осадки (мм/ч)', class: 'gradient-precipitation', min: '0', mid: '5', max: '30+' },
+                'wind': { title: 'Скорость ветра', class: 'gradient-wind', min: '0 м/с', mid: '12 м/с', max: '35+ м/с' },
+                'clouds': { title: 'Облачность', class: 'gradient-clouds', min: '0%', mid: '50%', max: '100%' },
+                'snow': { title: 'Снег (мм/ч)', class: 'gradient-snow', min: '0', mid: '2', max: '10+' }
+            };
+
             layerButtons.forEach(btn => {
                 btn.addEventListener('click', function () {
                     layerButtons.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     const layer = btn.getAttribute('data-layer');
 
+                    // Удаляем текущий слой, если он есть
                     if (currentLayer) {
                         map.removeLayer(currentLayer);
                         currentLayer = null;
                     }
 
-                    if (layer !== 'none' && layers[layer]) {
+                    if (layer === 'none') {
+                        // Прячем оверлей-легенду на чистой карте
+                        overlayPanel.classList.add('hidden');
+                    } else if (layers[layer]) {
+                        // Добавляем погодный слой
                         currentLayer = layers[layer];
+                        currentLayer.setOpacity(opacityInput.value); // Задаем текущий уровень прозрачности
                         map.addLayer(currentLayer);
+
+                        // Динамически перестраиваем Легенду
+                        const data = legendData[layer];
+                        legendTitle.textContent = data.title;
+                        legendGradient.className = 'scale-gradient ' + data.class;
+                        
+                        document.getElementById('label-min').textContent = data.min;
+                        document.getElementById('label-mid').textContent = data.mid;
+                        document.getElementById('label-max').textContent = data.max;
+
+                        overlayPanel.classList.remove('hidden'); // Показываем панель
                     }
                 });
             });
 
-            // 5. Выпадающее навигационное меню (бургер)
+            // Слушатель изменения ползунка прозрачности
+            if (opacityInput) {
+                opacityInput.addEventListener('input', function () {
+                    if (currentLayer) {
+                        currentLayer.setOpacity(this.value);
+                    }
+                });
+            }
+
+            // Выпадающее меню бургер
             const menuToggle = document.getElementById('menu-toggle');
             const menuDropdown = document.getElementById('menu-dropdown');
             if (menuToggle && menuDropdown) {
