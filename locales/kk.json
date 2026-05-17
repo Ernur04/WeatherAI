@@ -146,11 +146,10 @@
     "placeholder-message": "Сіздің сұрағыңыз немесе ұсынысыңыз...",
     "btn-submit": "Жіберу",
     "menu-lunar": "Ай күнтізбесі",
-    "menu-horoscope": "Жұлдыз жорамал",
+
     "menu-30days": "Айлық болжам",
     "menu-garden": "Бағбанның ай күнтізбесі",
     "page-lunar-title": "Ай күнтізбесі",
-    "page-horoscope-title": "Жұлдыз жорамал",
     "page-30days-title": "Айлық болжам",
     "chart-month-title": "Температура тренді",
     "page-garden-title": "Бағбан мен бау-бақшаның ай күнтізбесі",
@@ -218,7 +217,7 @@
     "page-title-main": "WeatherAI – ЖИ ауа райы болжамы",
     "page-title-lunar": "WeatherAI – Ай күнтізбесі",
     "page-title-garden": "WeatherAI – Бағбан күнтізбесі",
-    "page-title-horoscope": "WeatherAI – Жұлдыз жорамал",
+ 
     "btn-export-preview": "Алдын ала қарау",
     "btn-export-reset": "Қалпына келтіру",
     "export-lang-label": "Деректер тілі:",
@@ -346,9 +345,51 @@
     "city-zhezkazgan": "Жезқазған",
     "city-konaev": "Қонаев",
     "menu-main": "Ауа-райы",
-    "menu-map": "Карта",
+
     "menu-cities": "Қалалар мен елдердің тізімі",
     "map-title1": "Әлемнің ауа райы картасы",
-    "map-page-title": "WeatherAI – Ауа райы картасы",
-    "page-title-cities-countries": "WeatherAI – Қалалар мен елдер"
+
+    "page-title-cities-countries": "WeatherAI – Қалалар мен елдер",
+
+    "page-horoscope-title": "AI Жұлдыз-жорамал",
+    "horoscope-subtitle": "Таңдалған кезеңге жұлдыздар мен жасанды интеллектің сізге не дайындағанын біліңіз",
+    "horoscope-today": "Бүгінге",
+    "horoscope-tomorrow": "Ертеңге",
+    "horoscope-week": "Аптаға",
+    "horoscope-month": "Айға",
+    
+    "zodiac-aries": "Тоқты",
+    "zodiac-taurus": "Торпақ",
+    "zodiac-gemini": "Егіздер",
+    "zodiac-cancer": "Шаян",
+    "zodiac-leo": "Арыстан",
+    "zodiac-virgo": "Бикеш",
+    "zodiac-libra": "Таразы",
+    "zodiac-scorpio": "Сарышаян",
+    "zodiac-sagittarius": "Мерген",
+    "zodiac-capricorn": "Тауешкі",
+    "zodiac-aquarius": "Суқұйғыш",
+    "zodiac-pisces": "Балықтар",
+    
+    "horoscope-select-prompt": "Жеке болжамды жасау үшін тізімнен өзіңіздің жұлдыз жорамалыңызды таңдаңыз",
+    "horoscope-ai-title": "AI жұлдыздық жүйелерді талдау:",
+    
+    "metric-love": "Махаббат",
+    "metric-career": "Мансап",
+    "metric-money": "Қаржы",
+    "metric-health": "Денсаулық",
+    
+    "lucky-color": "Күн түсі",
+    "lucky-number": "Сан",
+    "lucky-time": "Тәулік уақыты",
+    "lucky-match": "Үйлесімділік",
+    
+    "horoscope-weather-impact": "Ауа райы жағдайларымен байланысы",
+    "ai-astro-consult": "Жеке AI Консультациясы",
+    "ai-astro-desc": "Бүгінгі күн туралы кез келген маңызды сұрақты қойыңыз (мысалы, мәмілелер, сапарлар немесе кездесулер туралы)",
+    "ai-astro-placeholder": "Бүгін келісімшартқа қол қоюға тұрарлық па?...",
+    "menu-horoscope": "AI Жұлдыз-жорамал",
+    "page-title-horoscope": "WeatherAI – AI Жұлдыз-жорамал",
+    "map-page-title": "WeatherAI – Әлемнің ауа райы картасы",
+    "menu-map": "Әлемнің ауа райы картасы"
 }

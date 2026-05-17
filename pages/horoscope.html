@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeatherAI – Horoscope</title>
+    <title>WeatherAI – Гороскоп AI</title>
 
     <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
 
@@ -18,6 +18,498 @@
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* ==========================================================================
+        СТИЛИ СТРАНИЦЫ ГОРОСКОПА (HOROSCOPE)
+        ========================================================================== */
+        .horoscope-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            font-family: 'Manrope', sans-serif;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .horoscope-hero {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .horoscope-hero .hero-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .horoscope-hero .hero-subtitle {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        /* Переключатели периодов */
+        .horoscope-periods {
+            display: inline-flex;
+            background-color: #f1f5f9;
+            padding: 4px;
+            border-radius: 30px;
+            gap: 4px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .period-btn {
+            background: none;
+            border: none;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .period-btn:hover {
+            color: #1e293b;
+        }
+
+        .period-btn.active {
+            background-color: #ffffff;
+            color: #3b82f6;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Главный макет */
+        .horoscope-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .horoscope-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Сетка знаков зодиака */
+        .zodiac-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        @media (max-width: 576px) {
+            .zodiac-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .zodiac-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .zodiac-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+        }
+
+        .zodiac-card.active {
+            background-color: #eff6ff;
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.12);
+        }
+
+        .zodiac-icon {
+            width: 42px;
+            height: 42px;
+            background-color: #f8fafc;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .zodiac-card:hover .zodiac-icon,
+        .zodiac-card.active .zodiac-icon {
+            background-color: #3b82f6;
+            color: #ffffff;
+        }
+
+        .zodiac-icon i {
+            width: 20px;
+            height: 20px;
+        }
+
+        .zodiac-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .zodiac-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .zodiac-date {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        /* Экран отображения прогноза */
+        .horoscope-display-panel {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
+        }
+
+        /* Состояние плейсхолдера */
+        .horoscope-display-panel.placeholder-active .display-placeholder {
+            display: flex;
+        }
+        .horoscope-display-panel.placeholder-active .display-content {
+            display: none;
+        }
+        .horoscope-display-panel:not(.placeholder-active) .display-placeholder {
+            display: none;
+        }
+        .horoscope-display-panel:not(.placeholder-active) .display-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .display-placeholder {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #94a3b8;
+            padding: 4px;
+        }
+
+        .floating-astromoon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 14px;
+            color: #cbd5e1;
+            animation: astroFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes astroFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* Шапка прогноза */
+        .display-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 14px;
+        }
+
+        .selected-sign-badge {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #current-sign-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .selected-sign-badge .subdate {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .prediction-date-badge {
+            background-color: #f0fdf4;
+            color: #16a34a;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* Текстовый блок прогноза */
+        .prediction-text-block h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .prediction-text-block h4 i {
+            width: 16px;
+            height: 16px;
+            color: #3b82f6;
+        }
+
+        #prediction-text-output {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #334155;
+            margin: 0;
+        }
+
+        /* Шкалы / Прогресс-бары */
+        .prediction-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .metric-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .metric-labels span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .metric-labels i {
+            width: 14px;
+            height: 14px;
+        }
+
+        .m-love { color: #f43f5e; }
+        .m-career { color: #0284c7; }
+        .m-money { color: #eab308; }
+        .m-health { color: #10b981; }
+
+        .metric-bar {
+            width: 100%;
+            height: 6px;
+            background-color: #f1f5f9;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fill-love { background-color: #f43f5e; }
+        .fill-career { background-color: #3b82f6; }
+        .fill-money { background-color: #eab308; }
+        .fill-health { background-color: #10b981; }
+
+        /* Квадраты счастливых параметров */
+        .lucky-indicators {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .lucky-box {
+            background-color: #f8fafc;
+            border: 1px solid #f1f5f9;
+            padding: 10px 12px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .lucky-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .lucky-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        /* Блок влияния погоды */
+        .weather-impact-block {
+            background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);
+            border: 1px solid #ccfbf1;
+            padding: 14px;
+            border-radius: 12px;
+        }
+
+        .weather-impact-block h5 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f766e;
+            margin: 0 0 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .weather-impact-block h5 i {
+            width: 15px;
+            height: 15px;
+        }
+
+        #weather-impact-text {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #115e59;
+            margin: 0;
+        }
+
+        /* Блок индивидуальной консультации */
+        .ai-astrologer-section {
+            width: 100%;
+        }
+
+        .ai-astro-card {
+            background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+            border-radius: 16px;
+            padding: 24px;
+            color: #ffffff;
+            box-shadow: 0 10px 25px -5px rgba(30, 27, 75, 0.3);
+        }
+
+        .ai-astro-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .ai-astro-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .ai-star {
+            width: 20px;
+            height: 20px;
+            color: #a855f7;
+            animation: spinStar 4s linear infinite;
+        }
+
+        @keyframes spinStar {
+            100% { transform: rotate(360deg); }
+        }
+
+        .ai-astro-card p {
+            font-size: 13px;
+            color: #c7d2fe;
+            margin: 0 0 16px 0;
+        }
+
+        .ai-astro-input-group {
+            display: flex;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 4px;
+        }
+
+        .ai-astro-input-group:focus-within {
+            border-color: #818cf8;
+        }
+
+        #ai-astro-question {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        #ai-astro-question::placeholder {
+            color: #6366f1;
+        }
+
+        #ai-astro-submit-btn {
+            background: #6366f1;
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        #ai-astro-submit-btn:hover {
+            background: #4f46e5;
+        }
+
+        #ai-astro-submit-btn i {
+            width: 16px;
+            height: 16px;
+        }
+
+        .ai-astro-answer-box {
+            margin-top: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+            border-left: 3px solid #a855f7;
+        }
+
+        .ai-astro-answer-box.hidden {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -63,8 +555,8 @@
                     <ul>
                         <li><a href="../index.html" data-i18n="menu-main">Погода</a></li>
                         <li><a href="lunar-calendar.html" data-i18n="menu-lunar">Лунный календарь</a></li>
-                        <li><a href="horoscope.html" data-i18n="menu-horoscope">Гороскоп</a></li>
-                        <li><a href="map.html" data-i18n="menu-map">Карта</a></li>
+                        <li><a href="horoscope.html" data-i18n="menu-horoscope">Гороскоп AI</a></li>
+                        <li><a href="map.html" data-i18n="menu-map">Карта погоды мира</a></li>
                         <li><a href="cities-countries.html" data-i18n="menu-cities">Список городов и стран</a></li>
                     </ul>
                 </div>
@@ -72,10 +564,198 @@
         </div>
     </header>
 
-    <main>
-        <div class="search-container">
-            <h2 class="hero-title" data-i18n="page-horoscope-title">Гороскоп</h2>
-            <!-- Additional content for Horoscope will go here -->
+    <main class="horoscope-main">
+        <div class="horoscope-hero">
+            <h1 class="hero-title" data-i18n="page-horoscope-title">Гороскоп</h1>
+            <p class="hero-subtitle" data-i18n="horoscope-subtitle">Узнайте, что приготовили для вас звезды и искусственный интеллект на сегодня</p>
+            
+            <div class="horoscope-periods">
+                <button class="period-btn active" data-period="today" data-i18n="horoscope-today">На сегодня</button>
+                <button class="period-btn" data-period="tomorrow" data-i18n="horoscope-tomorrow">На завтра</button>
+                <button class="period-btn" data-period="week" data-i18n="horoscope-week">На неделю</button>
+                <button class="period-btn" data-period="month" data-i18n="horoscope-month">На месяц</button>
+            </div>
+        </div>
+
+        <div class="horoscope-layout">
+            <div class="zodiac-grid">
+                <div class="zodiac-card" data-sign="aries">
+                    <div class="zodiac-icon"><i data-lucide="zap"></i></div>
+                    <div class="zodiac-info">
+                        <h3 class="zodiac-name" data-i18n="zodiac-aries">Овен</h3>
+                        <span class="zodiac-date">21.03 - 19.04</span>
+                    </div>
+                </div>
+                <div class="zodiac-card" data-sign="taurus">
+                    <div class="zodiac-icon"><i data-lucide="gem"></i></div>
+                    <div class="zodiac-info">
+                        <h3 class="zodiac-name" data-i18n="zodiac-taurus">Телец</h3>
+                        <span class="zodiac-date">20.04 - 20.05</span>
+                    </div>
+                </div>
+                <div class="zodiac-card" data-sign="gemini">
+                    <div class="zodiac-icon"><i data-lucide="users"></i></div>
+                    <div class="zodiac-info">
+                        <h3 class="zodiac-name" data-i18n="zodiac-gemini">Близнецы</h3>
+                        <span class="zodiac-date">21.05 - 20.06</span>
+                    </div>
+                </div>
+                <div class="zodiac-card" data-sign="cancer">
+                    <div class="zodiac-icon"><i data-lucide="shield"></i></div>
+                    <div class="zodiac-info">
+                        <h3 class="zodiac-name" data-i18n="zodiac-cancer">Рак</h3>
+                        <span class="zodiac-date">21.06 - 22.07</span>
+                    </div>
+                </div>
+                <div class="zodiac-card" data-sign="leo">
+                    <div class="zodiac-icon"><i data-lucide="crown"></i></div>
+                    <div class="zodiac-info">
+                        <h3 class="zodiac-name" data-i18n="zodiac-leo">Лев</h3>
+                        <span class="zodiac-date">23.07 - 22.08</span>
+                    </div>
+                </div>
+                <div class="zodiac-card" data-sign="virgo">
+                    <div class="zodiac-icon"><i data-lucide="sparkles"></i></div>
+                    <div class="zodiac-info">
+                        <h3 class="zodiac-name" data-i18n="zodiac-virgo">Дева</h3>
+                        <span class="zodiac-date">23.08 - 22.09</span>
+                    </div>
+                </div>
+                <div class="zodiac-card" data-sign="libra">
+                    <div class="zodiac-icon"><i data-lucide="scale"></i></div>
+                    <div class="zodiac-info">
+                        <h3 class="zodiac-name" data-i18n="zodiac-libra">Весы</h3>
+                        <span class="zodiac-date">23.09 - 22.10</span>
+                    </div>
+                </div>
+                <div class="zodiac-card" data-sign="scorpio">
+                    <div class="zodiac-icon"><i data-lucide="flame"></i></div>
+                    <div class="zodiac-info">
+                        <h3 class="zodiac-name" data-i18n="zodiac-scorpio">Скорпион</h3>
+                        <span class="zodiac-date">23.10 - 21.11</span>
+                    </div>
+                </div>
+                <div class="zodiac-card" data-sign="sagittarius">
+                    <div class="zodiac-icon"><i data-lucide="compass"></i></div>
+                    <div class="zodiac-info">
+                        <h3 class="zodiac-name" data-i18n="zodiac-sagittarius">Стрелец</h3>
+                        <span class="zodiac-date">22.11 - 21.12</span>
+                    </div>
+                </div>
+                <div class="zodiac-card" data-sign="capricorn">
+                    <div class="zodiac-icon"><i data-lucide="mountain"></i></div>
+                    <div class="zodiac-info">
+                        <h3 class="zodiac-name" data-i18n="zodiac-capricorn">Козерог</h3>
+                        <span class="zodiac-date">22.12 - 19.01</span>
+                    </div>
+                </div>
+                <div class="zodiac-card" data-sign="aquarius">
+                    <div class="zodiac-icon"><i data-lucide="droplet"></i></div>
+                    <div class="zodiac-info">
+                        <h3 class="zodiac-name" data-i18n="zodiac-aquarius">Водолей</h3>
+                        <span class="zodiac-date">20.01 - 18.02</span>
+                    </div>
+                </div>
+                <div class="zodiac-card" data-sign="pisces">
+                    <div class="zodiac-icon"><i data-lucide="waves"></i></div>
+                    <div class="zodiac-info">
+                        <h3 class="zodiac-name" data-i18n="zodiac-pisces">Рыбы</h3>
+                        <span class="zodiac-date">19.02 - 20.03</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="horoscope-display-panel" class="horoscope-display-panel placeholder-active">
+                <div class="display-placeholder">
+                    <i data-lucide="moon-star" class="floating-astromoon"></i>
+                    <p data-i18n="horoscope-select-prompt">Выберите свой знак зодиака из списка слева, чтобы сгенерировать персональный прогноз</p>
+                </div>
+
+                <div class="display-content hidden">
+                    <div class="display-header">
+                        <div class="selected-sign-badge">
+                            <span id="current-sign-title">Овен</span>
+                            <span id="current-sign-date" class="subdate">21.03 - 19.04</span>
+                        </div>
+                        <div class="prediction-date-badge" id="current-prediction-date">Сегодня</div>
+                    </div>
+
+                    <div class="prediction-text-block">
+                        <h4 data-i18n="horoscope-ai-title"><i data-lucide="brain-circuit"></i> Анализ звездных систем AI:</h4>
+                        <p id="prediction-text-output">Загрузка прогноза...</p>
+                    </div>
+
+                    <div class="prediction-metrics">
+                        <div class="metric-item">
+                            <div class="metric-labels">
+                                <span><i data-lucide="heart" class="m-love"></i> <span data-i18n="metric-love">Любовь</span></span>
+                                <span id="val-love">0%</span>
+                            </div>
+                            <div class="metric-bar"><div class="bar-fill fill-love" id="bar-love" style="width: 0%"></div></div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-labels">
+                                <span><i data-lucide="briefcase" class="m-career"></i> <span data-i18n="metric-career">Карьера</span></span>
+                                <span id="val-career">0%</span>
+                            </div>
+                            <div class="metric-bar"><div class="bar-fill fill-career" id="bar-career" style="width: 0%"></div></div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-labels">
+                                <span><i data-lucide="coins" class="m-money"></i> <span data-i18n="metric-money">Финансы</span></span>
+                                <span id="val-money">0%</span>
+                            </div>
+                            <div class="metric-bar"><div class="bar-fill fill-money" id="bar-money" style="width: 0%"></div></div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-labels">
+                                <span><i data-lucide="apple" class="m-health"></i> <span data-i18n="metric-health">Здоровье</span></span>
+                                <span id="val-health">0%</span>
+                            </div>
+                            <div class="metric-bar"><div class="bar-fill fill-health" id="bar-health" style="width: 0%"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="lucky-indicators">
+                        <div class="lucky-box">
+                            <span class="lucky-label" data-i18n="lucky-color">Цвет дня</span>
+                            <span class="lucky-value" id="lucky-color-val">-</span>
+                        </div>
+                        <div class="lucky-box">
+                            <span class="lucky-label" data-i18n="lucky-number">Число</span>
+                            <span class="lucky-value" id="lucky-number-val">-</span>
+                        </div>
+                        <div class="lucky-box">
+                            <span class="lucky-label" data-i18n="lucky-time">Время суток</span>
+                            <span class="lucky-value" id="lucky-time-val">-</span>
+                        </div>
+                        <div class="lucky-box">
+                            <span class="lucky-label" data-i18n="lucky-match">Совместимость</span>
+                            <span class="lucky-value" id="lucky-match-val">-</span>
+                        </div>
+                    </div>
+
+                    <div class="weather-impact-block">
+                        <h5><i data-lucide="cloud-sun"></i> <span data-i18n="horoscope-weather-impact">Связь с погодными условиями</span></h5>
+                        <p id="weather-impact-text">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-astrologer-section">
+            <div class="ai-astro-card">
+                <div class="ai-astro-header">
+                    <i data-lucide="sparkles" class="ai-star"></i>
+                    <h3 data-i18n="ai-astro-consult">Индивидуальная AI Консультация</h3>
+                </div>
+                <p data-i18n="ai-astro-desc">Задайте любой волнующий вопрос о сегодняшнем дне (например, о сделках, поездках или встречах)</p>
+                <div class="ai-astro-input-group">
+                    <input type="text" id="ai-astro-question" placeholder="Стоит ли сегодня подписывать контракт?..." data-i18n="[placeholder]ai-astro-placeholder">
+                    <button id="ai-astro-submit-btn"><i data-lucide="send"></i></button>
+                </div>
+                <div id="ai-astro-answer-box" class="ai-astro-answer-box hidden"></div>
+            </div>
         </div>
     </main>
 
@@ -104,6 +784,188 @@
     <script src="../js/calendar.js"></script>
     <script src="../js/scroll.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        // 1. Находим все необходимые элементы интерфейса
+            const zodiacCards = document.querySelectorAll('.zodiac-card');
+            const periodButtons = document.querySelectorAll('.period-btn');
+            const displayPanel = document.getElementById('horoscope-display-panel');
+            const displayContent = displayPanel.querySelector('.display-content');
+            
+            // Элементы вывода данных прогноза
+            const signTitle = document.getElementById('current-sign-title');
+            const signDateOutput = document.getElementById('current-sign-date');
+            const predictionDateBadge = document.getElementById('current-prediction-date');
+            const predictionText = document.getElementById('prediction-text-output');
+            
+            // Элементы метрик и шкал успешности
+            const metrics = {
+                love: { bar: document.getElementById('bar-love'), val: document.getElementById('val-love') },
+                career: { bar: document.getElementById('bar-career'), val: document.getElementById('val-career') },
+                money: { bar: document.getElementById('bar-money'), val: document.getElementById('val-money') },
+                health: { bar: document.getElementById('bar-health'), val: document.getElementById('val-health') }
+            };
+
+            // Индикаторы дня
+            const luckyColor = document.getElementById('lucky-color-val');
+            const luckyNumber = document.getElementById('lucky-number-val');
+            const luckyTime = document.getElementById('lucky-time-val');
+            const luckyMatch = document.getElementById('lucky-match-val');
+            const weatherImpact = document.getElementById('weather-impact-text');
+
+            // Переменные для хранения текущего выбора пользователя
+            let selectedSign = null;
+            let selectedPeriod = 'today';
+
+            // База данных знаков для корректных заголовков и дат
+            const zodiacData = {
+                aries: { name: 'Овен', date: '21.03 - 19.04' },
+                taurus: { name: 'Телец', date: '20.04 - 20.05' },
+                gemini: { name: 'Близнецы', date: '21.05 - 20.06' },
+                cancer: { name: 'Рак', date: '21.06 - 22.07' },
+                leo: { name: 'Лев', date: '23.07 - 22.08' },
+                virgo: { name: 'Дева', date: '23.08 - 22.09' },
+                libra: { name: 'Весы', date: '23.09 - 22.10' },
+                scorpio: { name: 'Скорпион', date: '23.10 - 21.11' },
+                sagittarius: { name: 'Стрелец', date: '22.11 - 21.12' },
+                capricorn: { name: 'Козерог', date: '22.12 - 19.01' },
+                aquarius: { name: 'Водолей', date: '20.01 - 18.02' },
+                pisces: { name: 'Рыбы', date: '19.02 - 20.03' }
+            };
+
+            // Текстовые заготовки для периодов (в будущем тут будет запрос к вашему API)
+            const periodNames = {
+                today: 'Сегодня',
+                tomorrow: 'Завтра',
+                week: 'На эту неделю',
+                month: 'На этот месяц'
+            };
+
+            // 2. ГЛАВНАЯ ФУНКЦИЯ ОБНОВЛЕНИЯ И ЗАГРУЗКИ ГОРОСКОПА
+            function updateHoroscopeView(sign, period) {
+                if (!sign) return;
+
+                // Отключаем состояние подсказки-плейсхолдера и показываем контент
+                displayPanel.classList.remove('placeholder-active');
+                displayContent.classList.remove('hidden');
+
+                // Устанавливаем текстовые заголовки и даты
+                signTitle.textContent = zodiacData[sign].name;
+                signDateOutput.textContent = zodiacData[sign].date;
+                predictionDateBadge.textContent = periodNames[period];
+
+                // Имитируем загрузку (плавный fade-out эффект)
+                predictionText.style.opacity = '0.3';
+                
+                setTimeout(() => {
+                    // В реальном проекте здесь будет: fetch('/api/horoscope?sign=' + sign + '&period=' + period)
+                    // Сейчас генерируем качественные псевдо-данные:
+                    
+                    predictionText.style.opacity = '1';
+                    predictionText.textContent = `Для знака ${zodiacData[sign].name} этот период (${periodNames[period].toLowerCase()}) будет наполнен важными событиями. Звезды рекомендуют сохранять баланс во всем и прислушиваться к интуиции. Внутренний ИИ подсказывает, что любые начинания в интеллектуальной сфере увенчаются успехом. Избегайте поспешных выводов во второй половине дня.`;
+
+                    // Генерируем проценты для шкал (динамические, но стабильные для знака)
+                    const seed = sign.charCodeAt(0) + period.charCodeAt(0);
+                    const scores = {
+                        love: Math.floor(((seed * 3) % 45) + 55),   // от 55% до 100%
+                        career: Math.floor(((seed * 7) % 50) + 50), // от 50% до 100%
+                        money: Math.floor(((seed * 9) % 60) + 40),  // от 40% до 100%
+                        health: Math.floor(((seed * 12) % 40) + 60) // от 60% до 100%
+                    };
+
+                    // Заполняем прогресс-бары с анимацией
+                    for (let key in metrics) {
+                        metrics[key].val.textContent = `${scores[key]}%`;
+                        metrics[key].bar.style.width = `${scores[key]}%`;
+                    }
+
+                    // Заполняем счастливые показатели дня
+                    const colors = ['Ультрамарин', 'Изумрудный', 'Золотой песок', 'Неоновый фиолетовый', 'Глубокий багровый', 'Жемчужный'];
+                    const times = ['09:00 — 11:00', '14:00 — 15:30', '18:00 — 20:00', '21:00 — 23:00'];
+                    const signsArray = Object.values(zodiacData).map(z => z.name);
+
+                    luckyColor.textContent = colors[seed % colors.length];
+                    luckyNumber.textContent = `${(seed % 9) + 1}, ${(seed % 13) + 7}`;
+                    luckyTime.textContent = times[seed % times.length];
+                    luckyMatch.textContent = signsArray[(seed + 3) % signsArray.length];
+
+                    // Интеграция с погодой WeatherAI
+                    weatherImpact.textContent = `Повышенная атмосферная влажность и облачность могут усилить вашу природную чувствительность сегодня. Рекомендуется провести вечер в теплом и уютном помещении, минимизируя внешние раздражители.`;
+
+                }, 250);
+            }
+
+            // 3. ОБРАБОТЧИКИ КЛИКОВ ПО КАРТОЧКАМ ЗНАКОВ ЗОДИАКА
+            zodiacCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Снимаем активный класс со всех карточек и вешаем на текущую
+                    zodiacCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+
+                    // Запоминаем выбранный знак и обновляем экран
+                    selectedSign = card.getAttribute('data-sign');
+                    updateHoroscopeView(selectedSign, selectedPeriod);
+
+                    // Сохраняем выбор в LocalStorage для удобства (фича проекта)
+                    localStorage.setItem('user_zodiac_sign', selectedSign);
+                });
+            });
+
+            // 4. ОБРАБОТЧИКИ КЛИКОВ ПО ТАБАМ ПЕРИОДОВ (СЕГОДНЯ / ЗАВТРА / НЕДЕЛЯ)
+            periodButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    periodButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    selectedPeriod = btn.getAttribute('data-period');
+                    if (selectedSign) {
+                        updateHoroscopeView(selectedSign, selectedPeriod);
+                    }
+                });
+            });
+
+            // 5. ФИЧА: ЛОКАЛЬНОЕ ХРАНИЛИЩЕ (LocalStorage)
+            // Если пользователь уже заходил и выбирал знак, автоматически открываем его
+            const savedSign = localStorage.getItem('user_zodiac_sign');
+            if (savedSign) {
+                const activeCard = document.querySelector(`.zodiac-card[data-sign="${savedSign}"]`);
+                if (activeCard) {
+                    activeCard.click(); // Имитируем клик по сохраненному знаку
+                }
+            }
+
+            // 6. ЛОГИКА ДЛЯ ОКНА «СПРОСИТЬ АСТРО-AI»
+            const aiSubmitBtn = document.getElementById('ai-astro-submit-btn');
+            const aiInput = document.getElementById('ai-astro-question');
+            const aiAnswerBox = document.getElementById('ai-astro-answer-box');
+
+            if (aiSubmitBtn && aiInput && aiAnswerBox) {
+                function handleAiConsultation() {
+                    const question = aiInput.value.trim();
+                    if (!question) return;
+
+                    // Если знак еще не выбран, выводим предупреждение
+                    if (!selectedSign) {
+                        alert('Пожалуйста, сначала выберите ваш знак зодиака в сетке выше.');
+                        return;
+                    }
+
+                    aiAnswerBox.classList.remove('hidden');
+                    aiAnswerBox.innerHTML = `<em><i class="lucide-refresh-cw"></i> AI обрабатывает данные звездной карты...</em>`;
+                    aiInput.value = '';
+
+                    setTimeout(() => {
+                        // Псевдо-генерация индивидуального ответа ИИ-Астролога
+                        aiAnswerBox.innerHTML = `<strong>Ответ AI Астролога:</strong> Звезды указывают, что на ваш вопрос <em>"${question}"</em> ответ положительный на 75%. Для знака ${zodiacData[selectedSign].name} текущее расположение планет благоприятствует решительным действиям, но советует внимательно читать документы во второй половине дня.`;
+                    }, 1500);
+                }
+
+                aiSubmitBtn.addEventListener('click', handleAiConsultation);
+                aiInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') handleAiConsultation();
+                });
+            }
+        });
+        
         // Initialize Lucide icons
         lucide.createIcons();
 

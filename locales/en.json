@@ -148,11 +148,10 @@
     "error-title": "Error",
     "warning-title": "Warning",
     "menu-lunar": "Lunar Calendar",
-    "menu-horoscope": "Horoscope",
+
     "menu-30days": "Monthly Forecast",
     "menu-garden": "Gardener's Lunar Calendar",
     "page-lunar-title": "Lunar Calendar",
-    "page-horoscope-title": "Horoscope",
     "page-30days-title": "Monthly Forecast",
     "chart-month-title": "Temperature Trend",
     "page-garden-title": "Gardener's Lunar Calendar",
@@ -220,7 +219,7 @@
     "page-title-main": "WeatherAI – AI Weather Forecast",
     "page-title-lunar": "WeatherAI – Lunar Calendar",
     "page-title-garden": "WeatherAI – Gardener's Calendar",
-    "page-title-horoscope": "WeatherAI – Horoscope",
+
     "btn-export-preview": "Preview",
     "btn-export-reset": "Reset",
     "export-lang-label": "Data Language:",
@@ -348,9 +347,51 @@
     "city-zhezkazgan": "Zhezkazgan",
     "city-konaev": "Konaev",
     "menu-main": "Weather",
-    "menu-map": "Map",
+
     "menu-cities": "Cities and Countries List",
     "map-title1": "World Weather Map",
-    "map-page-title": "WeatherAI – Map",
-    "page-title-cities-countries": "WeatherAI – Cities and Countries List"
+
+    "page-title-cities-countries": "WeatherAI – Cities and Countries List",
+
+    "page-horoscope-title": "AI Horoscope",
+    "horoscope-subtitle": "Find out what the stars and artificial intelligence have in store for you for the selected period",
+    "horoscope-today": "For Today",
+    "horoscope-tomorrow": "For Tomorrow",
+    "horoscope-week": "For Week",
+    "horoscope-month": "For Month",
+    
+    "zodiac-aries": "Aries",
+    "zodiac-taurus": "Taurus",
+    "zodiac-gemini": "Gemini",
+    "zodiac-cancer": "Cancer",
+    "zodiac-leo": "Leo",
+    "zodiac-virgo": "Virgo",
+    "zodiac-libra": "Libra",
+    "zodiac-scorpio": "Scorpio",
+    "zodiac-sagittarius": "Sagittarius",
+    "zodiac-capricorn": "Capricorn",
+    "zodiac-aquarius": "Aquarius",
+    "zodiac-pisces": "Pisces",
+    
+    "horoscope-select-prompt": "Select your zodiac sign from the list to generate a personal prediction",
+    "horoscope-ai-title": "AI Star System Analysis:",
+    
+    "metric-love": "Love",
+    "metric-career": "Career",
+    "metric-money": "Finance",
+    "metric-health": "Health",
+    
+    "lucky-color": "Color of the day",
+    "lucky-number": "Number",
+    "lucky-time": "Time of day",
+    "lucky-match": "Compatibility",
+    
+    "horoscope-weather-impact": "Weather conditions connection",
+    "ai-astro-consult": "Individual AI Consultation",
+    "ai-astro-desc": "Ask any exciting question about today (for example, about deals, trips, or meetings)",
+    "ai-astro-placeholder": "Is it worth signing a contract today?...",
+    "menu-horoscope": "AI Horoscope",
+    "page-title-horoscope": "WeatherAI – AI Horoscope",
+    "map-page-title": "WeatherAI – World Weather Map",
+    "menu-map": "World Weather Map"
 }
