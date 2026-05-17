@@ -556,7 +556,7 @@
                         <li><a href="../index.html" data-i18n="menu-main">Погода</a></li>
                         <li><a href="lunar-calendar.html" data-i18n="menu-lunar">Лунный календарь</a></li>
                         <li><a href="horoscope.html" data-i18n="menu-horoscope">Гороскоп AI</a></li>
-                        <li><a href="map.html" data-i18n="menu-map">Карта погоды мира</a></li>
+                        <li><a href="map.html" data-i18n="menu-map">Карта</a></li>
                         <li><a href="cities-countries.html" data-i18n="menu-cities">Список городов и стран</a></li>
                     </ul>
                 </div>
@@ -751,7 +751,7 @@
                 </div>
                 <p data-i18n="ai-astro-desc">Задайте любой волнующий вопрос о сегодняшнем дне (например, о сделках, поездках или встречах)</p>
                 <div class="ai-astro-input-group">
-                    <input type="text" id="ai-astro-question" placeholder="Стоит ли сегодня подписывать контракт?..." data-i18n="[placeholder]ai-astro-placeholder">
+                    <input type="text" id="ai-astro-question" placeholder="Стоит ли сегодня подписывать контракт?..." data-i18n-placeholder="ai-astro-placeholder">
                     <button id="ai-astro-submit-btn"><i data-lucide="send"></i></button>
                 </div>
                 <div id="ai-astro-answer-box" class="ai-astro-answer-box hidden"></div>
@@ -783,93 +783,155 @@
     <script src="../js/language.js"></script>
     <script src="../js/calendar.js"></script>
     <script src="../js/scroll.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/language.js"></script>
+    <script src="../js/calendar.js"></script>
+    <script src="../js/scroll.js"></script>
+
     <script>
+        // Инициализация Lucide иконок
+        lucide.createIcons();
+
         document.addEventListener('DOMContentLoaded', () => {
-        // 1. Находим все необходимые элементы интерфейса
-            const zodiacCards = document.querySelectorAll('.zodiac-card');
-            const periodButtons = document.querySelectorAll('.period-btn');
+            // Инициализация тем и языков из глобальных плагинов
+            if (typeof initLanguage === 'function') initLanguage();
+            if (typeof initTheme === 'function') initTheme();
+
+            // Базовые структуры данных для вычисления дат
+            const zodiacData = {
+                aries: { date: "21.03 - 19.04" },
+                taurus: { date: "20.04 - 20.05" },
+                gemini: { date: "21.05 - 20.06" },
+                cancer: { date: "21.06 - 22.07" },
+                leo: { date: "23.07 - 22.08" },
+                virgo: { date: "23.08 - 22.09" },
+                libra: { date: "23.09 - 22.10" },
+                scorpio: { date: "23.10 - 21.11" },
+                sagittarius: { date: "22.11 - 21.12" },
+                capricorn: { date: "22.12 - 19.01" },
+                aquarius: { date: "20.01 - 18.02" },
+                pisces: { date: "19.02 - 20.03" }
+            };
+
+            // Полные словари для железной генерации контента без ожидания асинхронного перевода
+            const localizationData = {
+                ru: {
+                    predict: "Для знака {sign} этот период ({period}) будет наполнен важными событиями. Звезды рекомендуют сохранять баланс во всем и прислушиваться к интуиции. Внутренний ИИ подсказывает, что любые начинания в интеллектуальной сфере увенчаются успехом. Избегайте поспешных выводов во второй половине дня.",
+                    weather: "Повышенная атмосферная влажность и облачность могут усилить вашу природную чувствительность сегодня. Рекомендуется провести вечер в теплом и уютном помещении, минимизируя внешние раздражители.",
+                    colors: ['Ультрамарин', 'Изумрудный', 'Золотой песок', 'Неоновый фиолетовый', 'Глубокий багровый', 'Жемчужный'],
+                    periods: { today: "сегодня", tomorrow: "завтра", week: "неделя", month: "месяц" },
+                    signs: {
+                        aries: "Овен", taurus: "Телец", gemini: "Близнецы", cancer: "Рак",
+                        leo: "Лев", virgo: "Дева", libra: "Весы", scorpio: "Скорпион",
+                        sagittarius: "Стрелец", capricorn: "Козерог", aquarius: "Водолей", pisces: "Рыбы"
+                    },
+                    aiLoading: "Анализ звездной карты и вашего вопроса...",
+                    aiResponse: 'Расположение планет указывает, что на ваш вопрос <em>"{question}"</em> ответ положительный на 75%. Для вашего знака текущее расположение планет благоприятствует решительным действиям, но советует внимательно читать документы во второй половине дня.'
+                },
+                kk: {
+                    predict: "{sign} белгісі үшін бұл кезең ({period}) маңызды оқиғаларға толы болады. Жұлдыздар барлық нәрседе тепе-теңдікті сақтауды және интуицияны тыңдауды ұсынады. Ішкі Жасанды Интеллект зияткерлік саладағы кез келген бастамалар сәтті аяқталатынын айтады. Күннің екінші жартысында асығыс қорытынды жасаудан аулақ болыңыз.",
+                    weather: "Атмосфералық ылғалдылықтың жоғарылауы мен бұлттылық бүгін сіздің табиғи сезімталдығыңызды арттыруы мүмкін. Кешті сыртқы тітіркендіргіштерді азайтып, жылы әрі жайлы бөлмеде өткізу ұсынылады.",
+                    colors: ['Ультрамарин', 'Зүбәржат', 'Алтын құм', 'Неонды күлгін', 'Қанық қызыл', 'Інжу'],
+                    periods: { today: "бүгін", tomorrow: "ертең", week: "апта", month: "ай" },
+                    signs: {
+                        aries: "Тоқты", taurus: "Торпақ", gemini: "Егіздер", cancer: "Шаян",
+                        leo: "Арыстан", virgo: "Бикеш", libra: "Таразы", scorpio: "Сарышаян",
+                        sagittarius: "Мерген", capricorn: "Тауешкі", aquarius: "Суқұйғыш", pisces: "Балықтар"
+                    },
+                    aiLoading: "Жұлдыздық карта мен сіздің сұрағыңызды талдау...",
+                    aiResponse: 'Жұлдыздар сіздің <em>"{question}"</em> сұрағыңызға жауап 75% оң екенін көрсетеді. Сіздің жұлдызжорамалыңыз үшін планеталардың қазіргі орналасуы батыл әрекеттерге қолайлы, бірақ күннің екінші жартысында құжаттарды мұқият оқуға кеңес береді.'
+                },
+                en: {
+                    predict: "For the sign of {sign}, this period ({period}) will be filled with important events. The stars recommend maintaining balance in everything and listening to your intuition. The internal AI suggests that any undertakings in the intellectual sphere will be crowned with success. Avoid hasty conclusions in the second half of the day.",
+                    weather: "Increased atmospheric humidity and cloud cover may enhance your natural sensitivity today. It is recommended to spend the evening in a warm and cozy room, minimizing external stimuli.",
+                    colors: ['Ultramarine', 'Emerald', 'Golden Sand', 'Neon Purple', 'Deep Crimson', 'Pearlescent'],
+                    periods: { today: "today", tomorrow: "tomorrow", week: "week", month: "month" },
+                    signs: {
+                        aries: "Aries", taurus: "Taurus", gemini: "Gemini", cancer: "Cancer",
+                        leo: "Leo", virgo: "Virgo", libra: "Libra", scorpio: "Scorpio",
+                        sagittarius: "Sagittarius", capricorn: "Capricorn", aquarius: "Aquarius", pisces: "Pisces"
+                    },
+                    aiLoading: "Analyzing the star chart and your question...",
+                    aiResponse: 'Stars indicate that the answer to your question <em>"{question}"</em> is 75% positive. For your zodiac sign, the current alignment favors decisive actions, but advises reading documents carefully in the afternoon.'
+                }
+            };
+
+            // Переменные глобального состояния страницы
+            let selectedSign = '';
+            let selectedPeriod = 'today';
+
+            // DOM Элементы панели отображения гороскопа
             const displayPanel = document.getElementById('horoscope-display-panel');
             const displayContent = displayPanel.querySelector('.display-content');
-            
-            // Элементы вывода данных прогноза
             const signTitle = document.getElementById('current-sign-title');
             const signDateOutput = document.getElementById('current-sign-date');
             const predictionDateBadge = document.getElementById('current-prediction-date');
             const predictionText = document.getElementById('prediction-text-output');
-            
-            // Элементы метрик и шкал успешности
-            const metrics = {
-                love: { bar: document.getElementById('bar-love'), val: document.getElementById('val-love') },
-                career: { bar: document.getElementById('bar-career'), val: document.getElementById('val-career') },
-                money: { bar: document.getElementById('bar-money'), val: document.getElementById('val-money') },
-                health: { bar: document.getElementById('bar-health'), val: document.getElementById('val-health') }
-            };
-
-            // Индикаторы дня
             const luckyColor = document.getElementById('lucky-color-val');
             const luckyNumber = document.getElementById('lucky-number-val');
             const luckyTime = document.getElementById('lucky-time-val');
             const luckyMatch = document.getElementById('lucky-match-val');
             const weatherImpact = document.getElementById('weather-impact-text');
 
-            // Переменные для хранения текущего выбора пользователя
-            let selectedSign = null;
-            let selectedPeriod = 'today';
-
-            // База данных знаков для корректных заголовков и дат
-            const zodiacData = {
-                aries: { name: 'Овен', date: '21.03 - 19.04' },
-                taurus: { name: 'Телец', date: '20.04 - 20.05' },
-                gemini: { name: 'Близнецы', date: '21.05 - 20.06' },
-                cancer: { name: 'Рак', date: '21.06 - 22.07' },
-                leo: { name: 'Лев', date: '23.07 - 22.08' },
-                virgo: { name: 'Дева', date: '23.08 - 22.09' },
-                libra: { name: 'Весы', date: '23.09 - 22.10' },
-                scorpio: { name: 'Скорпион', date: '23.10 - 21.11' },
-                sagittarius: { name: 'Стрелец', date: '22.11 - 21.12' },
-                capricorn: { name: 'Козерог', date: '22.12 - 19.01' },
-                aquarius: { name: 'Водолей', date: '20.01 - 18.02' },
-                pisces: { name: 'Рыбы', date: '19.02 - 20.03' }
+            const metrics = {
+                love: { val: document.getElementById('val-love'), bar: document.getElementById('bar-love') },
+                career: { val: document.getElementById('val-career'), bar: document.getElementById('bar-career') },
+                money: { val: document.getElementById('val-money'), bar: document.getElementById('bar-money') },
+                health: { val: document.getElementById('val-health'), bar: document.getElementById('bar-health') }
             };
 
-            // Текстовые заготовки для периодов (в будущем тут будет запрос к вашему API)
-            const periodNames = {
-                today: 'Сегодня',
-                tomorrow: 'Завтра',
-                week: 'На эту неделю',
-                month: 'На этот месяц'
-            };
-
-            // 2. ГЛАВНАЯ ФУНКЦИЯ ОБНОВЛЕНИЯ И ЗАГРУЗКИ ГОРОСКОПА
+            // ГЛАВНАЯ ФУНКЦИЯ ОБНОВЛЕНИЯ И ЗАГРУЗКИ ГОРОСКОПА
             function updateHoroscopeView(sign, period) {
                 if (!sign) return;
+                
+                // Сохраняем в глобальное состояние, чтобы корректно работало при смене селекта языка
+                selectedSign = sign;
+                selectedPeriod = period;
 
                 // Отключаем состояние подсказки-плейсхолдера и показываем контент
                 displayPanel.classList.remove('placeholder-active');
                 displayContent.classList.remove('hidden');
 
-                // Устанавливаем текстовые заголовки и даты
-                signTitle.textContent = zodiacData[sign].name;
+                // Применяем ключи локализации для статических элементов через data-атрибуты
+                signTitle.setAttribute('data-i18n', `zodiac-${sign}`);
+                predictionDateBadge.setAttribute('data-i18n', `horoscope-${period}`);
+
+                // Вызываем асинхронное обновление локализации плагина (для заголовков)
+                if (typeof initLanguage === 'function') {
+                    initLanguage(); 
+                }
+
+                // Устанавливаем статичные даты периода знака (цифры)
                 signDateOutput.textContent = zodiacData[sign].date;
-                predictionDateBadge.textContent = periodNames[period];
 
                 // Имитируем загрузку (плавный fade-out эффект)
                 predictionText.style.opacity = '0.3';
                 
                 setTimeout(() => {
-                    // В реальном проекте здесь будет: fetch('/api/horoscope?sign=' + sign + '&period=' + period)
-                    // Сейчас генерируем качественные псевдо-данные:
-                    
                     predictionText.style.opacity = '1';
-                    predictionText.textContent = `Для знака ${zodiacData[sign].name} этот период (${periodNames[period].toLowerCase()}) будет наполнен важными событиями. Звезды рекомендуют сохранять баланс во всем и прислушиваться к интуиции. Внутренний ИИ подсказывает, что любые начинания в интеллектуальной сфере увенчаются успехом. Избегайте поспешных выводов во второй половине дня.`;
+                    
+                    // Считываем текущий выбранный язык приложения
+                    const currentLang = document.getElementById('lang-select')?.value || 'ru';
+                    const langPack = localizationData[currentLang] || localizationData['ru'];
+
+                    // БЕРЕМ НАЗВАНИЯ ИЗ СЛОВАРЯ, ЧТОБЫ ИЗБЕЖАТЬ АСИНХРОННЫХ БАГОВ:
+                    const translatedSignName = langPack.signs[sign] || langPack.signs['aries'];
+                    const translatedPeriodName = langPack.periods[period];
+
+                    // Подставляем переменные в текстовый шаблон
+                    let generatedText = langPack.predict
+                        .replace('{sign}', translatedSignName)
+                        .replace('{period}', translatedPeriodName);
+
+                    predictionText.textContent = generatedText;
 
                     // Генерируем проценты для шкал (динамические, но стабильные для знака)
                     const seed = sign.charCodeAt(0) + period.charCodeAt(0);
                     const scores = {
-                        love: Math.floor(((seed * 3) % 45) + 55),   // от 55% до 100%
-                        career: Math.floor(((seed * 7) % 50) + 50), // от 50% до 100%
-                        money: Math.floor(((seed * 9) % 60) + 40),  // от 40% до 100%
-                        health: Math.floor(((seed * 12) % 40) + 60) // от 60% до 100%
+                        love: Math.floor(((seed * 3) % 45) + 55),
+                        career: Math.floor(((seed * 7) % 50) + 50),
+                        money: Math.floor(((seed * 9) % 60) + 40),
+                        health: Math.floor(((seed * 12) % 40) + 60)
                     };
 
                     // Заполняем прогресс-бары с анимацией
@@ -879,102 +941,57 @@
                     }
 
                     // Заполняем счастливые показатели дня
-                    const colors = ['Ультрамарин', 'Изумрудный', 'Золотой песок', 'Неоновый фиолетовый', 'Глубокий багровый', 'Жемчужный'];
                     const times = ['09:00 — 11:00', '14:00 — 15:30', '18:00 — 20:00', '21:00 — 23:00'];
-                    const signsArray = Object.values(zodiacData).map(z => z.name);
+                    const signsKeys = Object.keys(zodiacData);
+                    const matchedSignKey = signsKeys[(seed + 3) % signsKeys.length];
 
-                    luckyColor.textContent = colors[seed % colors.length];
+                    // Цвет берем из языкового пакета
+                    luckyColor.textContent = langPack.colors[seed % langPack.colors.length];
                     luckyNumber.textContent = `${(seed % 9) + 1}, ${(seed % 13) + 7}`;
                     luckyTime.textContent = times[seed % times.length];
-                    luckyMatch.textContent = signsArray[(seed + 3) % signsArray.length];
+                    
+                    // Совместимый знак: пишем текст напрямую из нашего словаря + дублируем атрибут i18n на будущее
+                    luckyMatch.textContent = langPack.signs[matchedSignKey];
+                    luckyMatch.setAttribute('data-i18n', `zodiac-${matchedSignKey}`);
 
-                    // Интеграция с погодой WeatherAI
-                    weatherImpact.textContent = `Повышенная атмосферная влажность и облачность могут усилить вашу природную чувствительность сегодня. Рекомендуется провести вечер в теплом и уютном помещении, минимизируя внешние раздражители.`;
+                    // Интеграция с погодой WeatherAI из языкового пакета
+                    weatherImpact.textContent = langPack.weather;
 
                 }, 250);
             }
 
-            // 3. ОБРАБОТЧИКИ КЛИКОВ ПО КАРТОЧКАМ ЗНАКОВ ЗОДИАКА
-            zodiacCards.forEach(card => {
+            // Навешивание обработчиков событий на сетку знаков зодиака
+            document.querySelectorAll('.zodiac-card').forEach(card => {
                 card.addEventListener('click', () => {
-                    // Снимаем активный класс со всех карточек и вешаем на текущую
-                    zodiacCards.forEach(c => c.classList.remove('active'));
+                    document.querySelectorAll('.zodiac-card').forEach(c => c.classList.remove('active'));
                     card.classList.add('active');
-
-                    // Запоминаем выбранный знак и обновляем экран
-                    selectedSign = card.getAttribute('data-sign');
-                    updateHoroscopeView(selectedSign, selectedPeriod);
-
-                    // Сохраняем выбор в LocalStorage для удобства (фича проекта)
-                    localStorage.setItem('user_zodiac_sign', selectedSign);
+                    
+                    const sign = card.getAttribute('data-sign');
+                    updateHoroscopeView(sign, selectedPeriod);
                 });
             });
 
-            // 4. ОБРАБОТЧИКИ КЛИКОВ ПО ТАБАМ ПЕРИОДОВ (СЕГОДНЯ / ЗАВТРА / НЕДЕЛЯ)
-            periodButtons.forEach(btn => {
+            // Навешивание обработчиков событий на переключатели периодов
+            document.querySelectorAll('.period-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    periodButtons.forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-
-                    selectedPeriod = btn.getAttribute('data-period');
-                    if (selectedSign) {
-                        updateHoroscopeView(selectedSign, selectedPeriod);
-                    }
+                    
+                    const period = btn.getAttribute('data-period');
+                    updateHoroscopeView(selectedSign, period);
                 });
             });
 
-            // 5. ФИЧА: ЛОКАЛЬНОЕ ХРАНИЛИЩЕ (LocalStorage)
-            // Если пользователь уже заходил и выбирал знак, автоматически открываем его
-            const savedSign = localStorage.getItem('user_zodiac_sign');
-            if (savedSign) {
-                const activeCard = document.querySelector(`.zodiac-card[data-sign="${savedSign}"]`);
-                if (activeCard) {
-                    activeCard.click(); // Имитируем клик по сохраненному знаку
-                }
-            }
-
-            // 6. ЛОГИКА ДЛЯ ОКНА «СПРОСИТЬ АСТРО-AI»
-            const aiSubmitBtn = document.getElementById('ai-astro-submit-btn');
-            const aiInput = document.getElementById('ai-astro-question');
-            const aiAnswerBox = document.getElementById('ai-astro-answer-box');
-
-            if (aiSubmitBtn && aiInput && aiAnswerBox) {
-                function handleAiConsultation() {
-                    const question = aiInput.value.trim();
-                    if (!question) return;
-
-                    // Если знак еще не выбран, выводим предупреждение
-                    if (!selectedSign) {
-                        alert('Пожалуйста, сначала выберите ваш знак зодиака в сетке выше.');
-                        return;
-                    }
-
-                    aiAnswerBox.classList.remove('hidden');
-                    aiAnswerBox.innerHTML = `<em><i class="lucide-refresh-cw"></i> AI обрабатывает данные звездной карты...</em>`;
-                    aiInput.value = '';
-
+            // Мгновенная перерисовка прогноза при переключении селекта языка в шапке
+            document.getElementById('lang-select')?.addEventListener('change', () => {
+                if (selectedSign) {
                     setTimeout(() => {
-                        // Псевдо-генерация индивидуального ответа ИИ-Астролога
-                        aiAnswerBox.innerHTML = `<strong>Ответ AI Астролога:</strong> Звезды указывают, что на ваш вопрос <em>"${question}"</em> ответ положительный на 75%. Для знака ${zodiacData[selectedSign].name} текущее расположение планет благоприятствует решительным действиям, но советует внимательно читать документы во второй половине дня.`;
-                    }, 1500);
+                        updateHoroscopeView(selectedSign, selectedPeriod);
+                    }, 50);
                 }
+            });
 
-                aiSubmitBtn.addEventListener('click', handleAiConsultation);
-                aiInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') handleAiConsultation();
-                });
-            }
-        });
-        
-        // Initialize Lucide icons
-        lucide.createIcons();
-
-        // Initialize Language and Theme
-        document.addEventListener('DOMContentLoaded', () => {
-            initLanguage();
-            initTheme();
-
-            // Menu toggle logic
+            // Выпадающее меню бургер в шапке
             const menuBtn = document.getElementById('menu-toggle');
             const menuDropdown = document.getElementById('menu-dropdown');
 
@@ -990,9 +1007,36 @@
                     }
                 });
             }
+
+            // Логика кастомной Консультации ИИ (Интегрированная локализация)
+            const aiSubmitBtn = document.getElementById('ai-astro-submit-btn');
+            const aiInput = document.getElementById('ai-astro-question');
+            const aiAnswerBox = document.getElementById('ai-astro-answer-box');
+
+            if (aiSubmitBtn && aiInput && aiAnswerBox) {
+                function handleAiConsultation() {
+                    const question = aiInput.value.trim();
+                    if (!question) return;
+
+                    aiAnswerBox.classList.remove('hidden');
+                    
+                    const currentLang = document.getElementById('lang-select')?.value || 'ru';
+                    const langPack = localizationData[currentLang] || localizationData['ru'];
+                    
+                    aiAnswerBox.textContent = langPack.aiLoading;
+
+                    setTimeout(() => {
+                        aiAnswerBox.innerHTML = langPack.aiResponse.replace('{question}', question);
+                    }, 1500);
+                }
+
+                aiSubmitBtn.addEventListener('click', handleAiConsultation);
+                aiInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') handleAiConsultation();
+                });
+            }
         });
     </script>
-
 </body>
 
 </html>
