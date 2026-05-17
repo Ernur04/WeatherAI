@@ -390,5 +390,6 @@
     "menu-horoscope": "Гороскоп AI",
     "page-title-horoscope": "WeatherAI – Гороскоп AI",
     "map-page-title": "WeatherAI – Карта погоды мира",
-    "menu-map": "Карта погоды мира"
+    "menu-map": "Карта погоды мира",
+    "map-subtitle": "Интерактивный анализ климатических условий, температуры и осадков в реальном времени"
 }

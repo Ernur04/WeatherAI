@@ -393,5 +393,6 @@
     "menu-horoscope": "AI Horoscope",
     "page-title-horoscope": "WeatherAI – AI Horoscope",
     "map-page-title": "WeatherAI – World Weather Map",
-    "menu-map": "World Weather Map"
+    "menu-map": "World Weather Map",
+    "map-subtitle": "Interactive analysis of climatic conditions, temperature and precipitation in real time"
 }
