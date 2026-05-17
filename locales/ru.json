@@ -349,5 +349,7 @@
     "city-konaev": "Конаев",
     "menu-main": "Погода",
     "menu-map": "Карта",
-    "menu-cities":"Список городов и стран"
+    "menu-cities":"Список городов и стран",
+    "map-title1": "Карта погоды мира",
+    "map-page-title": "WeatherAI – Карта"
 }

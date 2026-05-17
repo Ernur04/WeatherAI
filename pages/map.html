@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Карта | WeatherAI</title>
+    <title data-i18n="map-page-title">WeatherAI – Карта</title>
     <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,6 +43,12 @@
             flex-shrink: 0;
         }
 
+        /* Обертка для позиционирования выпадающего списка */
+        .map-search-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
         /* Контейнер всей поисковой строки */
         .map-search {
             display: flex;
@@ -77,6 +83,56 @@
         /* Плейсхолдер (текст-подсказка) */
         #map-search-input::placeholder {
             color: #94a3b8;
+        }
+
+        /* Выпадающий список подсказок (Автодополнение) */
+        .map-search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-top: 4px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 1010; /* Выше карты Leaflet и элементов управления */
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        /* Элемент списка подсказок */
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #334155;
+            cursor: pointer;
+            transition: background-color 0.15s ease, color 0.15s ease;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f8fafc;
+            color: #3b82f6;
+        }
+
+        .suggestion-item i {
+            width: 14px;
+            height: 14px;
+            color: #94a3b8;
+            flex-shrink: 0;
+        }
+
+        /* Класс скрытия выпадающего списка */
+        .map-search-suggestions.hidden {
+            display: none;
         }
 
         /* Общие стили для кнопок внутри поиска (и гео, и поиск) */
@@ -306,6 +362,110 @@
             background: linear-gradient(to right, #ffffff, #93c5fd, #2563eb, #1e3a8a);
         }
         
+        /* ==========================================================================
+        МОБИЛЬНАЯ АДАПТАЦИЯ (ДЛЯ ЭКРАНОВ ДО 768px)
+        ========================================================================== */
+        @media (max-width: 768px) {
+            .map-section {
+                padding: 12px; /* Компактные отступы по краям экрана */
+            }
+
+            /* Горизонтальный скролл кнопок (капсул) в один ряд */
+            .map-buttons-row {
+                display: flex;
+                flex-wrap: nowrap; /* Запрещаем перенос кнопок на новую строку */
+                gap: 8px;
+                width: 100%;
+                overflow-x: auto; /* Включаем горизонтальную прокрутку пальцем */
+                padding-bottom: 8px; /* Отступ для красивого отображения скроллбара */
+                -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
+            }
+
+            /* Настройка тонкого аккуратного скроллбара для кнопок */
+            .map-buttons-row::-webkit-scrollbar {
+                height: 3px;
+            }
+            .map-buttons-row::-webkit-scrollbar-thumb {
+                background-color: #cbd5e1;
+                border-radius: 10px;
+            }
+
+            .map-buttons-row .map-btn {
+                padding: 8px 12px;
+                font-size: 12px; /* Чуть уменьшаем текст */
+                white-space: nowrap; /* Запрещаем перенос слов внутри кнопки */
+                flex-shrink: 0; /* Защищаем кнопки от сжатия */
+            }
+
+            .map-buttons-row .map-btn i {
+                width: 14px;
+                height: 14px;
+            }
+
+            /* Уменьшаем высоту интерактивной карты, чтобы она помещалась на экран телефона */
+            .weather-map-container {
+                height: 380px; 
+            }
+
+            /* Выпадающие живые подсказки автодополнения (крупнее под палец) */
+            .map-search-suggestions {
+                max-height: 180px;
+                z-index: 2000;
+            }
+
+            .suggestion-item {
+                padding: 12px 14px; /* Увеличена область клика */
+                font-size: 13px;
+            }
+
+            /* Адаптация панели-легенды поверх карты */
+            .map-overlay-panel {
+                bottom: 10px;
+                left: 10px;
+                right: 10px; /* Растягиваем почти на всю ширину экрана */
+                width: auto;  /* Сбрасываем фиксированную ширину */
+                padding: 10px 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            /* Оптимизация прозрачности: лейбл и ползунок в одну строку */
+            .map-opacity-control {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+            }
+
+            .map-opacity-control label {
+                font-size: 11px;
+                white-space: nowrap;
+            }
+
+            #opacity-range {
+                width: 50%; /* Ползунок занимает правую половину панели */
+                margin: 0;
+            }
+
+            .panel-divider {
+                margin: 2px 0;
+            }
+
+            .legend-title {
+                font-size: 11px;
+                margin-bottom: 4px;
+            }
+
+            .scale-gradient {
+                height: 6px; /* Чуть тоньше шкала */
+            }
+
+            .scale-labels {
+                font-size: 10px;
+                margin-top: 4px;
+            }
+        }
     </style>
 </head>
 
@@ -359,21 +519,27 @@
     </header>
 
     <section id="map-section" class="map-section">
-        <h2 class="section-title"><i data-lucide="map"></i> <span data-i18n="map-title">Интерактивная карта</span></h2>
+        <h2 class="section-title">
+            <i data-lucide="map"></i> 
+            <span data-i18n="map-title1">Карта погоды мира</span>
+        </h2>
         
         <div class="map-layout-container">
             
             <div class="map-controls">
-                <div class="map-search">
-                    <input type="text" id="map-search-input" placeholder="Поиск города..." data-i18n="[placeholder]map-search-placeholder">
-                    
-                    <button id="map-geolocation-btn" class="map-btn-geo" title="Определить местоположение" data-i18n="[title]map-geo-title">
-                        <i data-lucide="locate-fixed"></i>
-                    </button>
+                <div class="map-search-wrapper">
+                    <div class="map-search">
+                        <input type="text" id="map-search-input" placeholder="Поиск города..." data-i18n="[placeholder]map-search-placeholder" autocomplete="off">
+                        
+                        <button id="map-geolocation-btn" class="map-btn-geo" title="Определить местоположение" data-i18n="[title]map-geo-title">
+                            <i data-lucide="locate-fixed"></i>
+                        </button>
 
-                    <button id="map-search-btn" class="map-btn-search">
-                        <i data-lucide="search"></i>
-                    </button>
+                        <button id="map-search-btn" class="map-btn-search">
+                            <i data-lucide="search"></i>
+                        </button>
+                    </div>
+                    <div id="map-search-suggestions" class="map-search-suggestions hidden"></div>
                 </div>
                 
                 <hr class="controls-divider">
@@ -490,32 +656,94 @@
                 'snow': L.tileLayer('https://tile.openweathermap.org/map/snow_new/{z}/{x}/{y}.png?appid=' + OWM_KEY, {opacity: 0.7})
             };
             let currentLayer = null;
+            let currentMarker = null; // Для хранения одного активного маркера на карте
 
             // Исправление размеров карты при рендере в Flexbox
             setTimeout(() => {
                 map.invalidateSize();
             }, 300);
 
-            // Логика работы Поиска городов (Nominatim API)
+            // Вспомогательная функция для установки маркера и перемещения карты
+            function moveAndMark(lat, lon, popupText) {
+                map.setView([lat, lon], 10);
+                if (currentMarker) {
+                    map.removeLayer(currentMarker);
+                }
+                currentMarker = L.marker([lat, lon])
+                    .addTo(map)
+                    .bindPopup(`<b>${popupText}</b>`)
+                    .openPopup();
+            }
+
+            // Элементы живого поиска
             const searchInput = document.getElementById('map-search-input');
             const searchBtn = document.getElementById('map-search-btn');
+            const suggestionsContainer = document.getElementById('map-search-suggestions');
+            let debounceTimer;
 
+            // Логика живых подсказок автодополнения (Nominatim API)
+            searchInput.addEventListener('input', function() {
+                clearTimeout(debounceTimer);
+                const query = searchInput.value.trim();
+
+                if (query.length < 3) {
+                    suggestionsContainer.classList.add('hidden');
+                    return;
+                }
+
+                // Дебаунс 400мс, чтобы не перегружать API частыми запросами
+                debounceTimer = setTimeout(() => {
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5`)
+                        .then(response => response.json())
+                        .then(data => {
+                            suggestionsContainer.innerHTML = '';
+                            if (data && data.length > 0) {
+                                data.forEach(item => {
+                                    const div = document.createElement('div');
+                                    div.className = 'suggestion-item';
+                                    
+                                    // Форматируем красивую строку
+                                    const shortName = item.display_name.split(',')[0];
+                                    div.innerHTML = `<i class="lucide-map-pin"></i> <span>${item.display_name}</span>`;
+                                    
+                                    // Клик по выбранному городу из списка
+                                    div.addEventListener('click', function() {
+                                        searchInput.value = shortName;
+                                        suggestionsContainer.classList.add('hidden');
+                                        moveAndMark(parseFloat(item.lat), parseFloat(item.lon), shortName);
+                                    });
+                                    suggestionsContainer.appendChild(div);
+                                });
+                                suggestionsContainer.classList.remove('hidden');
+                            } else {
+                                suggestionsContainer.classList.add('hidden');
+                            }
+                        })
+                        .catch(err => console.error('Ошибка получения подсказок:', err));
+                }, 400);
+            });
+
+            // Скрывать подсказки, если кликнули в любое другое место экрана
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+                    suggestionsContainer.classList.add('hidden');
+                }
+            });
+
+            // Обычный ручной поиск (по нажатию на иконку лупы или Enter)
             function performSearch() {
                 const query = searchInput.value.trim();
                 if (!query) return;
+
+                suggestionsContainer.classList.add('hidden');
 
                 fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data && data.length > 0) {
                             const result = data[0];
-                            const lat = parseFloat(result.lat);
-                            const lon = parseFloat(result.lon);
-                            map.setView([lat, lon], 10);
-                            L.marker([lat, lon])
-                                .addTo(map)
-                                .bindPopup(`<b>${result.display_name.split(',')[0]}</b>`)
-                                .openPopup();
+                            const shortName = result.display_name.split(',')[0];
+                            moveAndMark(parseFloat(result.lat), parseFloat(result.lon), shortName);
                         } else {
                             alert('Город не найден, попробуйте еще раз.');
                         }
@@ -549,13 +777,7 @@
                             geoBtn.style.opacity = '1';
                             const lat = position.coords.latitude;
                             const lon = position.coords.longitude;
-
-                            map.setView([lat, lon], 11);
-
-                            L.marker([lat, lon])
-                                .addTo(map)
-                                .bindPopup('<b>Вы находитесь здесь</b>')
-                                .openPopup();
+                            moveAndMark(lat, lon, 'Вы находитесь здесь');
                         },
                         (error) => {
                             geoBtn.style.opacity = '1';

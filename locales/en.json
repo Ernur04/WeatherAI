@@ -349,5 +349,7 @@
     "city-konaev": "Konaev",
     "menu-main": "Weather",
     "menu-map": "Map",
-    "menu-cities": "Cities and Countries List"
+    "menu-cities": "Cities and Countries List",
+    "map-title1": "World Weather Map",
+    "map-page-title": "WeatherAI – Map"
 }
