@@ -1,0 +1,582 @@
+/* ==========================================================================
+        СТИЛИ СТРАНИЦЫ ГОРОСКОПА (HOROSCOPE)
+        ========================================================================== */
+        .horoscope-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            font-family: 'Manrope', sans-serif;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .horoscope-hero {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .horoscope-hero .hero-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .horoscope-hero .hero-subtitle {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        /* Переключатели периодов */
+        .horoscope-periods {
+            display: inline-flex;
+            background-color: #f1f5f9;
+            padding: 4px;
+            border-radius: 30px;
+            gap: 4px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .period-btn {
+            background: none;
+            border: none;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .period-btn:hover {
+            color: #1e293b;
+        }
+
+        .period-btn.active {
+            background-color: #ffffff;
+            color: #3b82f6;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Главный макет */
+        .horoscope-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .horoscope-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Сетка знаков зодиака */
+        .zodiac-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        @media (max-width: 576px) {
+            .zodiac-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .zodiac-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .zodiac-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+        }
+
+        .zodiac-card.active {
+            background-color: #eff6ff;
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.12);
+        }
+
+        .zodiac-icon {
+            width: 42px;
+            height: 42px;
+            background-color: #f8fafc;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .zodiac-card:hover .zodiac-icon,
+        .zodiac-card.active .zodiac-icon {
+            background-color: #3b82f6;
+            color: #ffffff;
+        }
+
+        .zodiac-icon i {
+            width: 20px;
+            height: 20px;
+        }
+
+        .zodiac-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .zodiac-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .zodiac-date {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        /* Экран отображения прогноза */
+        .horoscope-display-panel {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
+        }
+
+        /* Состояние плейсхолдера */
+        .horoscope-display-panel.placeholder-active .display-placeholder {
+            display: flex;
+        }
+        .horoscope-display-panel.placeholder-active .display-content {
+            display: none;
+        }
+        .horoscope-display-panel:not(.placeholder-active) .display-placeholder {
+            display: none;
+        }
+        .horoscope-display-panel:not(.placeholder-active) .display-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .display-placeholder {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #94a3b8;
+            padding: 4px;
+        }
+
+        .floating-astromoon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 14px;
+            color: #cbd5e1;
+            animation: astroFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes astroFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* Шапка прогноза */
+        .display-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 14px;
+        }
+
+        .selected-sign-badge {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #current-sign-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .selected-sign-badge .subdate {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .prediction-date-badge {
+            background-color: #f0fdf4;
+            color: #16a34a;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* Текстовый блок прогноза */
+        .prediction-text-block h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .prediction-text-block h4 i {
+            width: 16px;
+            height: 16px;
+            color: #3b82f6;
+        }
+
+        #prediction-text-output {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #334155;
+            margin: 0;
+        }
+
+        /* Шкалы / Прогресс-бары */
+        .prediction-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .metric-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .metric-labels span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .metric-labels i {
+            width: 14px;
+            height: 14px;
+        }
+
+        .m-love { color: #f43f5e; }
+        .m-career { color: #0284c7; }
+        .m-money { color: #eab308; }
+        .m-health { color: #10b981; }
+
+        .metric-bar {
+            width: 100%;
+            height: 6px;
+            background-color: #f1f5f9;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fill-love { background-color: #f43f5e; }
+        .fill-career { background-color: #3b82f6; }
+        .fill-money { background-color: #eab308; }
+        .fill-health { background-color: #10b981; }
+
+        /* Квадраты счастливых параметров */
+        .lucky-indicators {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .lucky-box {
+            background-color: #f8fafc;
+            border: 1px solid #f1f5f9;
+            padding: 10px 12px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .lucky-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .lucky-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        /* Блок влияния погоды */
+        .weather-impact-block {
+            background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);
+            border: 1px solid #ccfbf1;
+            padding: 14px;
+            border-radius: 12px;
+        }
+
+        .weather-impact-block h5 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f766e;
+            margin: 0 0 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .weather-impact-block h5 i {
+            width: 15px;
+            height: 15px;
+        }
+
+        #weather-impact-text {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #115e59;
+            margin: 0;
+        }
+
+        /* Блок индивидуальной консультации */
+        .ai-astrologer-section {
+            width: 100%;
+        }
+
+        .ai-astro-card {
+            background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+            border-radius: 16px;
+            padding: 24px;
+            color: #ffffff;
+            box-shadow: 0 10px 25px -5px rgba(30, 27, 75, 0.3);
+        }
+
+        .ai-astro-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .ai-astro-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .ai-star {
+            width: 20px;
+            height: 20px;
+            color: #a855f7;
+            animation: spinStar 4s linear infinite;
+        }
+
+        @keyframes spinStar {
+            100% { transform: rotate(360deg); }
+        }
+
+        .ai-astro-card p {
+            font-size: 13px;
+            color: #c7d2fe;
+            margin: 0 0 16px 0;
+        }
+
+        .ai-astro-input-group {
+            display: flex;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 4px;
+        }
+
+        .ai-astro-input-group:focus-within {
+            border-color: #818cf8;
+        }
+
+        #ai-astro-question {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        #ai-astro-question::placeholder {
+            color: #6366f1;
+        }
+
+        #ai-astro-submit-btn {
+            background: #6366f1;
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        #ai-astro-submit-btn:hover {
+            background: #4f46e5;
+        }
+
+        #ai-astro-submit-btn i {
+            width: 16px;
+            height: 16px;
+        }
+
+        .ai-astro-answer-box {
+            margin-top: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+            border-left: 3px solid #a855f7;
+        }
+
+        .ai-astro-answer-box.hidden {
+            display: none;
+        }
+
+/* ==========================================================================
+   DARK THEME SUPPORT
+   ========================================================================== */
+[data-theme="dark"] .horoscope-hero .hero-title {
+    color: #f8fafc;
+}
+[data-theme="dark"] .hero-subtitle {
+    color: #94a3b8;
+}
+[data-theme="dark"] .period-btn {
+    background: #1e293b;
+    color: #94a3b8;
+    border-color: #334155;
+}
+[data-theme="dark"] .period-btn:hover {
+    color: #f8fafc;
+}
+[data-theme="dark"] .period-btn.active {
+    background: #3b82f6;
+    color: #ffffff;
+    border-color: #3b82f6;
+}
+[data-theme="dark"] .period-tabs-container {
+    background: #1e293b;
+    border-color: #334155;
+}
+[data-theme="dark"] .sign-btn {
+    background: #1e293b;
+    border-color: #334155;
+}
+[data-theme="dark"] .sign-btn-name {
+    color: #e2e8f0;
+}
+[data-theme="dark"] .sign-btn-dates {
+    color: #64748b;
+}
+[data-theme="dark"] .sign-btn:hover {
+    border-color: #3b82f6;
+    background: #1e293b;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+[data-theme="dark"] .sign-btn.active {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+[data-theme="dark"] .horoscope-card {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+[data-theme="dark"] .horoscope-card-empty {
+    color: #94a3b8;
+}
+[data-theme="dark"] .zodiac-bg-icon {
+    color: #334155;
+    opacity: 0.3;
+}
+[data-theme="dark"] .horoscope-card-title {
+    color: #f8fafc;
+}
+[data-theme="dark"] .horoscope-content p {
+    color: #cbd5e1;
+}
+[data-theme="dark"] .horoscope-meta-item span {
+    color: #e2e8f0;
+}
+[data-theme="dark"] .ai-consultation-block {
+    background: linear-gradient(135deg, rgba(88, 28, 135, 0.6) 0%, rgba(59, 130, 246, 0.6) 100%);
+    border-color: #334155;
+}
+[data-theme="dark"] .ai-consultation-title {
+    color: #f8fafc;
+}
+[data-theme="dark"] .ai-consultation-desc {
+    color: #e2e8f0;
+}
+[data-theme="dark"] .ai-input-group {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+[data-theme="dark"] #ai-astro-question {
+    color: #f8fafc;
+}
+[data-theme="dark"] #ai-astro-question::placeholder {
+    color: #94a3b8;
+}
+[data-theme="dark"] .ai-astro-answer {
+    background: rgba(15, 23, 42, 0.6);
+    color: #e2e8f0;
+    border-color: rgba(255, 255, 255, 0.1);
+}
