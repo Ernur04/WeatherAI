@@ -452,5 +452,6 @@
     },
     "forecast.global_title": "🌍 Глобальный прогноз",
     "no-weather-data": "Нет данных о погоде",
-    "cities-count-text": "{count} городов"
+    "cities-count-text": "{count} городов",
+    "search-btn": "Найти"
 }

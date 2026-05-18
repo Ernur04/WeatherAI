@@ -1,102 +1,68 @@
 /* ── 1. БАЗА ПОПУЛЯРНЫХ ГОРОДОВ (с координатами для API) ── */
-        const CP_POPULAR = [
-            // === КАЗАХСТАН (kz) ===
-            { ru:'Алматы',    kk:'Алматы',    en:'Almaty',      countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:43.25,  lon:76.95,   city:'Almaty',    flag:'🇰🇿' },
-            { ru:'Астана',    kk:'Астана',    en:'Astana',      countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:51.18,  lon:71.45,   city:'Astana',    flag:'🇰🇿' },
-            { ru:'Шымкент',   kk:'Шымкент',   en:'Shymkent',    countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:42.32,  lon:69.59,   city:'Shymkent',  flag:'🇰🇿' },
-            { ru:'Тараз',     kk:'Тараз',     en:'Taraz',       countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:42.90,  lon:71.36,   city:'Taraz',     flag:'🇰🇿' },
-            { ru:'Караганда', kk:'Қарағанды',  en:'Karaganda',   countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:49.80,  lon:73.09,   city:'Karaganda', flag:'🇰🇿' },
-            { ru:'Актобе',    kk:'Ақтөбе',    en:'Aktobe',      countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:50.28,  lon:57.17,   city:'Aktobe',    flag:'🇰🇿' },
-            { ru:'Усть-Каменогорск', kk:'Өскемен', en:'Oskemen', countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:49.95,  lon:82.61,   city:'Oskemen',   flag:'🇰🇿' },
-            { ru:'Павлодар',  kk:'Павлодар',  en:'Pavlodar',    countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:52.30,  lon:76.95,   city:'Pavlodar',  flag:'🇰🇿' },
-            { ru:'Атырау',    kk:'Атырау',    en:'Atyrau',      countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:47.12,  lon:51.88,   city:'Atyrau',    flag:'🇰🇿' },
-            { ru:'Актау',     kk:'Ақтау',     en:'Aktau',       countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:43.65,  lon:51.17,   city:'Aktau',     flag:'🇰🇿' },
-            { ru:'Семей',     kk:'Семей',     en:'Semey',       countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:50.41,  lon:80.25,   city:'Semey',     flag:'🇰🇿' },
-            { ru:'Уральск',   kk:'Орал',      en:'Uralsk',      countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:51.23,  lon:51.37,   city:'Uralsk',    flag:'🇰🇿' },
-            { ru:'Костанай',  kk:'Қостанай',  en:'Kostanay',    countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:53.21,  lon:63.63,   city:'Kostanay',  flag:'🇰🇿' },
-            { ru:'Кызылорда', kk:'Қызылорда',  en:'Kyzylorda',   countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:44.85,  lon:65.51,   city:'Kyzylorda', flag:'🇰🇿' },
-            { ru:'Петропавловск', kk:'Петропавл', en:'Petropavlovsk', countryRu:'Казахстан', countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:54.87,  lon:69.15,   city:'Petropavlovsk', flag:'🇰🇿' },
-            { ru:'Туркестан', kk:'Түркістан', en:'Turkistan',   countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:43.30,  lon:68.27,   city:'Turkistan', flag:'🇰🇿' },
+       const CP_POPULAR = [
+        // === КАЗАХСТАН (kz) ===
+        { ru:'Алматы',    kk:'Алматы',    en:'Almaty',      countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:43.25,  lon:76.95,   city:'Almaty',    flag:'🇰🇿' },
+        { ru:'Астана',    kk:'Астана',    en:'Astana',      countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:51.18,  lon:71.45,   city:'Astana',    flag:'🇰🇿' },
+        { ru:'Шымкент',   kk:'Шымкент',   en:'Shymkent',    countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:42.32,  lon:69.59,   city:'Shymkent',  flag:'🇰🇿' },
+        { ru:'Караганда', kk:'Қарағанды',  en:'Karaganda',   countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:49.80,  lon:73.09,   city:'Karaganda', flag:'🇰🇿' },
+        { ru:'Актобе',    kk:'Ақтөбе',    en:'Aktobe',      countryRu:'Казахстан',     countryKk:'Қазақстан',  countryEn:'Kazakhstan',     region:'kz',            lat:50.28,  lon:57.17,   city:'Aktobe',    flag:'🇰🇿' },
 
-            // === СНГ (cis) ===
-            { ru:'Ташкент',   kk:'Ташкент',   en:'Tashkent',    countryRu:'Узбекистан',    countryKk:'Өзбекстан',  countryEn:'Uzbekistan',     region:'cis',           lat:41.30,  lon:69.27,   city:'Tashkent',  flag:'🇺🇿' },
-            { ru:'Москва',    kk:'Мәскеу',    en:'Moscow',      countryRu:'Россия',        countryKk:'Ресей',      countryEn:'Russia',         region:'cis',           lat:55.75,  lon:37.62,   city:'Moscow',    flag:'🇷🇺' },
-            { ru:'Бишкек',    kk:'Бішкек',    en:'Bishkek',     countryRu:'Кыргызстан',    countryKk:'Қырғызстан', countryEn:'Kyrgyzstan',     region:'cis',           lat:42.87,  lon:74.59,   city:'Bishkek',   flag:'🇰🇬' },
-            { ru:'Санкт-Петербург', kk:'Санкт-Петербург', en:'St. Petersburg', countryRu:'Россия', countryKk:'Ресей', countryEn:'Russia',      region:'cis',           lat:59.94,  lon:30.31,   city:'StPetersburg', flag:'🇷🇺' },
-            { ru:'Минск',     kk:'Минск',     en:'Minsk',       countryRu:'Беларусь',      countryKk:'Беларусь',   countryEn:'Belarus',        region:'cis',           lat:53.90,  lon:27.57,   city:'Minsk',     flag:'🇧🇾' },
-            { ru:'Баку',      kk:'Баку',      en:'Baku',        countryRu:'Азербайджан',   countryKk:'Әзірбайжан', countryEn:'Azerbaijan',     region:'cis',           lat:40.41,  lon:49.87,   city:'Baku',      flag:'🇦🇿' },
-            { ru:'Ереван',    kk:'Ереван',    en:'Yerevan',     countryRu:'Армения',       countryKk:'Армения',    countryEn:'Armenia',        region:'cis',           lat:40.18,  lon:44.51,   city:'Yerevan',   flag:'🇦🇲' },
-            { ru:'Кишинев',   kk:'Кишинев',   en:'Chisinau',    countryRu:'Молдова',       countryKk:'Молдова',    countryEn:'Moldova',        region:'cis',           lat:47.01,  lon:28.86,   city:'Chisinau',  flag:'🇲🇩' },
-            { ru:'Душанбе',   kk:'Душанбе',   en:'Dushanbe',    countryRu:'Таджикистан',   countryKk:'Тәжікстан',  countryEn:'Tajikistan',     region:'cis',           lat:38.54,  lon:68.78,   city:'Dushanbe',  flag:'🇹🇯' },
-            { ru:'Ашхабад',   kk:'Ашхабад',   en:'Ashgabat',    countryRu:'Туркменистан',  countryKk:'Түрікменстан', countryEn:'Turkmenistan',  region:'cis',           lat:37.95,  lon:58.38,   city:'Ashgabat',  flag:'🇹🇲' },
-            { ru:'Самарканд', kk:'Самарқанд',  en:'Samarkand',   countryRu:'Узбекистан',    countryKk:'Өзбекстан',  countryEn:'Uzbekistan',     region:'cis',           lat:39.65,  lon:66.96,   city:'Samarkand', flag:'🇺🇿' },
-            { ru:'Ош',        kk:'Ош',        en:'Osh',         countryRu:'Кыргызстан',    countryKk:'Қырғызстан', countryEn:'Kyrgyzstan',     region:'cis',           lat:40.51,  lon:72.81,   city:'Osh',       flag:'🇰🇬' },
+        // === СНГ (cis) ===
+        { ru:'Ташкент',   kk:'Ташкент',   en:'Tashkent',    countryRu:'Узбекистан',    countryKk:'Өзбекстан',  countryEn:'Uzbekistan',     region:'cis',           lat:41.30,  lon:69.27,   city:'Tashkent',  flag:'🇺🇿' },
+        { ru:'Москва',    kk:'Мәскеу',    en:'Moscow',      countryRu:'Россия',        countryKk:'Ресей',      countryEn:'Russia',         region:'cis',           lat:55.75,  lon:37.62,   city:'Moscow',    flag:'🇷🇺' },
+        { ru:'Бишкек',    kk:'Бішкек',    en:'Bishkek',     countryRu:'Кыргызстан',    countryKk:'Қырғызстан', countryEn:'Kyrgyzstan',     region:'cis',           lat:42.87,  lon:74.59,   city:'Bishkek',   flag:'🇰🇬' },
+        { ru:'Санкт-Петербург', kk:'Санкт-Петербург', en:'St. Petersburg', countryRu:'Россия', countryKk:'Ресей', countryEn:'Russia',      region:'cis',           lat:59.94,  lon:30.31,   city:'StPetersburg', flag:'🇷🇺' },
+        { ru:'Минск',     kk:'Минск',     en:'Minsk',       countryRu:'Беларусь',      countryKk:'Беларусь',   countryEn:'Belarus',        region:'cis',           lat:53.90,  lon:27.57,   city:'Minsk',     flag:'🇧🇾' },
 
-            // === ЕВРОПА (europe) ===
-            { ru:'Лондон',    kk:'Лондон',    en:'London',      countryRu:'Великобритания',countryKk:'Ұлыбритания', countryEn:'United Kingdom', region:'europe',        lat:51.51,  lon:-0.13,   city:'London',    flag:'🇬🇧' },
-            { ru:'Париж',     kk:'Париж',     en:'Paris',       countryRu:'Франция',       countryKk:'Франция',    countryEn:'France',         region:'europe',        lat:48.85,  lon:2.35,    city:'Paris',     flag:'🇫🇷' },
-            { ru:'Берлин',    kk:'Берлин',    en:'Berlin',      countryRu:'Германия',      countryKk:'Германия',   countryEn:'Germany',        region:'europe',        lat:52.52,  lon:13.41,   city:'Berlin',    flag:'🇩🇪' },
-            { ru:'Рим',       kk:'Рим',       en:'Rome',        countryRu:'Италия',        countryKk:'Италия',     countryEn:'Italy',          region:'europe',        lat:41.90,  lon:12.50,   city:'Rome',      flag:'🇮🇹' },
-            { ru:'Мадрид',    kk:'Мадрид',    en:'Madrid',      countryRu:'Испания',       countryKk:'Испания',    countryEn:'Spain',          region:'europe',        lat:40.42,  lon:-3.70,   city:'Madrid',    flag:'🇪🇸' },
-            { ru:'Амстердам', kk:'Амстердам',  en:'Amsterdam',   countryRu:'Нидерланды',    countryKk:'Нидерланд',  countryEn:'Netherlands',    region:'europe',        lat:52.37,  lon:4.89,    city:'Amsterdam', flag:'🇳🇱' },
-            { ru:'Вена',      kk:'Вена',      en:'Vienna',      countryRu:'Австрия',       countryKk:'Австрия',    countryEn:'Austria',        region:'europe',        lat:48.21,  lon:16.37,   city:'Vienna',    flag:'🇦🇹' },
-            { ru:'Прага',     kk:'Прага',     en:'Prague',      countryRu:'Чехия',         countryKk:'Чехия',      countryEn:'Czechia',        region:'europe',        lat:50.08,  lon:14.44,   city:'Prague',    flag:'🇨🇿' },
-            { ru:'Варшава',   kk:'Варшава',   en:'Warsaw',      countryRu:'Польша',        countryKk:'Польша',     countryEn:'Poland',         region:'europe',        lat:52.23,  lon:21.01,   city:'Warsaw',    flag:'🇵🇱' },
-            { ru:'Афины',     kk:'Афины',     en:'Athens',      countryRu:'Греция',        countryKk:'Греция',     countryEn:'Greece',         region:'europe',        lat:37.98,  lon:23.73,   city:'Athens',    flag:'🇬🇷' },
-            { ru:'Лиссабон',  kk:'Лиссабон',  en:'Lisbon',      countryRu:'Португалия',    countryKk:'Португалия', countryEn:'Portugal',       region:'europe',        lat:38.72,  lon:-9.14,   city:'Lisbon',    flag:'🇵🇹' },
+        // === ЕВРОПА (europe) ===
+        { ru:'Лондон',    kk:'Лондон',    en:'London',      countryRu:'Великобритания',countryKk:'Ұлыбритания', countryEn:'United Kingdom', region:'europe',        lat:51.51,  lon:-0.13,   city:'London',    flag:'🇬🇧' },
+        { ru:'Париж',     kk:'Париж',     en:'Paris',       countryRu:'Франция',       countryKk:'Франция',    countryEn:'France',         region:'europe',        lat:48.85,  lon:2.35,    city:'Paris',     flag:'🇫🇷' },
+        { ru:'Берлин',    kk:'Берлин',    en:'Berlin',      countryRu:'Германия',      countryKk:'Германия',   countryEn:'Germany',        region:'europe',        lat:52.52,  lon:13.41,   city:'Berlin',    flag:'🇩🇪' },
+        { ru:'Рим',       kk:'Рим',       en:'Rome',        countryRu:'Италия',        countryKk:'Италия',     countryEn:'Italy',          region:'europe',        lat:41.90,  lon:12.50,   city:'Rome',      flag:'🇮🇹' },
+        { ru:'Мадрид',    kk:'Мадрид',    en:'Madrid',      countryRu:'Испания',       countryKk:'Испания',    countryEn:'Spain',          region:'europe',        lat:40.42,  lon:-3.70,   city:'Madrid',    flag:'🇪🇸' },
 
-            // === АЗИЯ (asia) ===
-            { ru:'Токио',     kk:'Токио',     en:'Tokyo',       countryRu:'Япония',        countryKk:'Жапония',    countryEn:'Japan',          region:'asia',          lat:35.68,  lon:139.69,  city:'Tokyo',     flag:'🇯🇵' },
-            { ru:'Пекин',     kk:'Пекин',     en:'Beijing',     countryRu:'Китай',         countryKk:'Қытай',      countryEn:'China',          region:'asia',          lat:39.91,  lon:116.39,  city:'Beijing',   flag:'🇨🇳' },
-            { ru:'Сеул',      kk:'Сеул',      en:'Seoul',       countryRu:'Южная Корея',   countryKk:'Оңтүстік Корея', countryEn:'South Korea', region:'asia',          lat:37.57,  lon:126.98,  city:'Seoul',     flag:'🇰🇷' },
-            { ru:'Бангкок',   kk:'Бангкок',   en:'Bangkok',     countryRu:'Таиланд',       countryKk:'Таиланд',    countryEn:'Thailand',       region:'asia',          lat:13.75,  lon:100.50,  city:'Bangkok',   flag:'🇹🇭' },
-            { ru:'Сингапур',  kk:'Сингапур',  en:'Singapore',   countryRu:'Сингапур',      countryKk:'Сингапур',   countryEn:'Singapore',      region:'asia',          lat:1.35,   lon:103.82,  city:'Singapore', flag:'🇸🇬' },
-            { ru:'Дели',      kk:'Дели',      en:'Delhi',       countryRu:'Индия',         countryKk:'Үндістан',   countryEn:'India',          region:'asia',          lat:28.61,  lon:77.21,   city:'Delhi',     flag:'🇮🇳' },
-            { ru:'Джакарта',  kk:'Джакарта',  en:'Jakarta',     countryRu:'Индонезия',     countryKk:'Индонезия',  countryEn:'Indonesia',      region:'asia',          lat:-6.20,  lon:106.82,  city:'Jakarta',   flag:'🇮🇩' },
-            { ru:'Куала-Лумпур', kk:'Куала-Лумпур', en:'Kuala Lumpur', countryRu:'Малайзия', countryKk:'Малайзия', countryEn:'Malaysia',       region:'asia',          lat:3.14,   lon:101.69,  city:'KualaLumpur', flag:'🇲🇾' },
-            { ru:'Шанхай',    kk:'Шанхай',    en:'Shanghai',    countryRu:'Китай',         countryKk:'Қытай',      countryEn:'China',          region:'asia',          lat:31.23,  lon:121.47,  city:'Shanghai',  flag:'🇨🇳' },
+        // === АЗИЯ (asia) ===
+        { ru:'Токио',     kk:'Токио',     en:'Tokyo',       countryRu:'Япония',        countryKk:'Жапония',    countryEn:'Japan',          region:'asia',          lat:35.68,  lon:139.69,  city:'Tokyo',     flag:'🇯🇵' },
+        { ru:'Пекин',     kk:'Пекин',     en:'Beijing',     countryRu:'Китай',         countryKk:'Қытай',      countryEn:'China',          region:'asia',          lat:39.91,  lon:116.39,  city:'Beijing',   flag:'🇨🇳' },
+        { ru:'Сеул',      kk:'Сеул',      en:'Seoul',       countryRu:'Южная Корея',   countryKk:'Оңтүстік Корея', countryEn:'South Korea', region:'asia',          lat:37.57,  lon:126.98,  city:'Seoul',     flag:'🇰🇷' },
+        { ru:'Бангкок',   kk:'Бангкок',   en:'Bangkok',     countryRu:'Таиланд',       countryKk:'Таиланд',    countryEn:'Thailand',       region:'asia',          lat:13.75,  lon:100.50,  city:'Bangkok',   flag:'🇹🇭' },
+        { ru:'Сингапур',  kk:'Сингапур',  en:'Singapore',   countryRu:'Сингапур',      countryKk:'Сингапур',   countryEn:'Singapore',      region:'asia',          lat:1.35,   lon:103.82,  city:'Singapore', flag:'🇸🇬' },
 
-            // === БЛИЖНИЙ ВОСТОК (middle-east) ===
-            { ru:'Дубай',     kk:'Дубай',     en:'Dubai',       countryRu:'ОАЭ',           countryKk:'БАӘ',        countryEn:'UAE',            region:'middle-east',   lat:25.20,  lon:55.27,   city:'Dubai',     flag:'🇦🇪' },
-            { ru:'Стамбул',   kk:'Ыстамбұл',  en:'Istanbul',    countryRu:'Турция',        countryKk:'Түркия',     countryEn:'Turkey',         region:'middle-east',   lat:41.01,  lon:28.98,   city:'Istanbul',  flag:'🇹🇷' },
-            { ru:'Эр-Рияд',   kk:'Эр-Рияд',   en:'Riyadh',      countryRu:'Саудовская Аравия', countryKk:'Сауд Арабиясы', countryEn:'Saudi Arabia', region:'middle-east', lat:24.71,  lon:46.68,   city:'Riyadh',    flag:'🇸🇦' },
-            { ru:'Доха',      kk:'Доха',      en:'Doha',        countryRu:'Катар',         countryKk:'Катар',      countryEn:'Qatar',          region:'middle-east',   lat:25.29,  lon:51.53,   city:'Doha',      flag:'🇶🇦' },
-            { ru:'Тель-Авив', kk:'Тель-Авив',  en:'Tel Aviv',    countryRu:'Израиль',       countryKk:'Израиль',    countryEn:'Israel',         region:'middle-east',   lat:32.08,  lon:34.78,   city:'TelAviv',   flag:'🇮🇱' },
-            { ru:'Анкара',    kk:'Анкара',    en:'Ankara',      countryRu:'Турция',        countryKk:'Түркия',     countryEn:'Turkey',         region:'middle-east',   lat:39.93,  lon:32.86,   city:'Ankara',    flag:'🇹🇷' },
+        // === БЛИЖНИЙ ВОСТОК (middle-east) ===
+        { ru:'Дубай',     kk:'Дубай',     en:'Dubai',       countryRu:'ОАЭ',           countryKk:'БАӘ',        countryEn:'UAE',            region:'middle-east',   lat:25.20,  lon:55.27,   city:'Dubai',     flag:'🇦🇪' },
+        { ru:'Стамбул',   kk:'Ыстамбұл',  en:'Istanbul',    countryRu:'Турция',        countryKk:'Түркия',     countryEn:'Turkey',         region:'middle-east',   lat:41.01,  lon:28.98,   city:'Istanbul',  flag:'🇹🇷' },
+        { ru:'Эр-Рияд',   kk:'Эр-Рияд',   en:'Riyadh',      countryRu:'Саудовская Аравия', countryKk:'Сауд Арабиясы', countryEn:'Saudi Arabia', region:'middle-east', lat:24.71,  lon:46.68,   city:'Riyadh',    flag:'🇸🇦' },
+        { ru:'Доха',      kk:'Доха',      en:'Doha',        countryRu:'Катар',         countryKk:'Катар',      countryEn:'Qatar',          region:'middle-east',   lat:25.29,  lon:51.53,   city:'Doha',      flag:'🇶🇦' },
+        { ru:'Тель-Авив', kk:'Тель-Авив',  en:'Tel Aviv',    countryRu:'Израиль',       countryKk:'Израиль',    countryEn:'Israel',         region:'middle-east',   lat:32.08,  lon:34.78,   city:'TelAviv',   flag:'🇮🇱' },
 
-            // === СЕВЕРНАЯ АМЕРИКА (north-america) ===
-            { ru:'Нью-Йорк',  kk:'Нью-Йорк',  en:'New York',    countryRu:'США',           countryKk:'АҚШ',        countryEn:'USA',            region:'north-america', lat:40.71,  lon:-74.01,  city:'NewYork',   flag:'🇺🇸' },
-            { ru:'Лос-Анджелес', kk:'Лос-Анджелес', en:'Los Angeles', countryRu:'США',       countryKk:'АҚШ',        countryEn:'USA',            region:'north-america', lat:34.05,  lon:-118.24, city:'LosAngeles', flag:'🇺🇸' },
-            { ru:'Торонто',   kk:'Торонто',   en:'Toronto',     countryRu:'Канада',        countryKk:'Канада',     countryEn:'Canada',         region:'north-america', lat:43.65,  lon:-79.38,  city:'Toronto',   flag:'🇨🇦' },
-            { ru:'Мехико',    kk:'Мехико',    en:'Mexico City', countryRu:'Мексика',       countryKk:'Мексика',    countryEn:'Mexico',         region:'north-america', lat:19.43,  lon:-99.13,  city:'MexicoCity', flag:'🇲🇽' },
-            { ru:'Чикаго',    kk:'Чикаго',    en:'Chicago',     countryRu:'США',           countryKk:'АҚШ',        countryEn:'USA',            region:'north-america', lat:41.88,  lon:-87.63,  city:'Chicago',   flag:'🇺🇸' },
-            { ru:'Майами',    kk:'Майами',    en:'Miami',       countryRu:'США',           countryKk:'АҚШ',        countryEn:'USA',            region:'north-america', lat:25.76,  lon:-80.19,  city:'Miami',     flag:'🇺🇸' },
-            { ru:'Ванкувер',  kk:'Ванкувер',  en:'Vancouver',   countryRu:'Канада',        countryKk:'Канада',     countryEn:'Canada',         region:'north-america', lat:49.28,  lon:-123.12, city:'Vancouver', flag:'🇨🇦' },
+        // === СЕВЕРНАЯ АМЕРИКА (north-america) ===
+        { ru:'Нью-Йорк',  kk:'Нью-Йорк',  en:'New York',    countryRu:'США',           countryKk:'АҚШ',        countryEn:'USA',            region:'north-america', lat:40.71,  lon:-74.01,  city:'NewYork',   flag:'🇺🇸' },
+        { ru:'Лос-Анджелес', kk:'Лос-Анджелес', en:'Los Angeles', countryRu:'США',        countryKk:'АҚШ',        countryEn:'USA',            region:'north-america', lat:34.05,  lon:-118.24, city:'LosAngeles', flag:'🇺🇸' },
+        { ru:'Торонто',   kk:'Торонто',   en:'Toronto',     countryRu:'Канада',        countryKk:'Канада',     countryEn:'Canada',         region:'north-america', lat:43.65,  lon:-79.38,  city:'Toronto',   flag:'🇨🇦' },
+        { ru:'Мехико',    kk:'Мехико',    en:'Mexico City', countryRu:'Мексика',       countryKk:'Мексика',    countryEn:'Mexico',         region:'north-america', lat:19.43,  lon:-99.13,  city:'MexicoCity', flag:'🇲🇽' },
+        { ru:'Чикаго',    kk:'Чикаго',    en:'Chicago',     countryRu:'США',           countryKk:'АҚШ',        countryEn:'USA',            region:'north-america', lat:41.88,  lon:-87.63,  city:'Chicago',   flag:'🇺🇸' },
 
-            // === ЮЖНАЯ АМЕРИКА (south-america) ===
-            { ru:'Сан-Паулу', kk:'Сан-Паулу',  en:'Sao Paulo',   countryRu:'Бразилия',      countryKk:'Бразилия',   countryEn:'Brazil',         region:'south-america', lat:-23.55, lon:-46.63,  city:'SaoPaulo',  flag:'🇧🇷' },
-            { ru:'Рио-де-Жанейро', kk:'Рио-де-Жанейро', en:'Rio de Janeiro', countryRu:'Бразилия', countryKk:'Бразилия', countryEn:'Brazil',   region:'south-america', lat:-22.91, lon:-43.17,  city:'Rio',       flag:'🇧🇷' },
-            { ru:'Буэнос-Айрес', kk:'Буэнос-Айрес', en:'Buenos Aires', countryRu:'Аргентина', countryKk:'Аргентина', countryEn:'Argentina',   region:'south-america', lat:-34.60, lon:-58.38,  city:'BuenosAires', flag:'🇦🇷' },
-            { ru:'Богота',    kk:'Богота',    en:'Bogota',      countryRu:'Колумбия',      countryKk:'Колумбия',   countryEn:'Colombia',       region:'south-america', lat:4.71,   lon:-74.07,  city:'Bogota',    flag:'🇨🇴' },
-            { ru:'Лима',      kk:'Лима',      en:'Lima',        countryRu:'Перу',          countryKk:'Перу',       countryEn:'Peru',           region:'south-america', lat:-12.04, lon:-77.03,  city:'Lima',      flag:'🇵🇪' },
-            { ru:'Сантьяго',  kk:'Сантьяго',  en:'Santiago',    countryRu:'Чили',          countryKk:'Чили',       countryEn:'Chile',          region:'south-america', lat:-33.45, lon:-70.66,  city:'Santiago',  flag:'🇨🇱' },
+        // === ЮЖНАЯ АМЕРИКА (south-america) ===
+        { ru:'Сан-Паулу', kk:'Сан-Паулу',  en:'Sao Paulo',   countryRu:'Бразилия',      countryKk:'Бразилия',   countryEn:'Brazil',         region:'south-america', lat:-23.55, lon:-46.63,  city:'SaoPaulo',  flag:'🇧🇷' },
+        { ru:'Рио-де-Жанейро', kk:'Рио-де-Жанейро', en:'Rio de Janeiro', countryRu:'Бразилия', countryKk:'Бразилия', countryEn:'Brazil',   region:'south-america', lat:-22.91, lon:-43.17,  city:'Rio',       flag:'🇧🇷' },
+        { ru:'Буэнос-Айрес', kk:'Буэнос-Айрес', en:'Buenos Aires', countryRu:'Аргентина', countryKk:'Аргентина', countryEn:'Argentina',   region:'south-america', lat:-34.60, lon:-58.38,  city:'BuenosAires', flag:'🇦🇷' },
+        { ru:'Богота',    kk:'Богота',    en:'Bogota',      countryRu:'Колумбия',      countryKk:'Колумбия',   countryEn:'Colombia',       region:'south-america', lat:4.71,   lon:-74.07,  city:'Bogota',    flag:'🇨🇴' },
+        { ru:'Лима',      kk:'Лима',      en:'Lima',        countryRu:'Перу',          countryKk:'Перу',       countryEn:'Peru',           region:'south-america', lat:-12.04, lon:-77.03,  city:'Lima',      flag:'🇵🇪' },
 
-            // === АФРИКА (africa) ===
-            { ru:'Найроби',   kk:'Найроби',   en:'Nairobi',     countryRu:'Кения',         countryKk:'Кения',      countryEn:'Kenya',          region:'africa',        lat:-1.29,  lon:36.82,   city:'Nairobi',   flag:'🇰🇪' },
-            { ru:'Каир',      kk:'Каир',      en:'Cairo',       countryRu:'Египет',        countryKk:'Мысыр',      countryEn:'Egypt',          region:'africa',        lat:30.04,  lon:31.24,   city:'Cairo',     flag:'🇪🇬' },
-            { ru:'Кейптаун',  kk:'Кейптаун',  en:'Cape Town',   countryRu:'ЮАР',           countryKk:'ОАР',        countryEn:'South Africa',   region:'africa',        lat:-33.93, lon:18.42,   city:'CapeTown',  flag:'🇿🇦' },
-            { ru:'Йоханнесбург', kk:'Йоханнесбург', en:'Johannesburg', countryRu:'ЮАР',     countryKk:'ОАР',        countryEn:'South Africa',   region:'africa',        lat:-26.20, lon:28.05,   city:'Johannesburg', flag:'🇿🇦' },
-            { ru:'Касабланка', kk:'Касабланка', en:'Casablanca', countryRu:'Марокко',       countryKk:'Марокко',    countryEn:'Morocco',        region:'africa',        lat:33.57,  lon:-7.58,   city:'Casablanca', flag:'🇲🇦' },
-            { ru:'Лагос',     kk:'Лагос',     en:'Lagos',       countryRu:'Нигерия',       countryKk:'Нигерия',    countryEn:'Nigeria',        region:'africa',        lat:6.52,   lon:3.38,    city:'Lagos',     flag:'🇳🇬' },
+        // === АФРИКА (africa) ===
+        { ru:'Найроби',   kk:'Найроби',   en:'Nairobi',     countryRu:'Кения',         countryKk:'Кения',      countryEn:'Kenya',          region:'africa',        lat:-1.29,  lon:36.82,   city:'Nairobi',   flag:'🇰🇪' },
+        { ru:'Каир',      kk:'Каир',      en:'Cairo',       countryRu:'Египет',        countryKk:'Мысыр',      countryEn:'Egypt',          region:'africa',        lat:30.04,  lon:31.24,   city:'Cairo',     flag:'🇪🇬' },
+        { ru:'Кейптаун',  kk:'Кейптаун',  en:'Cape Town',   countryRu:'ЮАР',           countryKk:'ОАР',        countryEn:'South Africa',   region:'africa',        lat:-33.93, lon:18.42,   city:'CapeTown',  flag:'🇿🇦' },
+        { ru:'Йоханнесбург', kk:'Йоханнесбург', en:'Johannesburg', countryRu:'ЮАР',      countryKk:'ОАР',        countryEn:'South Africa',   region:'africa',        lat:-26.20, lon:28.05,   city:'Johannesburg', flag:'🇿🇦' },
+        { ru:'Касабланка', kk:'Касабланка', en:'Casablanca', countryRu:'Марокко',       countryKk:'Марокко',    countryEn:'Morocco',        region:'africa',        lat:33.57,  lon:-7.58,   city:'Casablanca', flag:'🇲🇦' },
 
-            // === АВСТРАЛИЯ И ОКЕАНИЯ (oceania) ===
-            { ru:'Сидней',    kk:'Сидней',    en:'Sydney',      countryRu:'Австралия',     countryKk:'Австралия',  countryEn:'Australia',      region:'oceania',       lat:-33.87, lon:151.21,  city:'Sydney',    flag:'🇦🇺' },
-            { ru:'Мельбурн',  kk:'Мельбурн',  en:'Melbourne',   countryRu:'Австралия',     countryKk:'Австралия',  countryEn:'Australia',      region:'oceania',       lat:-37.81, lon:144.96,  city:'Melbourne', flag:'🇦🇺' },
-            { ru:'Окленд',    kk:'Окленд',    en:'Auckland',    countryRu:'Новая Зеландия', countryKk:'Жаңа Зеландия', countryEn:'New Zealand', region:'oceania',       lat:-36.85, lon:174.76,  city:'Auckland',  flag:'🇳🇿' },
-            { ru:'Брисбен',   kk:'Брисбен',   en:'Brisbane',    countryRu:'Австралия',     countryKk:'Австралия',  countryEn:'Australia',      region:'oceania',       lat:-27.47, lon:153.03,  city:'Brisbane',  flag:'🇦🇺' },
-            { ru:'Перт',      kk:'Перт',      en:'Perth',       countryRu:'Австралия',     countryKk:'Австралия',  countryEn:'Australia',      region:'oceania',       lat:-31.95, lon:115.86,  city:'Perth',     flag:'🇦🇺' },
-            { ru:'Веллингтон', kk:'Веллингтон', en:'Wellington',  countryRu:'Новая Зеландия', countryKk:'Жаңа Зеландия', countryEn:'New Zealand', region:'oceania',       lat:-41.29, lon:174.77,  city:'Wellington', flag:'🇳🇿' }
-        ];
+        // === АВСТРАЛИЯ И ОКЕАНИЯ (oceania) ===
+        { ru:'Сидней',    kk:'Сидней',    en:'Sydney',      countryRu:'Австралия',     countryKk:'Австралия',  countryEn:'Australia',      region:'oceania',       lat:-33.87, lon:151.21,  city:'Sydney',    flag:'🇦🇺' },
+        { ru:'Мельбурн',  kk:'Мельбурн',  en:'Melbourne',   countryRu:'Австралия',     countryKk:'Австралия',  countryEn:'Australia',      region:'oceania',       lat:-37.81, lon:144.96,  city:'Melbourne', flag:'🇦🇺' },
+        { ru:'Окленд',    kk:'Окленд',    en:'Auckland',    countryRu:'Новая Зеландия', countryKk:'Жаңа Зеландия', countryEn:'New Zealand', region:'oceania',       lat:-36.85, lon:174.76,  city:'Auckland',  flag:'🇳🇿' },
+        { ru:'Брисбен',   kk:'Брисбен',   en:'Brisbane',    countryRu:'Австралия',     countryKk:'Австралия',  countryEn:'Australia',      region:'oceania',       lat:-27.47, lon:153.03,  city:'Brisbane',  flag:'🇦🇺' },
+        { ru:'Перт',      kk:'Перт',      en:'Perth',       countryRu:'Австралия',     countryKk:'Австралия',  countryEn:'Australia',      region:'oceania',       lat:-31.95, lon:115.86,  city:'Perth',     flag:'🇦🇺' }
+    ];
     // Helper: get localized name for popular city
     function cpPopularName(p) {
         const lang = (typeof getCurrentLang === 'function' ? getCurrentLang() : null)
@@ -501,6 +467,7 @@
     function cpInitSearch() {
         const input = document.getElementById('cp-search');
         const dd    = document.getElementById('cp-dropdown');
+        const btn   = document.getElementById('cp-search-btn');
 
         input.addEventListener('input', () => {
             const q = input.value.trim().toLowerCase();
@@ -522,16 +489,43 @@
 
             hits.forEach(c => {
                 const div = document.createElement('div');
-                div.className = 'cp-dd-item';
-                div.innerHTML = `<span class="cp-dd-city">${c[searchField]}</span><span class="cp-dd-country">${c.country}</span>`;
+                div.className = 'cp-dropdown-item';
+                div.innerHTML = `<span class="cp-item-flag">📍</span><span class="cp-dd-city" style="flex:1">${c[searchField]}</span><span class="cp-item-country">${c.country}</span>`;
                 div.addEventListener('click', () => { window.location.href = `../index.html?city=${c.en}`; });
                 dd.appendChild(div);
             });
             dd.classList.remove('hidden');
         });
 
+        if (btn) {
+            btn.addEventListener('click', () => {
+                const q = input.value.trim().toLowerCase();
+                if (q.length < 2) {
+                    input.focus();
+                    return;
+                }
+                const hits = CP_ALL.filter(c =>
+                    c.ru.toLowerCase().includes(q) ||
+                    c.en.toLowerCase().includes(q) ||
+                    c.country.toLowerCase().includes(q)
+                );
+                if (hits.length > 0) {
+                    window.location.href = `../index.html?city=${hits[0].en}`;
+                } else {
+                    input.focus();
+                }
+            });
+
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    btn.click();
+                }
+            });
+        }
+
         document.addEventListener('click', e => {
-            if (!e.target.closest('.cp-search-wrap')) dd.classList.add('hidden');
+            if (!e.target.closest('.cp-search-box-container')) dd.classList.add('hidden');
         });
     }
 

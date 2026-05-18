@@ -452,5 +452,6 @@
     },
     "forecast.global_title": "🌍 Global forecast",
     "no-weather-data": "No weather data",
-    "cities-count-text": "{count} cities"
+    "cities-count-text": "{count} cities",
+    "search-btn": "Search"
 }

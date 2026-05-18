@@ -76,17 +76,19 @@
     <!-- ═══════════════════════════════════════ MAIN ═══════════════════════════════════════ -->
     <main class="cities-page">
 
-        <!-- ── HERO + ПОИСК ── -->
-        <div class="cities-hero-inner">
-            <span class="cities-hero-eyebrow" data-i18n="forecast.global_title">🌍 Глобальный прогноз</span>
-            <h1 class="cities-hero-title" data-i18n="cities-title">Города и страны мира</h1>
-            <p class="cities-hero-subtitle" data-i18n="cities-subtitle">Найдите любой город и узнайте точный прогноз погоды</p>
+        <!-- ── ЗАГОЛОВОК И ПОИСК (СТИЛЬ КАК НА КАРТЕ) ── -->
+        <div class="cp-header-block">
+            <h1 class="cp-hero-title">
+                <i data-lucide="globe-2"></i> 
+                <span data-i18n="cities-title">Города и страны мира</span>
+            </h1>
+            <p class="cp-hero-subtitle" data-i18n="cities-subtitle">Найдите любой город и узнайте точный прогноз погоды</p>
+        </div>
 
+        <div class="cp-search-wrapper">
             <div class="cp-search-box-container">
-                <div class="cp-search-input-field">
-                    <i data-lucide="search" class="cp-search-icon"></i>
-                    <input type="text" id="cp-search" data-i18n-placeholder="search-placeholder" placeholder="Поиск города или страны…">
-                </div>
+                <i data-lucide="search" class="cp-search-icon"></i>
+                <input type="text" id="cp-search" data-i18n-placeholder="search-placeholder" placeholder="Поиск города или страны…" autocomplete="off">
                 
                 <select id="cp-region" class="cp-region-select">
                     <option value="all" data-i18n="regions.all">Все регионы</option>
@@ -107,14 +109,17 @@
                     </optgroup>
                 </select>
 
-                <div id="cp-dropdown" class="cp-dropdown hidden"></div>
+                <button id="cp-search-btn" class="cp-search-btn" data-i18n="search-btn">Найти</button>
             </div>
-
-            <div class="cp-meta-row">
-                <span id="cp-count" class="cp-found-count"></span>
-            </div>
+            
+            <div id="cp-dropdown" class="cp-dropdown hidden"></div>
         </div>
 
+        <div class="cp-meta-row">
+            <span id="cp-count" class="cp-found-count"></span>
+        </div>
+
+        <hr class="cp-divider">
 
         <!-- ── ПОПУЛЯРНЫЕ ГОРОДА ── -->
         <section class="cp-section">
@@ -123,29 +128,19 @@
                 <span class="cp-badge" data-i18n="popular-cities-badge">В реальном времени</span>
             </div>
             <div id="cp-popular-grid" class="cp-popular-grid">
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
-                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
+                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
+                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
+                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
+                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
+                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
+                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
+                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
+                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
+                <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
             </div>
         </section>
 
+        <hr class="cp-divider">
 
         <!-- ── ВСЕ ГОРОДА ПО АЛФАВИТУ ── -->
         <section class="cp-section">

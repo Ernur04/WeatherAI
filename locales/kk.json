@@ -452,5 +452,6 @@
     },
     "forecast.global_title": "🌍 Жаһандық болжам",
     "no-weather-data": "Ауа райы деректері жоқ",
-    "cities-count-text": "{count} қала"
+    "cities-count-text": "{count} қала",
+    "search-btn": "Табу"
 }
