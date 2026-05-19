@@ -41,7 +41,7 @@
 
 .cp-divider {
     border: 0;
-    height: 1px;
+    height: 5px;
     background: var(--cp-border);
     margin: 1.5rem 0;
 }
@@ -254,7 +254,8 @@
 .cp-meta-row {
     margin-top: 0.5rem;
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
+    padding-right: 4px;
 }
 
 .cp-found-count {
@@ -283,6 +284,7 @@
         padding: 8px;
     }
     #cp-search {
+        flex: 0 0 calc(100% - 36px);
         width: calc(100% - 36px);
     }
     .cp-region-select {
@@ -310,13 +312,14 @@
 .cp-section-title-group {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    flex: 1;
 }
 
 .cp-section-title {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--cp-text-main);
+    margin: 0;
 }
 
 .cp-badge {
@@ -326,6 +329,8 @@
     font-size: 0.8rem;
     font-weight: 700;
     border-radius: 0.5rem;
+    margin-left: auto;
+    margin-right: 1rem;
 }
 
 /* Сетка карточек погоды */
