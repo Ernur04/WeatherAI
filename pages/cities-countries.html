@@ -124,8 +124,13 @@
         <!-- ── ПОПУЛЯРНЫЕ ГОРОДА ── -->
         <section class="cp-section">
             <div class="cp-section-header">
-                <h2 class="cp-section-title" data-i18n="popular-cities-title">Популярные города</h2>
-                <span class="cp-badge" data-i18n="popular-cities-badge">В реальном времени</span>
+                <div class="cp-section-title-group">
+                    <h2 class="cp-section-title" data-i18n="popular-cities-title">Популярные города</h2>
+                    <span class="cp-badge" data-i18n="popular-cities-badge">В реальном времени</span>
+                </div>
+                <button class="refresh-btn refresh-weather-btn" id="refresh-weather-1" data-i18n-title="refresh-btn" title="Обновить">
+                    <i data-lucide="refresh-cw"></i>
+                </button>
             </div>
             <div id="cp-popular-grid" class="cp-popular-grid">
                 <div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div><div class="cp-skeleton"></div>
@@ -145,8 +150,13 @@
         <!-- ── ВСЕ ГОРОДА ПО АЛФАВИТУ ── -->
         <section class="cp-section">
             <div class="cp-section-header">
-                <h2 class="cp-section-title" data-i18n="alphabet-title">Все города по алфавиту</h2>
-                <span class="cp-badge" id="cp-total-badge">0</span>
+                <div class="cp-section-title-group">
+                    <h2 class="cp-section-title" data-i18n="alphabet-title">Все города по алфавиту</h2>
+                    <span class="cp-badge" id="cp-total-badge">0</span>
+                </div>
+                <button class="refresh-btn refresh-weather-btn" id="refresh-weather-2" data-i18n-title="refresh-btn" title="Обновить">
+                    <i data-lucide="refresh-cw"></i>
+                </button>
             </div>
             <div class="cp-alpha-nav" id="cp-alpha-nav"></div>
             <div class="cp-alpha-container" id="cp-alpha-container"></div>

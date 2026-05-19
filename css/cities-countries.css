@@ -43,7 +43,7 @@
     border: 0;
     height: 1px;
     background: var(--cp-border);
-    margin: 3rem 0;
+    margin: 1.5rem 0;
 }
 
 /* ── HERO СЕКЦИЯ & ПОИСК ── */
@@ -305,6 +305,12 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 1.5rem;
+}
+
+.cp-section-title-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .cp-section-title {

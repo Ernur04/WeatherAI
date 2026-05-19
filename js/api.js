@@ -5,7 +5,7 @@ const OW_GEOCODING_URL = 'https://api.openweathermap.org/geo/1.0/direct';
 const OW_REVERSE_GEOCODING_URL = 'https://api.openweathermap.org/geo/1.0/reverse';
 
 // ⚠️ Замените на ваш API-ключ OpenWeatherMap
-const OW_API_KEY = '43409068ad5a59259def4b81b84f44dd';
+const OW_API_KEY = '9633c95f529f98799e0793cfee8f50a2';
 
 /**
  * Fetches coordinates for a given city name using OpenWeatherMap Geocoding API.

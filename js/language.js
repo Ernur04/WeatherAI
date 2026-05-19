@@ -24,31 +24,48 @@ async function initLanguage() {
             }
         }
 
+        function getTranslationVal(lang, key) {
+            if (!window.translations[lang]) return undefined;
+            return key.split('.').reduce((o, i) => (o ? o[i] : undefined), window.translations[lang]);
+        }
+
         // Translate text elements
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
-            if (window.translations[lang] && window.translations[lang][key]) {
+            const val = getTranslationVal(lang, key);
+            if (val) {
                 if (el.tagName.toLowerCase() === 'optgroup') {
-                    el.label = window.translations[lang][key];
+                    el.label = val;
                 } else {
-                    el.textContent = window.translations[lang][key];
+                    el.textContent = val;
                 }
+            }
+        });
+
+        // Translate labels for optgroups directly via data-i18n-label
+        document.querySelectorAll('[data-i18n-label]').forEach(el => {
+            const key = el.getAttribute('data-i18n-label');
+            const val = getTranslationVal(lang, key);
+            if (val) {
+                el.label = val;
             }
         });
 
         // Translate placeholders
         document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
             const key = el.getAttribute('data-i18n-placeholder');
-            if (window.translations[lang] && window.translations[lang][key]) {
-                el.placeholder = window.translations[lang][key];
+            const val = getTranslationVal(lang, key);
+            if (val) {
+                el.placeholder = val;
             }
         });
 
         // Translate tooltips
         document.querySelectorAll('[data-i18n-tooltip]').forEach(el => {
             const key = el.getAttribute('data-i18n-tooltip');
-            if (window.translations[lang] && window.translations[lang][key]) {
-                el.setAttribute('data-tooltip', window.translations[lang][key]);
+            const val = getTranslationVal(lang, key);
+            if (val) {
+                el.setAttribute('data-tooltip', val);
             }
         });
 
@@ -56,16 +73,18 @@ async function initLanguage() {
         const titleEl = document.querySelector('[data-i18n-page-title]');
         if (titleEl) {
             const key = titleEl.getAttribute('data-i18n-page-title');
-            if (window.translations[lang] && window.translations[lang][key]) {
-                document.title = window.translations[lang][key];
+            const val = getTranslationVal(lang, key);
+            if (val) {
+                document.title = val;
             }
         }
 
         // Translate titles
         document.querySelectorAll('[data-i18n-title]').forEach(el => {
             const key = el.getAttribute('data-i18n-title');
-            if (window.translations[lang] && window.translations[lang][key]) {
-                el.title = window.translations[lang][key];
+            const val = getTranslationVal(lang, key);
+            if (val) {
+                el.title = val;
             }
         });
 
