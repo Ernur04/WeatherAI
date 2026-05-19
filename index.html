@@ -438,8 +438,7 @@
             </div>
         </div>
 
-        <!-- Export Constructor Modal -->
-        <div id="export-modal" class="modal">
+<div id="export-modal" class="modal">
             <div class="modal-content export-modal-content">
                 <span class="close-modal">&times;</span>
                 <div class="export-header-row">
@@ -455,30 +454,21 @@
                 </div>
                 
                 <div class="export-layout">
-                    <!-- Left Column: Options -->
                     <div class="export-options-col">
                         <div class="export-options-grid">
-                            <!-- Period Selection -->
                             <div class="export-option-group">
                                 <label class="group-label"><i data-lucide="calendar"></i> <span data-i18n="export-period-label">Выбор периода</span></label>
                                 <select id="export-period" class="export-select">
                                     <optgroup label="ОПЕРАТИВНЫЕ / КРАТКОСРОЧНЫЕ" data-i18n="export-group-short">
                                         <option value="today" data-i18n="export-period-today">Сегодня</option>
                                         <option value="tomorrow" data-i18n="export-period-tomorrow">Завтра (Прогноз)</option>
+                                        <option value="today_tomorrow" data-i18n="export-period-2days">Сегодня и завтра</option>
+                                        <option value="3days" data-i18n="export-period-3days">На 3 дня</option>
+                                        <option value="5days" data-i18n="export-period-5days">На 5 дней</option>
+                                        <option value="7days" data-i18n="export-period-7days">На 7 дней (Неделя)</option>
                                         <option value="last6h" data-i18n="export-period-last6h">Последние 6 часов</option>
                                         <option value="last24h" data-i18n="export-period-last24h">Последние 24 часа</option>
                                         <option value="yesterday" data-i18n="export-period-yesterday">Вчера</option>
-                                    </optgroup>
-                                    <optgroup label="СРЕДНЕСРОЧНЫЕ" data-i18n="export-group-medium">
-                                        <option value="3days" data-i18n="export-period-3days">Последние 3 дня</option>
-                                        <option value="week" data-i18n="export-period-week" selected>Последняя неделя</option>
-                                        <option value="2weeks" data-i18n="export-period-2weeks">Последние 2 недели</option>
-                                        <option value="this_month" data-i18n="export-period-this-month">Этот календарный месяц</option>
-                                        <option value="month" data-i18n="export-period-month">Последние 30 дней</option>
-                                    </optgroup>
-                                    <optgroup label="ДОЛГОСРОЧНЫЕ" data-i18n="export-group-long">
-                                        <option value="this_year" data-i18n="export-period-this-year">Этот год</option>
-                                        <option value="last_year" data-i18n="export-period-last-year">Прошлый год</option>
                                     </optgroup>
                                     <optgroup label="ДРУГОЕ" data-i18n="export-group-custom">
                                         <option value="custom" data-i18n="export-period-custom">Кастомный диапазон</option>
@@ -490,7 +480,6 @@
                                 </div>
                             </div>
 
-                            <!-- Parameters Selection -->
                             <div class="export-option-group">
                                 <label class="group-label"><i data-lucide="list"></i> <span data-i18n="export-params-label">Выбор параметров</span></label>
                                 <div class="checkbox-group">
@@ -510,12 +499,32 @@
                                         <input type="checkbox" id="param-pressure" checked> <span data-i18n="export-param-pressure">Давление</span>
                                     </label>
                                     <label class="checkbox-item checkbox-chip">
+                                        <input type="checkbox" id="param-uv" checked> <span data-i18n="export-param-uv">UV индекс</span>
+                                    </label>
+                                    <label class="checkbox-item checkbox-chip">
+                                        <input type="checkbox" id="param-visibility" checked> <span data-i18n="export-param-visibility">Видимость</span>
+                                    </label>
+                                    <label class="checkbox-item checkbox-chip">
+                                        <input type="checkbox" id="param-sunrise" checked> <span data-i18n="export-param-sunrise">Восход</span>
+                                    </label>
+                                    <label class="checkbox-item checkbox-chip">
+                                        <input type="checkbox" id="param-sunset" checked> <span data-i18n="export-param-sunset">Закат</span>
+                                    </label>
+                                    <label class="checkbox-item checkbox-chip">
+                                        <input type="checkbox" id="param-cloud Cover" checked> <span data-i18n="export-param-cloud">Облачность</span>
+                                    </label>
+                                    <label class="checkbox-item checkbox-chip">
+                                        <input type="checkbox" id="param-moonphase" checked> <span data-i18n="export-param-moonphase">Фаза Луны</span>
+                                    </label>
+                                    <label class="checkbox-item checkbox-chip">
+                                        <input type="checkbox" id="param-clothing" checked> <span data-i18n="export-param-clothing">Совет одежды</span>
+                                    </label>
+                                    <label class="checkbox-item checkbox-chip">
                                         <input type="checkbox" id="param-ai"> <span data-i18n="export-param-ai">Прогноз ИИ</span>
                                     </label>
                                 </div>
                             </div>
 
-                            <!-- Step Selection -->
                             <div class="export-option-group">
                                 <label class="group-label"><i data-lucide="bar-chart-2"></i> <span data-i18n="export-step-label">Выбор шага</span></label>
                                 <div class="toggle-chips-group" id="export-step-group">
@@ -524,7 +533,6 @@
                                 </div>
                             </div>
 
-                            <!-- Format Selection -->
                             <div class="export-option-group">
                                 <label class="group-label"><i data-lucide="file-output"></i> <span data-i18n="export-format-label">Формат файла</span></label>
                                 <div class="format-chips">
@@ -534,8 +542,11 @@
                                     <button class="format-btn has-tooltip" data-format="csv" data-i18n-tooltip="export-format-csv-tip">
                                         <i data-lucide="table"></i> <span>CSV</span>
                                     </button>
-                                    <button class="format-btn has-tooltip" data-format="excel" data-i18n-tooltip="export-format-excel-tip">
-                                        <i data-lucide="file-spreadsheet"></i> <span>Excel</span>
+                                    <button class="format-btn has-tooltip" data-format="xml" data-i18n-tooltip="export-format-xml-tip">
+                                        <i data-lucide="code-2"></i> <span>XML</span>
+                                    </button>
+                                    <button class="format-btn has-tooltip" data-format="txt" data-i18n-tooltip="export-format-txt-tip">
+                                        <i data-lucide="file-text"></i> <span>TXT отчет</span>
                                     </button>
                                 </div>
                             </div>
@@ -543,7 +554,6 @@
                         </div>
                     </div>
                     
-                    <!-- Right Column: Preview -->
                     <div class="export-preview-col">
                         <label class="group-label"><i data-lucide="eye"></i> <span data-i18n="export-preview-title">Предпросмотр данных</span></label>
                         <div class="export-preview-box" id="export-preview-box">

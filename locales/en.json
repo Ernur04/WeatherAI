@@ -454,5 +454,16 @@
     "no-weather-data": "No weather data",
     "cities-count-text": "{count} cities",
     "search-btn": "Search",
-    "refresh-btn": "Refresh"
+    "refresh-btn": "Refresh",
+    "export-param-uv": "UV Index",
+    "export-param-visibility": "Visibility",
+    "export-param-sunrise": "Sunrise",
+    "export-param-sunset": "Sunset",
+    "export-param-cloud": "Cloud Cover",
+    "export-param-moonphase": "Moon Phase",
+    "export-param-clothing": "Clothing Advice",
+    "export-param-ai": "AI Forecast",
+    "export-period-5days": "For 5 days",
+    "export-period-7days": "For 7 days (Week)",
+    "export-period-2days": "Today and tomorrow"
 }

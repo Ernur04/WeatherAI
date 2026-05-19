@@ -252,6 +252,7 @@
     gap: 12px;
 }
 
+/* 1. РОДИТЕЛЬСКИЙ БОКС */
 .export-preview-box {
     flex: 1;
     background: var(--bg-card);
@@ -261,6 +262,8 @@
     display: flex;
     flex-direction: column;
     min-height: 250px;
+    max-height: 800px; /* Ограничиваем максимальную высоту, чтобы окно не уходило под экран */
+    position: relative; /* Оставляем для фиксации кнопки «Наверх» строго внутри черного окна */
 }
 
 .export-preview-placeholder {
@@ -274,6 +277,7 @@
     text-align: center;
 }
 
+/* 2. КОНТЕЙНЕР КОНТЕНТА (Чистый текстовый режим для JSON, CSV, XML, TXT) */
 .export-preview-content {
     margin: 0;
     padding: 20px;
@@ -281,10 +285,46 @@
     color: #e4e4e4;
     font-family: 'Courier New', Courier, monospace;
     font-size: 0.85rem;
-    overflow-y: auto;
+    overflow-y: auto;   /* Вертикальный скролл для длинного текста */
+    overflow-x: auto;   /* Горизонтальный скролл, если строки кода слишком длинные */
     flex: 1;
-    white-space: pre-wrap;
+    white-space: pre-wrap; /* Перенос длинных строк текста по словам */
     border-radius: 15px;
+    box-sizing: border-box;
+}
+
+/* 3. КНОПКА «НАВЕРХ» ДЛЯ ПРЕДПРОСМОТРА (Ваш класс .scroll-to-top) */
+.export-preview-box .scroll-to-top {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.export-preview-box .scroll-to-top.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* 4. КРАСИВЫЙ СКРОЛЛБАР ДЛЯ ЧЕРНОГО ОКНА */
+.export-preview-content::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.export-preview-content::-webkit-scrollbar-track {
+    background: #141414;
+}
+.export-preview-content::-webkit-scrollbar-thumb {
+    background: #333333;
+    border-radius: 3px;
+}
+.export-preview-content::-webkit-scrollbar-thumb:hover {
+    background: var(--primary, #4a90e2);
 }
 
 /* Footer & Buttons */

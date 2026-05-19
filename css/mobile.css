@@ -674,6 +674,72 @@
         font-size: 16px;
     }
 
+    /* ────────────────────────────────────────
+       16. МОДАЛКА — НҰСҚАУЛЫҚ (INFO)
+       Проблема: карточки очень большие, нет прокрутки
+       Решение: bottom sheet + компактные карточки
+       ──────────────────────────────────────── */
+    .info-modal-container {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 22px 22px 0 0;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Прокрутка содержимого */
+    .info-modal-container .ai-modal-body {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        flex: 1;
+    }
+
+    /* Карточки инструкций — горизонтальный layout */
+    .info-sections {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 0;
+    }
+
+    .info-card {
+        display: flex;
+        flex-direction: row;   /* иконка слева, текст справа */
+        align-items: flex-start;
+        gap: 14px;
+        padding: 14px 16px;
+        border-radius: 14px;
+    }
+
+    .info-icon {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;       /* не сжимать */
+        margin-bottom: 0;
+        border-radius: 10px;
+    }
+
+    .info-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .info-card h4 {
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+    }
+
+    .info-card p {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+
+    /* Вводный текст в нұсқаулық */
+    .info-modal-container .ai-modal-body > p {
+        font-size: 0.92rem !important;
+        text-align: left !important;
+        margin-bottom: 1.2rem !important;
+    }
 
     /* ────────────────────────────────────────
        17. ФУТЕР

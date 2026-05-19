@@ -25,6 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const paramWind = document.getElementById('param-wind');
     const paramPrecip = document.getElementById('param-precip');
     const paramPressure = document.getElementById('param-pressure');
+    const paramUV = document.getElementById('param-uv');
+    const paramVisibility = document.getElementById('param-visibility');
+    const paramSunrise = document.getElementById('param-sunrise');
+    const paramSunset = document.getElementById('param-sunset');
+    const paramCloud = document.getElementById('param-cloud Cover'); 
+    const paramMoonphase = document.getElementById('param-moonphase');
+    const paramClothing = document.getElementById('param-clothing');
     const paramAI = document.getElementById('param-ai');
     
     // Preview Box
@@ -45,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Open/Close modal
     if (exportBtn) {
         exportBtn.addEventListener('click', () => {
-            // Set data lang to current interface lang by default
             const currentUI = localStorage.getItem('preferredLang') || 'ru';
             if (langSelect) langSelect.value = currentUI;
             exportModal.style.display = 'block';
@@ -62,9 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Also listen to global language changes so the dropdown stays in sync
-        // if language is changed from the header while the modal is open 
-        // (or just for consistency on next open).
         window.addEventListener('languageChanged', (e) => {
             if (e.detail && e.detail.lang) {
                 langSelect.value = e.detail.lang;
@@ -111,15 +114,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reset Form
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
-            periodSelect.value = 'week';
+            periodSelect.value = 'today';
             customRangeInputs.classList.remove('active');
             document.getElementById('export-start-date').value = '';
             document.getElementById('export-end-date').value = '';
             
-            paramTemp.checked = true;
-            paramHumidity.checked = true;
-            paramWind.checked = true;
-            paramAI.checked = false;
+            if(paramTemp) paramTemp.checked = true;
+            if(paramHumidity) paramHumidity.checked = true;
+            if(paramWind) paramWind.checked = true;
+            if(paramPrecip) paramPrecip.checked = true;
+            if(paramPressure) paramPressure.checked = true;
+            if(paramUV) paramUV.checked = true;
+            if(paramVisibility) paramVisibility.checked = true;
+            if(paramSunrise) paramSunrise.checked = true;
+            if(paramSunset) paramSunset.checked = true;
+            if(paramCloud) paramCloud.checked = true;
+            if(paramMoonphase) paramMoonphase.checked = true;
+            if(paramClothing) paramClothing.checked = true;
+            if(paramAI) paramAI.checked = false;
             
             stepBtns[0].click(); // hourly
             formatBtns[0].click(); // json
@@ -180,26 +192,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         setLoader(btn, true);
-        
-        // Simulate a tiny delay for UX (makes the UI feel more active/processing)
         await new Promise(r => setTimeout(r, 400)); 
 
         const dataLang = langSelect ? langSelect.value : (localStorage.getItem('preferredLang') || 'ru');
         const exportData = prepareExportData(currentData, currentCoords, dataLang);
         
         if (exportData) {
+            const {content} = generateFileContent(exportData, selectedFormat);
             if (isPreview) {
-                const {content} = generateFileContent(exportData, selectedFormat);
-                
-                // Truncate preview if too long
-                const lines = content.split('\n');
-                if (lines.length > 20) {
-                    showPreview(lines.slice(0, 20).join('\n') + '\n\n... (данные обрезаны для предпросмотра)');
-                } else {
-                    showPreview(content);
-                }
+                showPreview(content); 
             } else {
-                downloadFile(exportData, selectedFormat);
+                downloadFile(content, exportData.city || 'weather_data', selectedFormat);
                 exportModal.style.display = 'none';
                 if (window.showNotification) {
                     window.showNotification(getTranslation('export-success', 'Файл успешно сформирован и скачан'), 'success');
@@ -212,11 +215,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function prepareExportData(rawWeather, coords, dataLang) {
         const period = periodSelect.value;
+        
         const includeTemp = paramTemp ? paramTemp.checked : false;
         const includeHumidity = paramHumidity ? paramHumidity.checked : false;
         const includeWind = paramWind ? paramWind.checked : false;
         const includePrecip = paramPrecip ? paramPrecip.checked : false;
         const includePressure = paramPressure ? paramPressure.checked : false;
+        const includeUV = paramUV ? paramUV.checked : false;
+        const includeVisibility = paramVisibility ? paramVisibility.checked : false;
+        const includeSunrise = paramSunrise ? paramSunrise.checked : false;
+        const includeSunset = paramSunset ? paramSunset.checked : false;
+        const includeCloud = paramCloud ? paramCloud.checked : false;
+        const includeMoonphase = paramMoonphase ? paramMoonphase.checked : false;
+        const includeClothing = paramClothing ? paramClothing.checked : false;
         const includeAI = paramAI ? paramAI.checked : false;
 
         let data = {
@@ -228,20 +239,22 @@ document.addEventListener('DOMContentLoaded', () => {
             weather_data: []
         };
 
-        const hourly = rawWeather.hourly;
-        const daily = rawWeather.daily;
+        const hourly = rawWeather.hourly || {};
+        const daily = rawWeather.daily || {};
 
         let filterStartIndex = 0;
-        let filterEndIndex = hourly.time.length;
+        let filterEndIndex = hourly.time ? hourly.time.length : 0;
 
         const now = new Date();
         const getIndexTarget = (targetDateStr) => {
+            if (!hourly.time) return -1;
             const idx = hourly.time.findIndex(t => t.startsWith(targetDateStr));
             return idx !== -1 ? idx : -1;
         };
 
+        const todayStr = now.toISOString().split('T')[0];
+
         if (period === 'today') {
-            const todayStr = now.toISOString().split('T')[0];
             const idx = getIndexTarget(todayStr);
             if (idx !== -1) { filterStartIndex = idx; filterEndIndex = idx + 24; }
         } else if (period === 'tomorrow') {
@@ -251,6 +264,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const idx = getIndexTarget(tomorrowStr);
             if (idx !== -1) { filterStartIndex = idx; filterEndIndex = idx + 24; }
             else { filterStartIndex = hourly.time.length; filterEndIndex = hourly.time.length; } 
+        } else if (period === 'today_tomorrow') {
+            const idx = getIndexTarget(todayStr);
+            if (idx !== -1) { filterStartIndex = idx; filterEndIndex = idx + 48; }
+        } else if (period === '3days') {
+            const idx = getIndexTarget(todayStr);
+            if (idx !== -1) { filterStartIndex = idx; filterEndIndex = idx + 72; }
+        } else if (period === '5days') {
+            const idx = getIndexTarget(todayStr);
+            if (idx !== -1) { filterStartIndex = idx; filterEndIndex = idx + 120; }
+        } else if (period === '7days') {
+            const idx = getIndexTarget(todayStr);
+            if (idx !== -1) { filterStartIndex = idx; filterEndIndex = idx + 168; }
         } else if (period === 'yesterday') {
             const yesterday = new Date(now);
             yesterday.setDate(yesterday.getDate() - 1);
@@ -259,74 +284,27 @@ document.addEventListener('DOMContentLoaded', () => {
             if (idx !== -1) { filterStartIndex = idx; filterEndIndex = idx + 24; }
             else { filterStartIndex = 0; filterEndIndex = Math.min(24, hourly.time.length); }
         } else if (period === 'last6h') {
-            const currentHourStr = now.toISOString().slice(0, 14) + "00"; // "YYYY-MM-DDTHH:00"
-            const currentIdx = hourly.time.findIndex(t => t.startsWith(currentHourStr));
+            const currentHourStr = now.toISOString().slice(0, 14) + "00";
+            const currentIdx = hourly.time ? hourly.time.findIndex(t => t.startsWith(currentHourStr)) : -1;
             if (currentIdx !== -1) {
                 filterEndIndex = currentIdx + 1;
                 filterStartIndex = Math.max(0, currentIdx - 5);
             }
         } else if (period === 'last24h') {
             const currentHourStr = now.toISOString().slice(0, 14) + "00";
-            const currentIdx = hourly.time.findIndex(t => t.startsWith(currentHourStr));
+            const currentIdx = hourly.time ? hourly.time.findIndex(t => t.startsWith(currentHourStr)) : -1;
             if (currentIdx !== -1) {
                 filterEndIndex = currentIdx + 1;
                 filterStartIndex = Math.max(0, currentIdx - 23);
             }
-        } else if (period === '3days') {
-            const threeAgo = new Date(now);
-            threeAgo.setDate(threeAgo.getDate() - 3);
-            const threeAgoStr = threeAgo.toISOString().split('T')[0];
-            const idx = getIndexTarget(threeAgoStr);
-            if (idx !== -1) { filterStartIndex = idx; filterEndIndex = idx + 72; }
-            else { filterStartIndex = 0; filterEndIndex = 72; }
-        } else if (period === 'week' || period === '2weeks') {
-            filterStartIndex = 0;
-            filterEndIndex = hourly.time.length;
-        } else if (period === 'this_month') {
-            const monthStr = now.toISOString().slice(0, 7); // "YYYY-MM"
-            const startIdx = hourly.time.findIndex(t => t.startsWith(monthStr));
-            if (startIdx !== -1) {
-                filterStartIndex = startIdx;
-                filterEndIndex = hourly.time.findLastIndex(t => t.startsWith(monthStr)) + 1;
-            } else {
-                filterStartIndex = hourly.time.length; filterEndIndex = hourly.time.length;
-            }
-        } else if (period === 'month') {
-            const thirtyAgo = new Date(now);
-            thirtyAgo.setDate(thirtyAgo.getDate() - 30);
-            const thirtyAgoStr = thirtyAgo.toISOString().split('T')[0];
-            const idx = getIndexTarget(thirtyAgoStr);
-            if (idx !== -1) filterStartIndex = idx;
-            else filterStartIndex = 0;
-            filterEndIndex = hourly.time.length;
-        } else if (period === 'this_year') {
-            const yearStr = now.toISOString().slice(0, 4); // "YYYY"
-            const startIdx = hourly.time.findIndex(t => t.startsWith(yearStr));
-            if (startIdx !== -1) {
-                filterStartIndex = startIdx;
-                filterEndIndex = hourly.time.findLastIndex(t => t.startsWith(yearStr)) + 1;
-            } else {
-                filterStartIndex = hourly.time.length; filterEndIndex = hourly.time.length;
-            }
-        } else if (period === 'last_year') {
-            const lastYear = new Date(now);
-            lastYear.setFullYear(lastYear.getFullYear() - 1);
-            const yearStr = lastYear.toISOString().slice(0, 4); // "YYYY"
-            const startIdx = hourly.time.findIndex(t => t.startsWith(yearStr));
-            if (startIdx !== -1) {
-                filterStartIndex = startIdx;
-                filterEndIndex = hourly.time.findLastIndex(t => t.startsWith(yearStr)) + 1;
-            } else {
-                filterStartIndex = hourly.time.length; filterEndIndex = hourly.time.length;
-            }
         } else if (period === 'custom') {
             const start = document.getElementById('export-start-date').value;
             const end = document.getElementById('export-end-date').value;
-            if (start) {
+            if (start && hourly.time) {
                 filterStartIndex = hourly.time.findIndex(t => t.startsWith(start));
                 if (filterStartIndex === -1) filterStartIndex = 0;
             }
-            if (end) {
+            if (end && hourly.time) {
                 filterEndIndex = hourly.time.findLastIndex(t => t.startsWith(end));
                 if (filterEndIndex === -1) filterEndIndex = hourly.time.length;
                 else filterEndIndex += 24;
@@ -339,47 +317,84 @@ document.addEventListener('DOMContentLoaded', () => {
         const tTempMax = getTranslation('export-col-temp-max', 'Макс. Температура (°C)', dataLang);
         const tTempMin = getTranslation('export-col-temp-min', 'Мин. Температура (°C)', dataLang);
         const tHum = getTranslation('export-col-humidity', 'Влажность (%)', dataLang);
-        const tUV = getTranslation('export-col-uv', 'УФ Индекс', dataLang);
         const tWind = getTranslation('export-col-wind', 'Ск. ветра (км/ч)', dataLang);
         const tWindMax = getTranslation('export-col-wind-max', 'Макс. ск. ветра (км/ч)', dataLang);
         const tPrecip = getTranslation('export-col-precip', 'Осадки (мм)', dataLang);
         const tPressure = getTranslation('export-col-pressure', 'Давление (гПа)', dataLang);
+        
+        const tUV = getTranslation('export-col-uv', 'УФ Индекс', dataLang);
+        const tVisibility = getTranslation('export-col-visibility', 'Видимость (км)', dataLang);
+        const tSunrise = getTranslation('export-col-sunrise', 'Восход', dataLang);
+        const tSunset = getTranslation('export-col-sunset', 'Закат', dataLang);
+        const tCloud = getTranslation('export-col-cloud', 'Облачность (%)', dataLang);
+        const tMoonphase = getTranslation('export-col-moonphase', 'Фаза Луны', dataLang);
+        const tClothing = getTranslation('export-col-clothing', 'Совет одежды', dataLang);
         const tAI = getTranslation('export-col-ai', 'Рекомендация ИИ', dataLang);
 
-        if (selectedStep === 'hourly') {
+        if (selectedStep === 'hourly' && hourly.time) {
             for (let i = Math.max(0, filterStartIndex); i < Math.min(hourly.time.length, filterEndIndex); i++) {
                 let entry = {};
-                entry[tTime] = hourly.time[i];
-                if (includeTemp) entry[tTemp] = hourly.temperature_2m[i];
-                if (includeHumidity && hourly.relative_humidity_2m) entry[tHum] = hourly.relative_humidity_2m[i];
-                if (includeWind && hourly.wind_speed_10m) entry[tWind] = hourly.wind_speed_10m[i];
-                if (includePrecip && hourly.precipitation) entry[tPrecip] = hourly.precipitation[i];
-                if (includePressure && hourly.surface_pressure) entry[tPressure] = hourly.surface_pressure[i];
-                if (includeAI) entry[tAI] = getAIRecommendationForExport(hourly.temperature_2m[i], dataLang);
+                entry[tTime] = hourly.time[i].replace('T', ' ');
+                
+                if (includeTemp && hourly.temperature_2m !== undefined) entry[tTemp] = hourly.temperature_2m[i];
+                if (includeHumidity && hourly.relative_humidity_2m !== undefined) entry[tHum] = hourly.relative_humidity_2m[i];
+                if (includeWind && hourly.wind_speed_10m !== undefined) entry[tWind] = hourly.wind_speed_10m[i];
+                if (includePrecip && hourly.precipitation !== undefined) entry[tPrecip] = hourly.precipitation[i];
+                if (includePressure && hourly.surface_pressure !== undefined) entry[tPressure] = hourly.surface_pressure[i];
+                if (includeUV && hourly.uv_index !== undefined) entry[tUV] = hourly.uv_index[i];
+                if (includeVisibility && hourly.visibility !== undefined) entry[tVisibility] = (hourly.visibility[i] / 1000).toFixed(1);
+                if (includeCloud && hourly.cloud_cover !== undefined) entry[tCloud] = hourly.cloud_cover[i];
+                
+                if ((includeSunrise || includeSunset || includeMoonphase) && daily.time) {
+                    const currentHourDate = hourly.time[i].split('T')[0];
+                    const dIdx = daily.time.findIndex(d => d === currentHourDate);
+                    if (dIdx !== -1) {
+                        if (includeSunrise && daily.sunrise) entry[tSunrise] = daily.sunrise[dIdx].split('T')[1] || daily.sunrise[dIdx];
+                        if (includeSunset && daily.sunset) entry[tSunset] = daily.sunset[dIdx].split('T')[1] || daily.sunset[dIdx];
+                        if (includeMoonphase && daily.moon_phase !== undefined) entry[tMoonphase] = daily.moon_phase[dIdx];
+                    }
+                }
+                
+                if (includeClothing && hourly.temperature_2m !== undefined) entry[tClothing] = getAIRecommendationForExport(hourly.temperature_2m[i], dataLang);
+                if (includeAI && hourly.temperature_2m !== undefined) entry[tAI] = getAIRecommendationForExport(hourly.temperature_2m[i], dataLang);
+                
                 data.weather_data.push(entry);
             }
-        } else {
+        } 
+        else if (selectedStep === 'daily' && daily.time) {
             let dStartIndex = Math.floor(filterStartIndex / 24);
             let dEndIndex = Math.ceil(filterEndIndex / 24);
 
             for (let i = Math.max(0, dStartIndex); i < Math.min(daily.time.length, dEndIndex); i++) {
                 let entry = {};
                 entry[tDate] = daily.time[i];
+                
                 if (includeTemp) {
-                    entry[tTempMax] = daily.temperature_2m_max[i];
-                    entry[tTempMin] = daily.temperature_2m_min[i];
+                    if (daily.temperature_2m_max !== undefined) entry[tTempMax] = daily.temperature_2m_max[i];
+                    if (daily.temperature_2m_min !== undefined) entry[tTempMin] = daily.temperature_2m_min[i];
                 }
-                if (includeHumidity) entry[tUV] = daily.uv_index_max[i];
-                if (includeWind) entry[tWindMax] = daily.wind_speed_10m_max[i];
-                if (includePrecip && daily.precipitation_sum) entry[tPrecip] = daily.precipitation_sum[i];
-                // Note: Open-Meteo doesn't strictly provide daily mean pressure automatically out-of-the-box in the same request, so we'll skip pressure for daily averages unless requested specifically. We'll leave it blank or omit it.
-                if (includeAI) entry[tAI] = getAIRecommendationForExport(daily.temperature_2m_max[i], dataLang);
+                if (includeHumidity && daily.relative_humidity_2m_max !== undefined) entry[tHum] = daily.relative_humidity_2m_max[i];
+                if (includeWind && daily.wind_speed_10m_max !== undefined) entry[tWindMax] = daily.wind_speed_10m_max[i];
+                if (includePrecip && daily.precipitation_sum !== undefined) entry[tPrecip] = daily.precipitation_sum[i];
+                if (includeUV && daily.uv_index_max !== undefined) entry[tUV] = daily.uv_index_max[i];
+                if (includeVisibility && daily.visibility_min !== undefined) entry[tVisibility] = (daily.visibility_min[i] / 1000).toFixed(1);
+                if (includeSunrise && daily.sunrise) entry[tSunrise] = daily.sunrise[i].split('T')[1] || daily.sunrise[i];
+                if (includeSunset && daily.sunset) entry[tSunset] = daily.sunset[i].split('T')[1] || daily.sunset[i];
+                if (includeCloud && daily.cloud_cover_mean !== undefined) entry[tCloud] = daily.cloud_cover_mean[i];
+                if (includeMoonphase && daily.moon_phase !== undefined) entry[tMoonphase] = daily.moon_phase[i];
+                
+                const avgTemp = daily.temperature_2m_max ? daily.temperature_2m_max[i] : 0;
+                if (includeClothing) entry[tClothing] = getAIRecommendationForExport(avgTemp, dataLang);
+                if (includeAI) entry[tAI] = getAIRecommendationForExport(avgTemp, dataLang);
+                
                 data.weather_data.push(entry);
             }
         }
 
         if (data.weather_data.length === 0) {
-            window.showNotification(getTranslation('export-error-no-period-data', 'Нет данных за выбранный период'), 'warning');
+            const noDataMsg = getTranslation('export-error-no-period-data', 'Нет данных за выбранный период');
+            if (window.showNotification) window.showNotification(noDataMsg, 'warning');
+            else alert(noDataMsg);
             return null;
         }
 
@@ -405,44 +420,82 @@ document.addEventListener('DOMContentLoaded', () => {
             const csvRows = [
                 headers.join(','),
                 ...data.weather_data.map(row => headers.map(header => {
-                    const val = row[header] || '';
+                    const val = row[header] !== undefined ? row[header] : '';
                     return `"${val.toString().replace(/"/g, '""')}"`;
                 }).join(','))
             ];
             content = BOM + csvRows.join('\n');
             contentType = 'text/csv;charset=utf-8;';
-        } else if (format === 'excel') {
-            const headers = Object.keys(data.weather_data[0]);
-            const tableHeaders = headers.map(h => `<th style="background-color: #4f81bd; color: white;">${h}</th>`).join('');
-            const tableRows = data.weather_data.map(row => 
-                `<tr>${headers.map(h => `<td>${row[h] || ''}</td>`).join('')}</tr>`
-            ).join('');
+        } else if (format === 'xml') {
+            let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+            xml += `<weather_report>\n`;
+            xml += `  <meta>\n`;
+            xml += `    <city>${data.city}</city>\n`;
+            xml += `    <country>${data.country}</country>\n`;
+            xml += `    <export_date>${data.export_date}</export_date>\n`;
+            xml += `    <period>${data.period}</period>\n`;
+            xml += `    <step>${data.step}</step>\n`;
+            xml += `  </meta>\n`;
+            xml += `  <records>\n`;
+            
+            data.weather_data.forEach(row => {
+                xml += `    <record>\n`;
+                Object.keys(row).forEach(key => {
+                    const cleanKey = key.replace(/[^a-zA-Z0-9_]/g, '_').replace(/^_+|_+$/g, '');
+                    xml += `      <${cleanKey}>${row[key]}</${cleanKey}>\n`;
+                });
+                xml += `    </record>\n`;
+            });
+            
+            xml += `  </records>\n`;
+            xml += `</weather_report>`;
+            content = xml;
+            contentType = 'application/xml;charset=utf-8;';
+        } else if (format === 'txt') {
+            let txt = `==================================================\n`;
+            txt += `ОТЧЕТ О ПОГОДЕ: ${data.city}, ${data.country}\n`;
+            txt += `Период: ${data.period} | Шаг данных: ${data.step}\n`;
+            txt += `Дата генерации: ${new Date(data.export_date).toLocaleString()}\n`;
+            txt += `==================================================\n\n`;
 
-            content = `
-                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-                <head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Weather Export</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>
-                <body>
-                    <table>
-                        <thead><tr>${tableHeaders}</tr></thead>
-                        <tbody>${tableRows}</tbody>
-                    </table>
-                </body>
-                </html>
-            `;
-            contentType = 'application/vnd.ms-excel';
+            const headers = Object.keys(data.weather_data[0]);
+            const colWidths = headers.map(h => {
+                let maxLen = h.length;
+                data.weather_data.forEach(row => {
+                    const valStr = row[h] !== undefined ? row[h].toString() : '';
+                    if (valStr.length > maxLen) maxLen = valStr.length;
+                });
+                return maxLen + 3;
+            });
+
+            let headerLine = '';
+            headers.forEach((h, idx) => {
+                headerLine += h.padEnd(colWidths[idx]);
+            });
+            txt += headerLine + '\n';
+            txt += '-'.repeat(colWidths.reduce((a, b) => a + b, 0)) + '\n';
+
+            data.weather_data.forEach(row => {
+                let rowLine = '';
+                headers.forEach((h, idx) => {
+                    const valStr = row[h] !== undefined ? row[h].toString() : '';
+                    rowLine += valStr.padEnd(colWidths[idx]);
+                });
+                txt += rowLine + '\n';
+            });
+
+            content = txt;
+            contentType = 'text/plain;charset=utf-8;';
         }
 
         return {content, contentType};
     }
 
-    function downloadFile(data, format) {
-        const cityName = data.city || 'weather_data';
+    function downloadFile(content, cityName, format) {
         const timestamp = new Date().getTime();
-        let filename = `${cityName}_export_${timestamp}.${format === 'excel' ? 'xlsx' : format}`;
+        let filename = `${cityName}_export_${timestamp}.${format}`;
         
-        const {content, contentType} = generateFileContent(data, format);
-
-        const blob = new Blob([content], { type: contentType });
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -453,4 +506,3 @@ document.addEventListener('DOMContentLoaded', () => {
         URL.revokeObjectURL(url);
     }
 });
-

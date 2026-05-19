@@ -454,5 +454,17 @@
     "no-weather-data": "Нет данных о погоде",
     "cities-count-text": "{count} городов",
     "search-btn": "Найти",
-    "refresh-btn": "Обновить"
+    "refresh-btn": "Обновить",
+    "export-param-uv": "UV индекс",
+    "export-param-visibility": "Видимость",
+    "export-param-sunrise": "Восход",
+    "export-param-sunset": "Закат",
+    "export-param-cloud": "Облачность",
+    "export-param-moonphase": "Фаза Луны",
+    "export-param-clothing": "Совет одежды",
+    "export-param-ai": "Прогноз ИИ",
+    "export-period-5days": "На 5 дней",
+    "export-period-7days": "На 7 дней (Неделя)",
+    "export-period-2days": "Сегодня и завтра"
+    
 }

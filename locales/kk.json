@@ -454,5 +454,16 @@
     "no-weather-data": "Ауа райы деректері жоқ",
     "cities-count-text": "{count} қала",
     "search-btn": "Табу",
-    "refresh-btn": "Жаңарту"
+    "refresh-btn": "Жаңарту",
+    "export-param-uv": "УК-индекс",
+    "export-param-visibility": "Көріну қашықтығы",
+    "export-param-sunrise": "Күннің шығуы",
+    "export-param-sunset": "Күннің батуы",
+    "export-param-cloud": "Бұлттылық",
+    "export-param-moonphase": "Ай фазасы",
+    "export-param-clothing": "Киім бойынша кеңес",
+    "export-param-ai": "ЖИ болжамы",
+    "export-period-5days": "5 күнге",
+    "export-period-7days": "7 күнге (Апта)",
+    "export-period-2days": "Бүгін және ертең"
 }
