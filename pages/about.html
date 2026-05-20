@@ -62,55 +62,78 @@
 
     <main class="about-main">
         <div class="about-container">
-            <h1 class="section-title" data-i18n="about-header-title">О проекте WeatherAI</h1>
-
-            <div class="text-block">
-                <p data-i18n="about-desc">WeatherAI — это современное приложение для отслеживания погоды, которое
-                    использует передовые
-                    технологии и искусственный интеллект для предоставления точных данных и персонализированных
-                    рекомендаций.</p>
-
-                <h3 data-i18n="about-mission-title">Наша миссия</h3>
-                <p data-i18n="about-mission-desc">Мы стремимся сделать информацию о погоде не только точной, но и
-                    понятной, полезной и красивой. Наша
-                    цель — помочь вам планировать свой день, одеваться по погоде и быть готовыми к любым природным
-                    сюрпризам.</p>
-
-                <h3 data-i18n="about-features-title">Функционал</h3>
-                <ul class="feature-list">
-                    <li><strong data-i18n="feat-prec-title">Точный прогноз:</strong> <span
-                            data-i18n="feat-prec-desc">Текущая погода и прогноз на 7 дней.</span></li>
-                    <li><strong data-i18n="feat-ai-title">ИИ Анализ:</strong> <span data-i18n="feat-ai-desc">Умные
-                            рекомендации по одежде и необходимости зонта.</span></li>
-                    <li><strong data-i18n="feat-comp-title">Сравнение:</strong> <span
-                            data-i18n="feat-comp-desc">Возможность сравнить погоду в двух городах.</span></li>
-                    <li><strong data-i18n="feat-det-title">Детализация:</strong> <span data-i18n="feat-det-desc">Данные
-                            о влажности, ветре, давлении, UV-индексе и др.</span></li>
-                    <li><strong data-i18n="feat-viz-title">Визуализация:</strong> <span
-                            data-i18n="feat-viz-desc">Интерактивные графики и карты.</span></li>
-                    <li><strong data-i18n="feat-export-title">Экспорт данных:</strong> <span
-                            data-i18n="feat-export-desc">Выгрузка истории и прогнозов в JSON, CSV, Excel.</span></li>
-                    <li><strong data-i18n="feat-extra-title">Полезные сервисы:</strong> <span
-                            data-i18n="feat-extra-desc">Лунный календарь, гороскоп и Telegram-бот.</span></li>
-                </ul>
-
-                <h3 data-i18n="about-tech-title">Технологии</h3>
-                <p data-i18n="about-tech-desc">Проект построен с использованием современных веб-технологий:</p>
-                <ul class="tech-list">
-                    <li data-i18n="tech-1">HTML5 & CSS3 (Custom Properties, Flexbox, Grid)</li>
-                    <li data-i18n="tech-2">Vanilla JavaScript (ES6+)</li>
-                    <li data-i18n="tech-3">Open-Meteo API для данных погоды</li>
-                    <li data-i18n="tech-4">Chart.js для графиков</li>
-                    <li data-i18n="tech-5">Leaflet для карт</li>
-                    <li data-i18n="tech-6">Lucide Icons для иконографии</li>
-                </ul>
-
-                <div class="cta-block">
-                    <a href="../index.html" class="back-btn">
-                        <i data-lucide="arrow-left"></i>
-                        <span data-i18n="btn-back-weather">Вернуться к погоде</span>
-                    </a>
+            <div class="about-header-block">
+                <div class="about-hero-icon">
+                    <i data-lucide="info"></i>
                 </div>
+                <h1 class="about-title" data-i18n="about-header-title">О проекте WeatherAI</h1>
+                <p class="about-lead" data-i18n="about-desc">WeatherAI — это современное приложение для отслеживания погоды, которое использует передовые технологии и искусственный интеллект для предоставления точных данных и персонализированных рекомендаций.</p>
+            </div>
+
+            <div class="about-section">
+                <div class="section-badge"><i data-lucide="target"></i> <span data-i18n="about-mission-title">Наша миссия</span></div>
+                <p class="mission-text" data-i18n="about-mission-desc">Мы стремимся сделать информацию о погоде не только точной, но и понятной, полезной и красивой. Наша цель — помочь вам планировать свой день, одеваться по погоде и быть готовыми к любым природным сюрпризам.</p>
+            </div>
+
+            <div class="about-section">
+                <div class="section-badge"><i data-lucide="layers"></i> <span data-i18n="about-features-title">Функционал</span></div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i data-lucide="cloud-sun" class="feature-icon"></i>
+                        <h4 data-i18n="feat-prec-title">Точный прогноз:</h4>
+                        <p data-i18n="feat-prec-desc">Текущая погода и прогноз на 7 дней.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i data-lucide="sparkles" class="feature-icon"></i>
+                        <h4 data-i18n="feat-ai-title">ИИ Анализ:</h4>
+                        <p data-i18n="feat-ai-desc">Умные рекомендации по одежде и необходимости зонта.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i data-lucide="arrow-left-right" class="feature-icon"></i>
+                        <h4 data-i18n="feat-comp-title">Сравнение:</h4>
+                        <p data-i18n="feat-comp-desc">Возможность сравнить погоду в двух городах.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i data-lucide="bar-chart-2" class="feature-icon"></i>
+                        <h4 data-i18n="feat-det-title">Детализация:</h4>
+                        <p data-i18n="feat-det-desc">Данные о влажности, ветре, давлении, UV-индексе и др.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i data-lucide="pie-chart" class="feature-icon"></i>
+                        <h4 data-i18n="feat-viz-title">Визуализация:</h4>
+                        <p data-i18n="feat-viz-desc">Интерактивные графики и карты.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i data-lucide="download" class="feature-icon"></i>
+                        <h4 data-i18n="feat-export-title">Экспорт данных:</h4>
+                        <p data-i18n="feat-export-desc">Выгрузка истории и прогнозов в JSON, CSV, Excel.</p>
+                    </div>
+                    <div class="feature-card" style="grid-column: 1 / -1;">
+                        <i data-lucide="calendar-heart" class="feature-icon"></i>
+                        <h4 data-i18n="feat-extra-title">Полезные сервисы:</h4>
+                        <p data-i18n="feat-extra-desc">Лунный календарь, гороскоп и Telegram-бот.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-section">
+                <div class="section-badge"><i data-lucide="code-2"></i> <span data-i18n="about-tech-title">Технологии</span></div>
+                <p class="tech-desc" data-i18n="about-tech-desc">Проект построен с использованием современных веб-технологий:</p>
+                <div class="tech-pill-container">
+                    <div class="tech-pill"><i data-lucide="layout"></i> <span data-i18n="tech-1">HTML5 & CSS3 (Custom Properties, Flexbox, Grid)</span></div>
+                    <div class="tech-pill"><i data-lucide="file-code-2"></i> <span data-i18n="tech-2">Vanilla JavaScript (ES6+)</span></div>
+                    <div class="tech-pill"><i data-lucide="cloud-rain"></i> <span data-i18n="tech-3">Open-Meteo API для данных погоды</span></div>
+                    <div class="tech-pill"><i data-lucide="line-chart"></i> <span data-i18n="tech-4">Chart.js для графиков</span></div>
+                    <div class="tech-pill"><i data-lucide="map"></i> <span data-i18n="tech-5">Leaflet для карт</span></div>
+                    <div class="tech-pill"><i data-lucide="brush"></i> <span data-i18n="tech-6">Lucide Icons для иконографии</span></div>
+                </div>
+            </div>
+
+            <div class="cta-block">
+                <a href="../index.html" class="back-btn">
+                    <i data-lucide="arrow-left"></i>
+                    <span data-i18n="btn-back-weather">Вернуться к погоде</span>
+                </a>
             </div>
         </div>
     </main>
