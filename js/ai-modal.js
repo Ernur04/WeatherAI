@@ -174,99 +174,99 @@ document.addEventListener('DOMContentLoaded', () => {
         // Абсолютно полный список всех 89 городов Казахстана с координатами
         const citiesToFetch = [
             // --- Крупные города и областные центры (из твоего списка) ---
-            { name: 'Тараз', lat: 42.90, lon: 71.37, key: 'taraz' },
-            { name: 'Астана', lat: 51.17, lon: 71.45, key: 'astana' },
-            { name: 'Алматы', lat: 43.26, lon: 76.93, key: 'almaty' },
-            { name: 'Шымкент', lat: 42.30, lon: 69.60, key: 'shymkent' },
-            { name: 'Актобе', lat: 50.28, lon: 57.17, key: 'aktobe' },
-            { name: 'Караганда', lat: 49.80, lon: 73.09, key: 'karaganda' },
-            { name: 'Талдыкорган', lat: 45.02, lon: 78.38, key: 'taldykorgan' },
-            { name: 'Павлодар', lat: 52.30, lon: 76.95, key: 'pavlodar' },
-            { name: 'Усть-Каменогорск', lat: 49.95, lon: 82.61, key: 'oskemen' },
-            { name: 'Семей', lat: 50.41, lon: 80.25, key: 'semey' },
-            { name: 'Уральск', lat: 51.23, lon: 51.37, key: 'uralsk' },
-            { name: 'Костанай', lat: 53.21, lon: 63.63, key: 'kostanay' },
-            { name: 'Петропавловск', lat: 54.87, lon: 69.15, key: 'petropavlovsk' },
-            { name: 'Кызылорда', lat: 44.85, lon: 65.51, key: 'kyzylorda' },
-            { name: 'Атырау', lat: 47.12, lon: 51.88, key: 'atyrau' },
-            { name: 'Актау', lat: 43.65, lon: 51.17, key: 'aktau' },
-            { name: 'Туркестан', lat: 43.30, lon: 68.27, key: 'turkestan' },
-            { name: 'Кокшетау', lat: 53.28, lon: 69.39, key: 'kokshetau' },
-            { name: 'Жезказган', lat: 47.80, lon: 67.71, key: 'zhezkazgan' },
-            { name: 'Конаев', lat: 43.87, lon: 77.07, key: 'konaev' },
+            { name: { ru: 'Тараз', en: 'Taraz', kk: 'Тараз' }, lat: 42.90, lon: 71.37, key: 'taraz' },
+            { name: { ru: 'Астана', en: 'Astana', kk: 'Астана' }, lat: 51.17, lon: 71.45, key: 'astana' },
+            { name: { ru: 'Алматы', en: 'Almaty', kk: 'Алматы' }, lat: 43.26, lon: 76.93, key: 'almaty' },
+            { name: { ru: 'Шымкент', en: 'Shymkent', kk: 'Шымкент' }, lat: 42.30, lon: 69.60, key: 'shymkent' },
+            { name: { ru: 'Актобе', en: 'Aktobe', kk: 'Ақтөбе' }, lat: 50.28, lon: 57.17, key: 'aktobe' },
+            { name: { ru: 'Караганда', en: 'Karaganda', kk: 'Қарағанды' }, lat: 49.80, lon: 73.09, key: 'karaganda' },
+            { name: { ru: 'Талдыкорган', en: 'Taldykorgan', kk: 'Талдықорған' }, lat: 45.02, lon: 78.38, key: 'taldykorgan' },
+            { name: { ru: 'Павлодар', en: 'Pavlodar', kk: 'Павлодар' }, lat: 52.30, lon: 76.95, key: 'pavlodar' },
+            { name: { ru: 'Усть-Каменогорск', en: 'Oskemen', kk: 'Өскемен' }, lat: 49.95, lon: 82.61, key: 'oskemen' },
+            { name: { ru: 'Семей', en: 'Semey', kk: 'Семей' }, lat: 50.41, lon: 80.25, key: 'semey' },
+            { name: { ru: 'Уральск', en: 'Oral', kk: 'Орал' }, lat: 51.23, lon: 51.37, key: 'uralsk' },
+            { name: { ru: 'Костанай', en: 'Kostanay', kk: 'Қостанай' }, lat: 53.21, lon: 63.63, key: 'kostanay' },
+            { name: { ru: 'Петропавловск', en: 'Petropavl', kk: 'Петропавл' }, lat: 54.87, lon: 69.15, key: 'petropavlovsk' },
+            { name: { ru: 'Кызылорда', en: 'Kyzylorda', kk: 'Қызылорда' }, lat: 44.85, lon: 65.51, key: 'kyzylorda' },
+            { name: { ru: 'Атырау', en: 'Atyrau', kk: 'Атырау' }, lat: 47.12, lon: 51.88, key: 'atyrau' },
+            { name: { ru: 'Актау', en: 'Aktau', kk: 'Ақтау' }, lat: 43.65, lon: 51.17, key: 'aktau' },
+            { name: { ru: 'Туркестан', en: 'Turkistan', kk: 'Түркістан' }, lat: 43.30, lon: 68.27, key: 'turkestan' },
+            { name: { ru: 'Кокшетау', en: 'Kokshetau', kk: 'Көкшетау' }, lat: 53.28, lon: 69.39, key: 'kokshetau' },
+            { name: { ru: 'Жезказган', en: 'Zhezkazgan', kk: 'Жезқазған' }, lat: 47.80, lon: 67.71, key: 'zhezkazgan' },
+            { name: { ru: 'Конаев', en: 'Konaev', kk: 'Қонаев' }, lat: 43.87, lon: 77.07, key: 'konaev' },
             
             // --- Средние и малые города (из твоего списка) ---
-            { name: 'Темиртау', lat: 50.05, lon: 72.95, key: 'temirtau' },
-            { name: 'Экибастуз', lat: 51.72, lon: 75.32, key: 'ekibastuz' },
-            { name: 'Рудный', lat: 52.96, lon: 63.12, key: 'rudny' },
-            { name: 'Жанаозен', lat: 43.34, lon: 52.85, key: 'zhanaozen' },
-            { name: 'Балхаш', lat: 46.84, lon: 74.98, key: 'balkhash' },
-            { name: 'Риддер', lat: 50.35, lon: 83.51, key: 'ridder' },
-            { name: 'Сатпаев', lat: 47.90, lon: 67.53, key: 'satpayev' },
-            { name: 'Кентау', lat: 43.52, lon: 68.51, key: 'kentau' },
-            { name: 'Степногорск', lat: 53.16, lon: 71.88, key: 'stepnogorsk' },
-            { name: 'Щучинск', lat: 52.93, lon: 70.20, key: 'shuchinsk' },
-            { name: 'Зыряновск (Алтай)', lat: 49.73, lon: 84.26, key: 'altay' },
-            { name: 'Кульсары', lat: 46.95, lon: 53.98, key: 'kulsary' },
-            { name: 'Аксай', lat: 51.17, lon: 52.98, key: 'aksay' },
-            { name: 'Шу', lat: 43.60, lon: 73.76, key: 'shu' },
-            { name: 'Байконур', lat: 45.62, lon: 63.31, key: 'baikonur' },
-            { name: 'Лисаковск', lat: 52.56, lon: 62.49, key: 'lisakovsk' },
-            { name: 'Житикара', lat: 52.19, lon: 61.20, key: 'zhitikara' },
-            { name: 'Аркалык', lat: 50.25, lon: 66.91, key: 'arkalyk' },
+            { name: { ru: 'Темиртау', en: 'Temirtau', kk: 'Теміртау' }, lat: 50.05, lon: 72.95, key: 'temirtau' },
+            { name: { ru: 'Экибастуз', en: 'Ekibastuz', kk: 'Екібастұз' }, lat: 51.72, lon: 75.32, key: 'ekibastuz' },
+            { name: { ru: 'Рудный', en: 'Rudny', kk: 'Рудный' }, lat: 52.96, lon: 63.12, key: 'rudny' },
+            { name: { ru: 'Жанаозен', en: 'Zhanaozen', kk: 'Жаңаөзен' }, lat: 43.34, lon: 52.85, key: 'zhanaozen' },
+            { name: { ru: 'Балхаш', en: 'Balkhash', kk: 'Балқаш' }, lat: 46.84, lon: 74.98, key: 'balkhash' },
+            { name: { ru: 'Риддер', en: 'Ridder', kk: 'Риддер' }, lat: 50.35, lon: 83.51, key: 'ridder' },
+            { name: { ru: 'Сатпаев', en: 'Satpayev', kk: 'Сәтбаев' }, lat: 47.90, lon: 67.53, key: 'satpayev' },
+            { name: { ru: 'Кентау', en: 'Kentau', kk: 'Кентау' }, lat: 43.52, lon: 68.51, key: 'kentau' },
+            { name: { ru: 'Степногорск', en: 'Stepnogorsk', kk: 'Степногорск' }, lat: 53.16, lon: 71.88, key: 'stepnogorsk' },
+            { name: { ru: 'Щучинск', en: 'Shchuchinsk', kk: 'Щучинск' }, lat: 52.93, lon: 70.20, key: 'shuchinsk' },
+            { name: { ru: 'Зыряновск (Алтай)', en: 'Zyryanovsk (Altay)', kk: 'Зыряновск (Алтай)' }, lat: 49.73, lon: 84.26, key: 'altay' },
+            { name: { ru: 'Кульсары', en: 'Kulsary', kk: 'Құлсары' }, lat: 46.95, lon: 53.98, key: 'kulsary' },
+            { name: { ru: 'Аксай', en: 'Aksay', kk: 'Ақсай' }, lat: 51.17, lon: 52.98, key: 'aksay' },
+            { name: { ru: 'Шу', en: 'Shu', kk: 'Шу' }, lat: 43.60, lon: 73.76, key: 'shu' },
+            { name: { ru: 'Байконур', en: 'Baikonur', kk: 'Байқоңыр' }, lat: 45.62, lon: 63.31, key: 'baikonur' },
+            { name: { ru: 'Лисаковск', en: 'Lisakovsk', kk: 'Лисаковск' }, lat: 52.56, lon: 62.49, key: 'lisakovsk' },
+            { name: { ru: 'Житикара', en: 'Zhitikara', kk: 'Жітіқара' }, lat: 52.19, lon: 61.20, key: 'zhitikara' },
+            { name: { ru: 'Аркалык', en: 'Arkalyk', kk: 'Арқалық' }, lat: 50.25, lon: 66.91, key: 'arkalyk' },
 
             // --- ОСТАВШИЕСЯ ВСЕ 51 ГОРОД КАЗАХСТАНА ---
-            { name: 'Абай', lat: 49.63, lon: 72.85, key: 'abay' },
-            { name: 'Акколь', lat: 52.00, lon: 70.95, key: 'akkol' },
-            { name: 'Аксай (Кызылординская)', lat: 44.87, lon: 65.52, key: 'aksay_kyzylorda' },
-            { name: 'Алейск (Шалкар)', lat: 47.83, lon: 59.61, key: 'shalkar' },
-            { name: 'Алга', lat: 49.90, lon: 57.33, key: 'alga' },
-            { name: 'Аральск', lat: 46.80, lon: 61.67, key: 'aralsk' },
-            { name: 'Арыс', lat: 42.43, lon: 68.80, key: 'arys' },
-            { name: 'Атбасар', lat: 51.81, lon: 68.36, key: 'atbasar' },
-            { name: 'Аягоз', lat: 47.96, lon: 80.43, key: 'ayagoz' },
-            { name: 'Булаево', lat: 54.91, lon: 70.45, key: 'bulaevo' },
-            { name: 'Державинск', lat: 51.15, lon: 66.32, key: 'derzhavinsk' },
-            { name: 'Ерейментау', lat: 51.62, lon: 73.10, key: 'ereymentau' },
-            { name: 'Есик', lat: 43.35, lon: 77.45, key: 'esik' },
-            { name: 'Есиль', lat: 51.95, lon: 66.40, key: 'esil' },
-            { name: 'Жаркент', lat: 44.16, lon: 80.00, key: 'zharkent' },
-            { name: 'Жем', lat: 48.77, lon: 58.07, key: 'zhem' },
-            { name: 'Жетысай', lat: 40.76, lon: 68.32, key: 'zhetysay' },
-            { name: 'Зайсан', lat: 47.47, lon: 84.87, key: 'zaysan' },
-            { name: 'Казалинск', lat: 45.76, lon: 62.11, key: 'kazalinsk' },
-            { name: 'Кандыагаш', lat: 49.47, lon: 57.43, key: 'kandyagash' },
-            { name: 'Каражал', lat: 48.01, lon: 71.55, key: 'karazhal' },
-            { name: 'Каратау', lat: 43.18, lon: 70.47, key: 'karatau' },
-            { name: 'Каркаралинск', lat: 49.41, lon: 75.47, key: 'karkaralinsk' },
-            { name: 'Каскелен', lat: 43.20, lon: 76.62, key: 'kaskelen' },
-            { name: 'Ленгер', lat: 42.18, lon: 69.88, key: 'lenger' },
-            { name: 'Макинск', lat: 52.63, lon: 70.42, key: 'makinsk' },
-            { name: 'Мамлютка', lat: 54.94, lon: 68.54, key: 'mamlyutka' },
-            { name: 'Приозёрск', lat: 46.03, lon: 73.70, key: 'priozersk' },
-            { name: 'Сарань', lat: 49.79, lon: 72.86, key: 'saran' },
-            { name: 'Сарканд', lat: 45.41, lon: 79.91, key: 'sarkand' },
-            { name: 'Сарыагаш', lat: 41.48, lon: 69.17, key: 'saryagash' },
-            { name: 'Серебрянск', lat: 49.69, lon: 83.29, key: 'serebryansk' },
-            { name: 'Сергеевка', lat: 53.88, lon: 67.41, key: 'sergeevka' },
-            { name: 'Тайынша', lat: 53.85, lon: 69.77, key: 'tainsha' },
-            { name: 'Талгар', lat: 43.30, lon: 77.24, key: 'talgar' },
-            { name: 'Текели', lat: 44.85, lon: 78.75, key: 'tekeli' },
-            { name: 'Темир', lat: 49.14, lon: 57.13, key: 'temir' },
-            { name: 'Тобыл (Затобольск)', lat: 53.21, lon: 63.68, key: 'tobyl' },
-            { name: 'Форт-Шевченко', lat: 44.51, lon: 50.26, key: 'fort_shevchenko' },
-            { name: 'Хромтау', lat: 50.25, lon: 58.44, key: 'khromtau' },
-            { name: 'Шардара', lat: 41.25, lon: 67.97, key: 'shardara' },
-            { name: 'Шалкар', lat: 47.83, lon: 59.61, key: 'shalkar_actobe' },
-            { name: 'Шар', lat: 49.59, lon: 81.04, key: 'char' },
-            { name: 'Шемонаиха', lat: 50.63, lon: 81.91, key: 'shemonaikha' },
-            { name: 'Шолаккорган', lat: 43.79, lon: 69.18, key: 'sholakkoorgan' },
-            { name: 'Эмба', lat: 48.83, lon: 58.15, key: 'emba' },
-            { name: 'Степняк', lat: 52.83, lon: 70.78, key: 'stepnyak' },
-            { name: 'Буланды', lat: 52.63, lon: 70.42, key: 'bulandy' },
-            { name: 'Уштобе', lat: 45.25, lon: 77.98, key: 'ushtobe' },
-            { name: 'Жанатас', lat: 43.56, lon: 69.75, key: 'zhanatas' },
-            { name: 'Мартук', lat: 50.74, lon: 56.50, key: 'martuk' }
+            { name: { ru: 'Абай', en: 'Abay', kk: 'Абай' }, lat: 49.63, lon: 72.85, key: 'abay' },
+            { name: { ru: 'Акколь', en: 'Akkol', kk: 'Ақкөл' }, lat: 52.00, lon: 70.95, key: 'akkol' },
+            { name: { ru: 'Аксай (Кызылординская)', en: 'Aksay (Kyzylorda)', kk: 'Ақсай (Қызылорда)' }, lat: 44.87, lon: 65.52, key: 'aksay_kyzylorda' },
+            { name: { ru: 'Алейск (Шалкар)', en: 'Aleisk (Shalkar)', kk: 'Алейск (Шалқар)' }, lat: 47.83, lon: 59.61, key: 'shalkar' },
+            { name: { ru: 'Алга', en: 'Alga', kk: 'Алға' }, lat: 49.90, lon: 57.33, key: 'alga' },
+            { name: { ru: 'Аральск', en: 'Aralsk', kk: 'Арал' }, lat: 46.80, lon: 61.67, key: 'aralsk' },
+            { name: { ru: 'Арыс', en: 'Arys', kk: 'Арыс' }, lat: 42.43, lon: 68.80, key: 'arys' },
+            { name: { ru: 'Атбасар', en: 'Atbasar', kk: 'Атбасар' }, lat: 51.81, lon: 68.36, key: 'atbasar' },
+            { name: { ru: 'Аягоз', en: 'Ayagoz', kk: 'Аягөз' }, lat: 47.96, lon: 80.43, key: 'ayagoz' },
+            { name: { ru: 'Булаево', en: 'Bulaevo', kk: 'Булаев' }, lat: 54.91, lon: 70.45, key: 'bulaevo' },
+            { name: { ru: 'Державинск', en: 'Derzhavinsk', kk: 'Державинск' }, lat: 51.15, lon: 66.32, key: 'derzhavinsk' },
+            { name: { ru: 'Ерейментау', en: 'Ereymentau', kk: 'Ерейментау' }, lat: 51.62, lon: 73.10, key: 'ereymentau' },
+            { name: { ru: 'Есик', en: 'Esik', kk: 'Есік' }, lat: 43.35, lon: 77.45, key: 'esik' },
+            { name: { ru: 'Есиль', en: 'Esil', kk: 'Есіл' }, lat: 51.95, lon: 66.40, key: 'esil' },
+            { name: { ru: 'Жаркент', en: 'Zharkent', kk: 'Жаркент' }, lat: 44.16, lon: 80.00, key: 'zharkent' },
+            { name: { ru: 'Жем', en: 'Zhem', kk: 'Жем' }, lat: 48.77, lon: 58.07, key: 'zhem' },
+            { name: { ru: 'Жетысай', en: 'Zhetysay', kk: 'Жетісай' }, lat: 40.76, lon: 68.32, key: 'zhetysay' },
+            { name: { ru: 'Зайсан', en: 'Zaysan', kk: 'Зайсан' }, lat: 47.47, lon: 84.87, key: 'zaysan' },
+            { name: { ru: 'Казалинск', en: 'Kazalinsk', kk: 'Қазалы' }, lat: 45.76, lon: 62.11, key: 'kazalinsk' },
+            { name: { ru: 'Кандыагаш', en: 'Kandyagash', kk: 'Қандыағаш' }, lat: 49.47, lon: 57.43, key: 'kandyagash' },
+            { name: { ru: 'Каражал', en: 'Karazhal', kk: 'Қаражал' }, lat: 48.01, lon: 71.55, key: 'karazhal' },
+            { name: { ru: 'Каратау', en: 'Karatau', kk: 'Қаратау' }, lat: 43.18, lon: 70.47, key: 'karatau' },
+            { name: { ru: 'Каркаралинск', en: 'Karkaralinsk', kk: 'Қарқаралы' }, lat: 49.41, lon: 75.47, key: 'karkaralinsk' },
+            { name: { ru: 'Каскелен', en: 'Kaskelen', kk: 'Қаскелең' }, lat: 43.20, lon: 76.62, key: 'kaskelen' },
+            { name: { ru: 'Ленгер', en: 'Lenger', kk: 'Ленгер' }, lat: 42.18, lon: 69.88, key: 'lenger' },
+            { name: { ru: 'Макинск', en: 'Makinsk', kk: 'Макинск' }, lat: 52.63, lon: 70.42, key: 'makinsk' },
+            { name: { ru: 'Мамлютка', en: 'Mamlyutka', kk: 'Мамлют' }, lat: 54.94, lon: 68.54, key: 'mamlyutka' },
+            { name: { ru: 'Приозёрск', en: 'Priozersk', kk: 'Приозёрск' }, lat: 46.03, lon: 73.70, key: 'priozersk' },
+            { name: { ru: 'Сарань', en: 'Saran', kk: 'Саран' }, lat: 49.79, lon: 72.86, key: 'saran' },
+            { name: { ru: 'Сарканд', en: 'Sarkand', kk: 'Сарқан' }, lat: 45.41, lon: 79.91, key: 'sarkand' },
+            { name: { ru: 'Сарыагаш', en: 'Saryagash', kk: 'Сарыағаш' }, lat: 41.48, lon: 69.17, key: 'saryagash' },
+            { name: { ru: 'Серебрянск', en: 'Serebryansk', kk: 'Серебрянск' }, lat: 49.69, lon: 83.29, key: 'serebryansk' },
+            { name: { ru: 'Сергеевка', en: 'Sergeevka', kk: 'Сергеевка' }, lat: 53.88, lon: 67.41, key: 'sergeevka' },
+            { name: { ru: 'Тайынша', en: 'Taiynsha', kk: 'Тайынша' }, lat: 53.85, lon: 69.77, key: 'tainsha' },
+            { name: { ru: 'Талгар', en: 'Talgar', kk: 'Талғар' }, lat: 43.30, lon: 77.24, key: 'talgar' },
+            { name: { ru: 'Текели', en: 'Tekeli', kk: 'Текелі' }, lat: 44.85, lon: 78.75, key: 'tekeli' },
+            { name: { ru: 'Темир', en: 'Temir', kk: 'Темір' }, lat: 49.14, lon: 57.13, key: 'temir' },
+            { name: { ru: 'Тобыл (Затобольск)', en: 'Tobyl', kk: 'Тобыл' }, lat: 53.21, lon: 63.68, key: 'tobyl' },
+            { name: { ru: 'Форт-Шевченко', en: 'Fort-Shevchenko', kk: 'Форт-Шевченко' }, lat: 44.51, lon: 50.26, key: 'fort_shevchenko' },
+            { name: { ru: 'Хромтау', en: 'Khromtau', kk: 'Хромтау' }, lat: 50.25, lon: 58.44, key: 'khromtau' },
+            { name: { ru: 'Шардара', en: 'Shardara', kk: 'Шардара' }, lat: 41.25, lon: 67.97, key: 'shardara' },
+            { name: { ru: 'Шалкар', en: 'Shalkar', kk: 'Шалқар' }, lat: 47.83, lon: 59.61, key: 'shalkar_actobe' },
+            { name: { ru: 'Шар', en: 'Shar', kk: 'Шар' }, lat: 49.59, lon: 81.04, key: 'char' },
+            { name: { ru: 'Шемонаиха', en: 'Shemonaikha', kk: 'Шемонаиха' }, lat: 50.63, lon: 81.91, key: 'shemonaikha' },
+            { name: { ru: 'Шолаккорган', en: 'Sholakkorgan', kk: 'Шолаққорған' }, lat: 43.79, lon: 69.18, key: 'sholakkoorgan' },
+            { name: { ru: 'Эмба', en: 'Emba', kk: 'Ембі' }, lat: 48.83, lon: 58.15, key: 'emba' },
+            { name: { ru: 'Степняк', en: 'Stepnyak', kk: 'Степняк' }, lat: 52.83, lon: 70.78, key: 'stepnyak' },
+            { name: { ru: 'Буланды', en: 'Bulandy', kk: 'Бұланды' }, lat: 52.63, lon: 70.42, key: 'bulandy' },
+            { name: { ru: 'Уштобе', en: 'Ushtobe', kk: 'Үштөбе' }, lat: 45.25, lon: 77.98, key: 'ushtobe' },
+            { name: { ru: 'Жанатас', en: 'Zhanatas', kk: 'Жаңатас' }, lat: 43.56, lon: 69.75, key: 'zhanatas' },
+            { name: { ru: 'Мартук', en: 'Martuk', kk: 'Мәртөк' }, lat: 50.74, lon: 56.50, key: 'martuk' }
         ];
 
         let html = '';
@@ -335,7 +335,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     else if (temp > 30) aiRecommendation = "Высокая температура. Избегайте солнца и пейте больше воды.";
                 }
 
-                const cityName = t[cityObj.key] || cityObj.name;
+                const cityName = (cityObj.name && typeof cityObj.name === 'object') 
+                                 ? (cityObj.name[currentAiLang] || cityObj.name.ru) 
+                                 : (t['city-' + cityObj.key] || t[cityObj.key] || cityObj.name);
 
                 // Генерация продвинутой и богатой данными карточки
                 html += `
@@ -376,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     <div style="background: rgba(168, 85, 247, 0.05); border-left: 3px solid #a855f7; padding: 8px 12px; border-radius: 4px 8px 8px 4px; width: 100%;">
                         <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #a855f7; font-weight: 700; display: block; margin-bottom: 2px;">
-                            <i data-lucide="brain-circuit" style="width:12px; height:12px; vertical-align:middle; margin-right:4px;"></i>AI Сводка
+                            <i data-lucide="brain-circuit" style="width:12px; height:12px; vertical-align:middle; margin-right:4px;"></i>${currentAiLang === 'kk' ? 'АИ СВОДКАСЫ' : currentAiLang === 'en' ? 'AI SUMMARY' : 'AI СВОДКА'}
                         </span>
                         <p style="margin: 0; font-size: 0.82rem; color: var(--text-color); line-height: 1.35; font-weight: 500;">${aiRecommendation}</p>
                     </div>
@@ -423,13 +425,33 @@ document.addEventListener('DOMContentLoaded', () => {
     aiLangBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const selectedLang = btn.getAttribute('data-ai-lang');
-            if (selectedLang !== currentAiLang) {
-                currentAiLang = selectedLang;
-                updateActiveLangButton();
-                initWelcomeMessage();
-                if (citiesLoaded) loadAiCitiesForecast(); // Перегрузить вкладку городов на новом языке
+            const langSelect = document.getElementById('lang-select');
+            
+            // Запускаем глобальную смену языка на всем сайте
+            if (langSelect && langSelect.value !== selectedLang) {
+                langSelect.value = selectedLang;
+                langSelect.dispatchEvent(new Event('change'));
             }
         });
+    });
+
+    // Слушаем глобальную смену языка (из шапки сайта или ИИ-ассистента)
+    window.addEventListener('languageChanged', (e) => {
+        const newLang = e.detail.lang;
+        if (newLang !== currentAiLang) {
+            currentAiLang = newLang;
+            updateActiveLangButton();
+            
+            // Если модалка открыта, сразу перерисовываем приветствие
+            if (aiModal.style.display === 'block') {
+                initWelcomeMessage();
+            } else {
+                // Иначе просто очищаем, чтобы при открытии отрисовалось новое приветствие
+                chatMessages.innerHTML = '';
+            }
+            
+            if (citiesLoaded) loadAiCitiesForecast();
+        }
     });
 
     // ========================================================

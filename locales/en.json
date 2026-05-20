@@ -358,6 +358,7 @@
     "ai-cities-title": "Kazakhstan Cities Forecast",
     "ai-cities-desc": "AI collects and analyzes weather in real-time in all regional centers and major cities of Kazakhstan.",
     "ai-cities-loading": "Loading forecasts...",
+    "ai-loading-cities": "AI is generating a detailed analytical summary for the regions of KZ...",
     "ai-welcome": "Hello! I am the WeatherAI assistant. I can analyze the weather, give advice on what to wear, or tell you if you need an umbrella. What are you interested in?",
     "ai-city-stable": "Weather is stable.",
     "ai-city-cold": "Quite cold, dress warmly.",

@@ -800,63 +800,27 @@ function updateAIRecommendations(weather) {
     // Рекомендация по одежде
     let clothingAdvice = '';
     if (temp < -10) {
-        clothingAdvice = {
-            ru: '❄️ Очень холодно! Тёплая зимняя одежда, шапка и перчатки обязательны',
-            kk: '❄️ Өте суық! Жылы қысқы киім, бас киім және қолғап міндетті',
-            en: '❄️ Very cold! Warm winter clothes, hat and gloves are a must'
-        };
+        clothingAdvice = { ru: '❄️ Очень холодно! Тёплая зимняя одежда, шапка и перчатки обязательны', kk: '❄️ Өте суық! Жылы қысқы киім, бас киім және қолғап міндетті', en: '❄️ Very cold! Warm winter clothes, hat and gloves are a must' };
     } else if (temp < 0) {
-        clothingAdvice = {
-            ru: '🧥 Холодно. Зимняя куртка и тёплые вещи',
-            kk: '🧥 Суық. Қысқы күртеше және жылы киім',
-            en: '🧥 Cold. Winter jacket and warm clothes'
-        };
+        clothingAdvice = { ru: '🧥 Холодно. Зимняя куртка и тёплые вещи', kk: '🧥 Суық. Қысқы күртеше және жылы киім', en: '🧥 Cold. Winter jacket and warm clothes' };
     } else if (temp < 10) {
-        clothingAdvice = {
-            ru: '🧥 Прохладно. Куртка или пальто рекомендуется',
-            kk: '🧥 Салқын. Күртеше немесе пальто ұсынылады',
-            en: '🧥 Cool. Jacket or coat recommended'
-        };
+        clothingAdvice = { ru: '🧥 Прохладно. Куртка или пальто рекомендуется', kk: '🧥 Салқын. Күртеше немесе пальто ұсынылады', en: '🧥 Cool. Jacket or coat recommended' };
     } else if (temp < 20) {
-        clothingAdvice = {
-            ru: '👕 Умеренно. Лёгкая куртка или кофта',
-            kk: '👕 Қалыпты. Жеңіл күртеше немесе жемпір',
-            en: '👕 Moderate. Light jacket or sweater'
-        };
+        clothingAdvice = { ru: '👕 Умеренно. Лёгкая куртка или кофта', kk: '👕 Қалыпты. Жеңіл күртеше немесе жемпір', en: '👕 Moderate. Light jacket or sweater' };
     } else if (temp < 25) {
-        clothingAdvice = {
-            ru: '👔 Комфортно. Лёгкая одежда',
-            kk: '👔 Жайлы. Жеңіл киім',
-            en: '👔 Comfortable. Light clothing'
-        };
+        clothingAdvice = { ru: '👔 Комфортно. Лёгкая одежда', kk: '👔 Жайлы. Жеңіл киім', en: '👔 Comfortable. Light clothing' };
     } else {
-        clothingAdvice = {
-            ru: '🌞 Жарко! Лёгкая летняя одежда, головной убор',
-            kk: '🌞 Ыстық! Жеңіл жазғы киім, бас киім',
-            en: '🌞 Hot! Light summer clothes, hat'
-        };
+        clothingAdvice = { ru: '🌞 Жарко! Лёгкая летняя одежда, головной убор', kk: '🌞 Ыстық! Жеңіл жазғы киім, бас киім', en: '🌞 Hot! Light summer clothes, hat' };
     }
 
     // Рекомендация по зонту
     let umbrellaAdvice = '';
     if (precipitation > 5) {
-        umbrellaAdvice = {
-            ru: '☔ Возьмите зонт! Ожидаются осадки',
-            kk: '☔ Қолшатырды алыңыз! Жауын-шашын болады',
-            en: '☔ Take an umbrella! Precipitation expected'
-        };
+        umbrellaAdvice = { ru: '☔ Возьмите зонт! Ожидаются осадки', kk: '☔ Қолшатырды алыңыз! Жауын-шашын болады', en: '☔ Take an umbrella! Precipitation expected' };
     } else if (precipitation > 0) {
-        umbrellaAdvice = {
-            ru: '🌂 Зонт может пригодиться',
-            kk: '🌂 Қолшатыр пайдалы болуы мүмкін',
-            en: '🌂 Umbrella might be useful'
-        };
+        umbrellaAdvice = { ru: '🌂 Зонт может пригодиться', kk: '🌂 Қолшатыр пайдалы болуы мүмкін', en: '🌂 Umbrella might be useful' };
     } else {
-        umbrellaAdvice = {
-            ru: '✅ Зонт не понадобится',
-            kk: '✅ Қолшатыр қажет емес',
-            en: '✅ No umbrella needed'
-        };
+        umbrellaAdvice = { ru: '✅ Зонт не понадобится', kk: '✅ Қолшатыр қажет емес', en: '✅ No umbrella needed' };
     }
 
     document.getElementById('clothing-advice').textContent = clothingAdvice[lang] || clothingAdvice.ru;
@@ -961,11 +925,7 @@ function getCurrentLocation() {
     const lang = document.getElementById('lang-select').value;
 
     if (!navigator.geolocation) {
-        const messages = {
-            ru: 'Геолокация не поддерживается вашим браузером',
-            kk: 'Геолокация браузеріңізде қолдау көрсетілмейді',
-            en: 'Geolocation is not supported by your browser'
-        };
+        const messages = { ru: 'Геолокация не поддерживается вашим браузером', kk: 'Геолокация браузеріңізде қолдау көрсетілмейді', en: 'Geolocation is not supported by your browser' };
         showErrorModal('Ошибка геопозиции', messages[lang] || messages.ru);
         return;
     }
@@ -1007,11 +967,7 @@ function getCurrentLocation() {
         },
         (error) => {
             console.error('Ошибка геолокации:', error);
-            const messages = {
-                ru: 'Не удалось определить местоположение (возможно, отключен GPS или истекло время)',
-                kk: 'Орынды анықтау мүмкін болмады',
-                en: 'Unable to determine location (GPS may be disabled or timed out)'
-            };
+            const messages = { ru: 'Не удалось определить местоположение (возможно, отключен GPS или истекло время)', kk: 'Орынды анықтау мүмкін болмады', en: 'Unable to determine location (GPS may be disabled or timed out)' };
             showErrorModal('Ошибка геолокации', messages[lang] || messages.ru);
             showLoading(false);
         },
