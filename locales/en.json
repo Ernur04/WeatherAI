@@ -465,5 +465,7 @@
     "export-param-ai": "AI Forecast",
     "export-period-5days": "For 5 days",
     "export-period-7days": "For 7 days (Week)",
-    "export-period-2days": "Today and tomorrow"
+    "export-period-2days": "Today and tomorrow",
+    "ai-analysis-progress": "AI analytics for {city} is on the way! This feature is under development.",
+    "ai-analysis-select-city": "Please select or enter a city for analysis."
 }

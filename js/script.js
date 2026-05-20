@@ -62,15 +62,41 @@ function initEventListeners() {
         }
     });
 
-    // ИИ Анализ
+    // ИИ Анализ с поддержкой 3-х языков (RU, KK, EN)
     if (aiBtn) {
         aiBtn.addEventListener('click', () => {
             const city = cityInput.value.trim();
-            if (!city && !currentWeatherData) {
-                showNotification('Сначала найдите город для ИИ анализа', 'warning');
+            
+            // Определение текущего языка приложения (дефолт: ru)
+            const currentLang = document.documentElement.lang || 'ru'; 
+
+            // Словарь переводов прямо в коде (если не используешь внешние JSON)
+            const localTranslations = {
+                ru: {
+                    empty: 'Пожалуйста, выберите или введите город для анализа.',
+                    progress: `Интеллектуальный анализ для города ${city} уже на подходе! Функция в разработке.`
+                },
+                kk: {
+                    empty: 'Талдау жасау үшін қаланы таңдаңыз немесе енгізіңіз.',
+                    progress: `${city} қаласы үшін ИИ-аналитика дайындалуда! Функция әзірлену үстінде.`
+                },
+                en: {
+                    empty: 'Please select or enter a city for analysis.',
+                    progress: `AI analytics for ${city} is on the way! This feature is under development.`
+                }
+            };
+
+            // Берем перевод для текущего языка (или откатываемся на 'ru', если язык не найден)
+            const langSet = localTranslations[currentLang] || localTranslations['ru'];
+
+            // 1. Проверка на заполненность поля города
+            if (!city) {
+                showNotification(langSet.empty, 'warning');
                 return;
             }
-            showNotification('ИИ Анализ в разработке...', 'info');
+            
+            // 2. Показ уведомления о разработке на нужном языке
+            showNotification(langSet.progress, 'info');
         });
     }
 

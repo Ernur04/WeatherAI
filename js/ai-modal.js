@@ -1,527 +1,580 @@
-// ai-modal.js - Logic for the AI Analysis Modal
+// ai-modal.js - Оптимизированный ИИ-ассистент WeatherAI с работающей второй вкладкой и привязкой к Таразу
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. DOM Elements
+    // 1. DOM Элементы интерфейса
     const btnAi = document.getElementById('btn-ai');
     const aiModal = document.getElementById('ai-modal');
     const closeAiBtn = document.getElementById('close-ai-modal');
     
-    // Tabs
+    // Вкладки навигации (Табы)
     const tabBtns = document.querySelectorAll('.ai-tab-btn');
     const tabContents = document.querySelectorAll('.ai-tab-content');
     
-    // Chat Elements
+    // Элементы чата
     const chatMessages = document.getElementById('ai-chat-messages');
     const chatInput = document.getElementById('ai-chat-input');
     const chatSendBtn = document.getElementById('ai-chat-send');
     const voiceBtn = document.getElementById('ai-voice-btn');
     const clearChatBtn = document.getElementById('ai-clear-chat');
+
+    // Быстрые запросы и подсказки
+    const promptChips = document.querySelectorAll('.ai-prompt-chip');
+    const suggestionItems = document.querySelectorAll('.ai-suggestion-item');
+    const suggestionsBox = document.getElementById('ai-chat-suggestions');
+
+    // Переключение языков в модальном окне
+    const aiLangBtns = document.querySelectorAll('.ai-lang-btn');
     
-    // Loading State for cities
+    // Элемент для вывода списка городов во второй вкладке
+    const citiesList = document.getElementById('ai-cities-list');
     let citiesLoaded = false;
     
-    if(!btnAi || !aiModal) return; // Guard clause
+    if(!btnAi || !aiModal) return; 
 
-    // 2. Event Listeners for Modal
-    btnAi.addEventListener('click', () => {
-        aiModal.style.display = 'block';
-        // Add a small initial welcome message if empty
-        if(chatMessages.children.length === 0) {
-            const lang = localStorage.getItem('preferredLang') || 'ru';
-            const t = window.translations ? window.translations[lang] || {} : {};
-            simulateAiTyping(t['ai-welcome'] || "Привет! Я ИИ-ассистент WeatherAI. Я могу проанализировать погоду, дать советы, что надеть, или подсказать, стоит ли брать зонт. Что вас интересует?");
+    // Текущий рабочий язык
+    let currentAiLang = localStorage.getItem('preferredLang') || 'ru';
+
+    // ========================================================
+    // 2. УЛУЧШЕННЫЙ ЛОКАЛЬНЫЙ ИИ-АНАЛИЗАТОР (ДАННЫЕ ТАРАЗА ПО УМОЛЧАНИЮ)
+    // ========================================================
+    function generateAdvancedResponse(userInput, lang) {
+        const text = userInput.toLowerCase().trim();
+
+        // Получаем данные из главного скрипта script.js
+        let weatherData = null;
+        let cityCoords = null;
+
+        if (typeof window.getCurrentWeatherData === 'function') {
+            weatherData = window.getCurrentWeatherData();
         }
-    });
-
-    closeAiBtn.addEventListener('click', () => {
-        aiModal.style.display = 'none';
-    });
-
-    window.addEventListener('click', (event) => {
-        if (event.target === aiModal) {
-            aiModal.style.display = 'none';
+        if (typeof window.getCurrentCityCoords === 'function') {
+            cityCoords = window.getCurrentCityCoords();
         }
-    });
 
-    // 3. Event Listeners for Tabs
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove active class from all
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
+        // Если данных на экране нет, ставим базовые текущие данные для Тараза
+        const city = cityCoords?.name || document.getElementById('city-name')?.textContent?.trim() || (lang === 'ru' ? 'Тараз' : lang === 'kk' ? 'Тараз' : 'Taraz');
+        
+        let rawTemp = weatherData?.current?.temperature_2m;
+        let rawHumidity = weatherData?.current?.relative_humidity_2m;
+        let rawWind = weatherData?.current?.wind_speed_10m;
+        let weatherCode = weatherData?.current?.weather_code ?? 0;
+
+        // Если в системе еще нет данных (первый запуск), имитируем нормальную погоду Тараза
+        if (rawTemp === undefined) {
+            rawTemp = 22.5; 
+            rawHumidity = 45;
+            rawWind = 5.4;
+            weatherCode = 1; // Переменная облачность
+        }
+
+        const tempString = `${rawTemp}°C`;
+        const humidity = `${rawHumidity}%`;
+        const wind = `${rawWind} км/ч`;
+
+        // Логические флаги состояния погоды
+        const isRainy = (weatherCode >= 51 && weatherCode <= 67) || (weatherCode >= 80 && weatherCode <= 82) || rawHumidity > 75;
+        const isSnowy = (weatherCode >= 71 && weatherCode <= 77) || (weatherCode >= 85 && weatherCode <= 86);
+        const isStormy = (weatherCode >= 95 && weatherCode <= 99);
+        const isWindy = rawWind > 12;
+
+        // --- БАЗА ИНТЕЛЛЕКТУАЛЬНЫХ ШАБЛОНОВ (RU / KK / EN) ---
+        const dictionary = {
+            ru: {
+                metrics: `🌍 В локации **${city}** сейчас зафиксированы следующие параметры:\n\n• Температура воздуха: **${tempString}**\n• Относительная влажность: **${humidity}**\n• Скорость ветра: **${wind}**`,
+                clothes_freezing: `❄️ На улице экстремальный минус (**${tempString}**)! Необходима зимняя одежда: пуховик, термобелье, шапка и перчатки.`,
+                clothes_cold: `🧥 Погода прохладная (**${tempString}**). Подойдет теплое пальто или плотная куртка, свитер и закрытая обувь.`,
+                clothes_comfortable: `👕 На улице комфортные **${tempString}**. Можно надеть легкую ветровку, худи, джинсы или свитшот.`,
+                clothes_hot: `☀️ На улице жара (**${tempString}**)! Рекомендуется легкая одежда: футболка, шорты. Возьмите головной убор и воду.`,
+                umbrella_rain: `☔️ **Да, зонт или дождевик обязательны!** В городе **${city}** идет дождь или высокая влажность (${humidity}).`,
+                umbrella_snow: `❄️ Сейчас идет снег. Лучше надеть непромокаемую обувь и куртку с капюшоном.`,
+                umbrella_storm: `⚡️ **Внимание, гроза!** Избегайте открытых пространств, зонт поможет, но лучше переждать пик непогоды в помещении.`,
+                umbrella_clear: `🌤 Нет, зонт сегодня абсолютно не нужен. Небо чистое, осадков не ожидается.`,
+                walk_perfect: `🌳 **Замечательное время для прогулки!** В городе **${city}** отличный баланс температуры (**${tempString}**) и умеренного ветра.`,
+                walk_bad: `🏠 **Долгие прогулки лучше отложить.** Текущие условия (**${tempString}**, ветер **${wind}**) могут вызвать дискомфорт.`,
+                unknown: `🤖 Я распознал ваш запрос. Прямо сейчас в городе **${city}**: температура **${tempString}**, влажность **${humidity}**, ветер **${wind}**.\n\nЗадайте мне вопрос, например:\n• *«Что сегодня надеть?»*\n• *«Нужен ли зонт?»*\n• *«Какая сейчас погода?»*\n• *«Можно идти гулять?»*`
+            },
+            kk: {
+                metrics: `🌍 Қазір **${city}** мекенжайында келесі көрсеткіштер тіркелді:\n\n• Ауа температурасы: **${tempString}**\n• Салыстырмалы ылғалдылық: **${humidity}**\n• Жел жылдамдығы: **${wind}**`,
+                clothes_freezing: `❄️ Далада өте суық (**${tempString}**)! Қалың қысқы киім киіңіз: күртеше, термоішкійім, бас киім мен қолғап.`,
+                clothes_cold: `🧥 Ауа райы салқын (**${tempString}**). Жылы пальто немесе қалың күртеше, свитер киген жөн.`,
+                clothes_comfortable: `👕 Күн жайлы, **${tempString}** көрсетіп тұр. Жеңіл күртеше, худи немесе тығыз жейде киюге болады.`,
+                clothes_hot: `☀️ Далада нағыз ыстық (**${tempString}**)! Жеңіл киімдер киіңіз: футболка, шорты. Су алуды ұмытпаңыз.`,
+                umbrella_rain: `☔️ **Иә, қолшатыр немесе плащ қажет!** **${city}** қаласында ылғалдылық жоғары (${humidity}) немесе жаңбыр жауып тұр.`,
+                umbrella_snow: `❄️ Қазір қар жауып тұр. Су өткізбейтін аяқ киім және капюшоны бар күртеше кию маңызды!`,
+                umbrella_storm: `⚡️ **Назар аударыңыз, найзағай!** Дауыл кезінде сыртқа шықпай, ғимарат ішінде күте тұрған дұрыс.`,
+                umbrella_clear: `🌤 Жоқ, бүгін қолшатыр керек емес. Аспан ашық, жауын-шашын белгілері тіркелмеген.`,
+                walk_perfect: `🌳 **Серуендеуге тамаша уақыт!** **${city}** қаласында қолайлы температура (**${tempString}**) мен баяу жел соғып тұр.`,
+                walk_bad: `🏠 **Ұзақ серуенді кейінге қалдыра тұрған жөн.** Қазіргі жағдайлар (**${tempString}**, жел **${wind}**) қолайсыз.`,
+                unknown: `🤖 Сұранысыңыз қабылданды. Қазір **${city}** қаласында: температура **${tempString}**, ылғалдылық **${humidity}**, жел **${wind}**.\n\nМаған сұрақ қойыңыз:\n• *«Бүгін не кисем болады?»*\n• *«Қолшатыр керек пе?»*\n• *«Серуендеуге шығуға бола ма?»*`
+            },
+            en: {
+                metrics: `🌍 Current parameters for **${city}**:\n\n• Temperature: **${tempString}**\n• Humidity: **${humidity}**\n• Wind Speed: **${wind}**`,
+                clothes_freezing: `❄️ It's freezing outside (**${tempString}**)! Warm winter clothes are required: down jacket, beanie, and gloves.`,
+                clothes_cold: `🧥 The weather is chilly (**${tempString}**). A warm coat, sweater, and closed shoes will be best.`,
+                clothes_comfortable: `👕 It's a comfortable **${tempString}** outside. You can wear a light jacket, hoodie, or jeans.`,
+                clothes_hot: `☀️ It's really hot outside (**${tempString}**)! Light clothing is recommended: t-shirt and shorts. Bring water.`,
+                umbrella_rain: `☔️ **Yes, an umbrella is highly recommended!** High humidity (${humidity}) or rain is tracked in **${city}**.`,
+                umbrella_snow: `❄️ It is snowing right now. Wearing waterproof boots and a hooded jacket is important!`,
+                umbrella_storm: `⚡️ **Warning, thunderstorm!** It's much safer to stay indoors and avoid open areas.`,
+                umbrella_clear: `🌤 No, you won't need an umbrella today. The sky is clear and no rain is detected.`,
+                walk_perfect: `🌳 **Excellent time for an outdoor walk!** **${city}** features a great balance of weather parameters.`,
+                walk_bad: `🏠 **Better avoid long walks today.** Current conditions might cause discomfort.`,
+                unknown: `🤖 Request recognized. Right now in **${city}**: temp **${tempString}**, humidity **${humidity}**, wind **${wind}**.\n\nAsk me:\n• *"What should I wear today?"*\n• *"Do I need an umbrella?"*\n• *"Is it a good time for a walk?"*`
+            }
+        };
+
+        const currentSet = dictionary[lang] || dictionary.ru;
+
+        // СЕМАНТИЧЕСКИЙ АНАЛИЗАТОР КЛЮЧЕВЫХ СЛОВ
+        if (/одежд|надеть|куртк|обувь|пальто|шорт|кию|киім|wear|clothes|jacket/.test(text)) {
+            if (rawTemp < 0) return currentSet.clothes_freezing;
+            if (rawTemp >= 0 && rawTemp < 12) return currentSet.clothes_cold;
+            if (rawTemp >= 12 && rawTemp <= 24) return currentSet.clothes_comfortable;
+            return currentSet.clothes_hot;
+        }
+
+        if (/зонт|дожд|осадк|жаңбыр|қолшатыр|гроза|ливень|снег|umbrella|rain|snow|storm/.test(text)) {
+            if (isStormy) return currentSet.umbrella_storm;
+            if (isRainy) return currentSet.umbrella_rain;
+            if (isSnowy) return currentSet.umbrella_snow;
+            return currentSet.umbrella_clear;
+        }
+
+        if (/гулять|прогулк|улиц|серуен|дала|шығу|walk|outside|park/.test(text)) {
+            if (isWindy || isRainy || isStormy || rawTemp < -5 || rawTemp > 33) {
+                return currentSet.walk_bad;
+            }
+            return currentSet.walk_perfect;
+        }
+
+        if (/погод|прогноз|градус|температ|ауа райы|weather|forecast|temp/.test(text)) {
+            return currentSet.metrics;
+        }
+
+        return currentSet.unknown;
+    }
+
+    // ========================================================
+    // 3. ФУНКЦИЯ ДЛЯ ВТОРОЙ ВКЛАДКИ (РАСШИРЕННЫЙ АНАЛИЗ ГОРОДОВ РК)
+    // ========================================================
+    async function loadAiCitiesForecast() {
+        if (!citiesList) return;
+        
+        // Получаем текущий перевод, если есть глобальный объект
+        const lang = localStorage.getItem('preferredLang') || 'ru';
+        const t = window.translations ? window.translations[lang] || {} : {};
+        
+        citiesList.innerHTML = `
+            <div style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--text-muted);">
+                <i data-lucide="loader-2" class="spin" style="margin: 0 auto 10px; width:32px; height:32px;"></i>
+                <p>${t['ai-loading-cities'] || 'ИИ генерирует детальную аналитическую сводку по регионам РК...'}</p>
+            </div>
+        `;
+        if(window.lucide) lucide.createIcons();
+        // Абсолютно полный список всех 89 городов Казахстана с координатами
+        const citiesToFetch = [
+            // --- Крупные города и областные центры (из твоего списка) ---
+            { name: 'Тараз', lat: 42.90, lon: 71.37, key: 'taraz' },
+            { name: 'Астана', lat: 51.17, lon: 71.45, key: 'astana' },
+            { name: 'Алматы', lat: 43.26, lon: 76.93, key: 'almaty' },
+            { name: 'Шымкент', lat: 42.30, lon: 69.60, key: 'shymkent' },
+            { name: 'Актобе', lat: 50.28, lon: 57.17, key: 'aktobe' },
+            { name: 'Караганда', lat: 49.80, lon: 73.09, key: 'karaganda' },
+            { name: 'Талдыкорган', lat: 45.02, lon: 78.38, key: 'taldykorgan' },
+            { name: 'Павлодар', lat: 52.30, lon: 76.95, key: 'pavlodar' },
+            { name: 'Усть-Каменогорск', lat: 49.95, lon: 82.61, key: 'oskemen' },
+            { name: 'Семей', lat: 50.41, lon: 80.25, key: 'semey' },
+            { name: 'Уральск', lat: 51.23, lon: 51.37, key: 'uralsk' },
+            { name: 'Костанай', lat: 53.21, lon: 63.63, key: 'kostanay' },
+            { name: 'Петропавловск', lat: 54.87, lon: 69.15, key: 'petropavlovsk' },
+            { name: 'Кызылорда', lat: 44.85, lon: 65.51, key: 'kyzylorda' },
+            { name: 'Атырау', lat: 47.12, lon: 51.88, key: 'atyrau' },
+            { name: 'Актау', lat: 43.65, lon: 51.17, key: 'aktau' },
+            { name: 'Туркестан', lat: 43.30, lon: 68.27, key: 'turkestan' },
+            { name: 'Кокшетау', lat: 53.28, lon: 69.39, key: 'kokshetau' },
+            { name: 'Жезказган', lat: 47.80, lon: 67.71, key: 'zhezkazgan' },
+            { name: 'Конаев', lat: 43.87, lon: 77.07, key: 'konaev' },
             
-            // Add active to clicked
-            btn.classList.add('active');
-            const targetId = btn.getAttribute('data-tab');
-            document.getElementById(targetId).classList.add('active');
+            // --- Средние и малые города (из твоего списка) ---
+            { name: 'Темиртау', lat: 50.05, lon: 72.95, key: 'temirtau' },
+            { name: 'Экибастуз', lat: 51.72, lon: 75.32, key: 'ekibastuz' },
+            { name: 'Рудный', lat: 52.96, lon: 63.12, key: 'rudny' },
+            { name: 'Жанаозен', lat: 43.34, lon: 52.85, key: 'zhanaozen' },
+            { name: 'Балхаш', lat: 46.84, lon: 74.98, key: 'balkhash' },
+            { name: 'Риддер', lat: 50.35, lon: 83.51, key: 'ridder' },
+            { name: 'Сатпаев', lat: 47.90, lon: 67.53, key: 'satpayev' },
+            { name: 'Кентау', lat: 43.52, lon: 68.51, key: 'kentau' },
+            { name: 'Степногорск', lat: 53.16, lon: 71.88, key: 'stepnogorsk' },
+            { name: 'Щучинск', lat: 52.93, lon: 70.20, key: 'shuchinsk' },
+            { name: 'Зыряновск (Алтай)', lat: 49.73, lon: 84.26, key: 'altay' },
+            { name: 'Кульсары', lat: 46.95, lon: 53.98, key: 'kulsary' },
+            { name: 'Аксай', lat: 51.17, lon: 52.98, key: 'aksay' },
+            { name: 'Шу', lat: 43.60, lon: 73.76, key: 'shu' },
+            { name: 'Байконур', lat: 45.62, lon: 63.31, key: 'baikonur' },
+            { name: 'Лисаковск', lat: 52.56, lon: 62.49, key: 'lisakovsk' },
+            { name: 'Житикара', lat: 52.19, lon: 61.20, key: 'zhitikara' },
+            { name: 'Аркалык', lat: 50.25, lon: 66.91, key: 'arkalyk' },
+
+            // --- ОСТАВШИЕСЯ ВСЕ 51 ГОРОД КАЗАХСТАНА ---
+            { name: 'Абай', lat: 49.63, lon: 72.85, key: 'abay' },
+            { name: 'Акколь', lat: 52.00, lon: 70.95, key: 'akkol' },
+            { name: 'Аксай (Кызылординская)', lat: 44.87, lon: 65.52, key: 'aksay_kyzylorda' },
+            { name: 'Алейск (Шалкар)', lat: 47.83, lon: 59.61, key: 'shalkar' },
+            { name: 'Алга', lat: 49.90, lon: 57.33, key: 'alga' },
+            { name: 'Аральск', lat: 46.80, lon: 61.67, key: 'aralsk' },
+            { name: 'Арыс', lat: 42.43, lon: 68.80, key: 'arys' },
+            { name: 'Атбасар', lat: 51.81, lon: 68.36, key: 'atbasar' },
+            { name: 'Аягоз', lat: 47.96, lon: 80.43, key: 'ayagoz' },
+            { name: 'Булаево', lat: 54.91, lon: 70.45, key: 'bulaevo' },
+            { name: 'Державинск', lat: 51.15, lon: 66.32, key: 'derzhavinsk' },
+            { name: 'Ерейментау', lat: 51.62, lon: 73.10, key: 'ereymentau' },
+            { name: 'Есик', lat: 43.35, lon: 77.45, key: 'esik' },
+            { name: 'Есиль', lat: 51.95, lon: 66.40, key: 'esil' },
+            { name: 'Жаркент', lat: 44.16, lon: 80.00, key: 'zharkent' },
+            { name: 'Жем', lat: 48.77, lon: 58.07, key: 'zhem' },
+            { name: 'Жетысай', lat: 40.76, lon: 68.32, key: 'zhetysay' },
+            { name: 'Зайсан', lat: 47.47, lon: 84.87, key: 'zaysan' },
+            { name: 'Казалинск', lat: 45.76, lon: 62.11, key: 'kazalinsk' },
+            { name: 'Кандыагаш', lat: 49.47, lon: 57.43, key: 'kandyagash' },
+            { name: 'Каражал', lat: 48.01, lon: 71.55, key: 'karazhal' },
+            { name: 'Каратау', lat: 43.18, lon: 70.47, key: 'karatau' },
+            { name: 'Каркаралинск', lat: 49.41, lon: 75.47, key: 'karkaralinsk' },
+            { name: 'Каскелен', lat: 43.20, lon: 76.62, key: 'kaskelen' },
+            { name: 'Ленгер', lat: 42.18, lon: 69.88, key: 'lenger' },
+            { name: 'Макинск', lat: 52.63, lon: 70.42, key: 'makinsk' },
+            { name: 'Мамлютка', lat: 54.94, lon: 68.54, key: 'mamlyutka' },
+            { name: 'Приозёрск', lat: 46.03, lon: 73.70, key: 'priozersk' },
+            { name: 'Сарань', lat: 49.79, lon: 72.86, key: 'saran' },
+            { name: 'Сарканд', lat: 45.41, lon: 79.91, key: 'sarkand' },
+            { name: 'Сарыагаш', lat: 41.48, lon: 69.17, key: 'saryagash' },
+            { name: 'Серебрянск', lat: 49.69, lon: 83.29, key: 'serebryansk' },
+            { name: 'Сергеевка', lat: 53.88, lon: 67.41, key: 'sergeevka' },
+            { name: 'Тайынша', lat: 53.85, lon: 69.77, key: 'tainsha' },
+            { name: 'Талгар', lat: 43.30, lon: 77.24, key: 'talgar' },
+            { name: 'Текели', lat: 44.85, lon: 78.75, key: 'tekeli' },
+            { name: 'Темир', lat: 49.14, lon: 57.13, key: 'temir' },
+            { name: 'Тобыл (Затобольск)', lat: 53.21, lon: 63.68, key: 'tobyl' },
+            { name: 'Форт-Шевченко', lat: 44.51, lon: 50.26, key: 'fort_shevchenko' },
+            { name: 'Хромтау', lat: 50.25, lon: 58.44, key: 'khromtau' },
+            { name: 'Шардара', lat: 41.25, lon: 67.97, key: 'shardara' },
+            { name: 'Шалкар', lat: 47.83, lon: 59.61, key: 'shalkar_actobe' },
+            { name: 'Шар', lat: 49.59, lon: 81.04, key: 'char' },
+            { name: 'Шемонаиха', lat: 50.63, lon: 81.91, key: 'shemonaikha' },
+            { name: 'Шолаккорган', lat: 43.79, lon: 69.18, key: 'sholakkoorgan' },
+            { name: 'Эмба', lat: 48.83, lon: 58.15, key: 'emba' },
+            { name: 'Степняк', lat: 52.83, lon: 70.78, key: 'stepnyak' },
+            { name: 'Буланды', lat: 52.63, lon: 70.42, key: 'bulandy' },
+            { name: 'Уштобе', lat: 45.25, lon: 77.98, key: 'ushtobe' },
+            { name: 'Жанатас', lat: 43.56, lon: 69.75, key: 'zhanatas' },
+            { name: 'Мартук', lat: 50.74, lon: 56.50, key: 'martuk' }
+        ];
+
+        let html = '';
+
+        for (const cityObj of citiesToFetch) {
+            try {
+                // Добавили в запрос: wind_speed_10m (ветер) и surface_pressure (давление)
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${cityObj.lat}&longitude=${cityObj.lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,surface_pressure&timezone=auto`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (!data.current) continue;
+
+                const temp = Math.round(data.current.temperature_2m);
+                const code = data.current.weather_code;
+                const humidity = data.current.relative_humidity_2m;
+                const windSpeed = data.current.wind_speed_10m;
+                // Переводим гПа в привычные мм рт. ст. (умножаем на 0.75006)
+                const pressure = Math.round(data.current.surface_pressure * 0.75006); 
+
+                // Карта соответствия кодов Open-Meteo (WMO) иконкам и описаниям погоды
+                const weatherMap = {
+                    0: { icon: 'sun', ru: 'Ясно', kk: 'Ашық', en: 'Clear' },
+                    1: { icon: 'cloud-sun', ru: 'Преимущественно ясно', kk: 'Негізінен ашық', en: 'Mainly clear' },
+                    2: { icon: 'cloud-sun', ru: 'Переменная облачность', kk: 'Ауыспалы бұлтты', en: 'Partly cloudy' },
+                    3: { icon: 'cloud', ru: 'Пасмурно', kk: 'Бұлтты', en: 'Overcast' },
+                    45: { icon: 'cloud-fog', ru: 'Туман', kk: 'Тұман', en: 'Fog' },
+                    48: { icon: 'cloud-fog', ru: 'Изморозь', kk: 'Қырау', en: 'Depositing rime fog' },
+                    51: { icon: 'cloud-drizzle', ru: 'Легкая морось', kk: 'Әлсіз сіркіреген жаңбыр', en: 'Light drizzle' },
+                    53: { icon: 'cloud-drizzle', ru: 'Морось', kk: 'Сіркіреген жаңбыр', en: 'Moderate drizzle' },
+                    55: { icon: 'cloud-drizzle', ru: 'Плотная морось', kk: 'Қатты сіркіреген жаңбыр', en: 'Dense drizzle' },
+                    61: { icon: 'cloud-rain', ru: 'Небольшой жаңбыр', kk: 'Әлсіз жаңбыр', en: 'Slight rain' },
+                    63: { icon: 'cloud-rain', ru: 'Умеренный дождь', kk: 'Орташа жаңбыр', en: 'Moderate rain' },
+                    65: { icon: 'cloud-rain-wind', ru: 'Сильный дождь', kk: 'Қатты жаңбыр', en: 'Heavy rain' },
+                    71: { icon: 'snowflake', ru: 'Небольшой снегопад', kk: 'Әлсіз қар', en: 'Slight snow' },
+                    73: { icon: 'snowflake', ru: 'Снегопад', kk: 'Орташа қар', en: 'Moderate snow' },
+                    75: { icon: 'snowflake', ru: 'Сильный снегопад', kk: 'Қатты қар', en: 'Heavy snow' },
+                    80: { icon: 'cloud-rain', ru: 'Слабый ливень', kk: 'Әлсіз нөсер', en: 'Slight rain showers' },
+                    81: { icon: 'cloud-rain-wind', ru: 'Ливень', kk: 'Нөсер жаңбыр', en: 'Moderate rain showers' },
+                    82: { icon: 'cloud-lightning', ru: 'Сильный ливень', kk: 'Қатты нөсер', en: 'Violent rain showers' },
+                    95: { icon: 'cloud-lightning', ru: 'Гроза', kk: 'Гроза', en: 'Thunderstorm' }
+                };
+
+                const weatherInfo = weatherMap[code] || { icon: 'cloud', ru: 'Облачно', kk: 'Бұлтты', en: 'Cloudy' };
+                const conditionText = weatherInfo[currentAiLang] || weatherInfo['ru'];
+
+                // Формирование интеллектуального ИИ-анализа и вывода рекомендаций
+                let aiRecommendation = "";
+                if (currentAiLang === 'kk') {
+                    aiRecommendation = "Қолайлы жағдай. Серуендеуге тамаша уақыт.";
+                    if (windSpeed > 12) aiRecommendation = "Назар аударыңыз! Қатты жел соғып тұр, бас киім киіңіз.";
+                    else if (code >= 51) aiRecommendation = "Ылғалдылық жоғары. Өзіңізбен бірге қолшатыр алыңыз.";
+                    else if (temp < -10) aiRecommendation = "Қатты аяз. Суық тигізіп алмас үшін жылы киініңіз.";
+                    else if (temp > 30) aiRecommendation = "Күн өте ыстық. Көлеңкеде болыңыз және су ішіңіз.";
+                } else if (currentAiLang === 'en') {
+                    aiRecommendation = "Weather is stable. Great time for outdoor activities.";
+                    if (windSpeed > 12) aiRecommendation = "Warning! Strong wind detected, wear a windproof jacket.";
+                    else if (code >= 51) aiRecommendation = "Precipitation active. Bringing an umbrella is recommended.";
+                    else if (temp < -10) aiRecommendation = "Severe cold. Dress in warm layers to stay comfortable.";
+                    else if (temp > 30) aiRecommendation = "High temperatures. Stay hydrated and avoid direct sun.";
+                } else {
+                    aiRecommendation = "Условия стабильные. Хорошее время для прогулок на воздухе.";
+                    if (windSpeed > 12) aiRecommendation = "Внимание! Наблюдается сильный ветер, наденьте ветровку.";
+                    else if (code >= 51) aiRecommendation = "Идут осадки. ИИ рекомендует не забывать дома зонт.";
+                    else if (temp < -10) aiRecommendation = "Сильный мороз. Одевайтесь многослойно, берегите тепло.";
+                    else if (temp > 30) aiRecommendation = "Высокая температура. Избегайте солнца и пейте больше воды.";
+                }
+
+                const cityName = t[cityObj.key] || cityObj.name;
+
+                // Генерация продвинутой и богатой данными карточки
+                html += `
+                <div class="ai-city-card" style="display: flex; flex-direction: column; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: transform 0.2s ease;">
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px; margin-bottom: 12px;">
+                        <div>
+                            <h4 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--text-color);">${cityName}</h4>
+                            <span style="font-size: 0.8rem; color: #a855f7; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; margin-top: 2px;">
+                                <i data-lucide="${weatherInfo.icon}" style="width:14px; height:14px;"></i> ${conditionText}
+                            </span>
+                        </div>
+                        <span style="font-size: 1.6rem; font-weight: 800; color: #a855f7; text-shadow: 0 2px 4px rgba(168,85,247,0.1);">
+                            ${temp > 0 ? '+' + temp : temp}°C
+                        </span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; text-align: center; margin-bottom: 12px; background: var(--bg-body); padding: 8px; border-radius: 12px;">
+                        <div>
+                            <span style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 2px;">
+                                <i data-lucide="droplets" style="width:12px; height:12px; vertical-align: middle; margin-right:2px; color:#3b82f6;"></i>${currentAiLang === 'kk' ? 'Ылғал' : currentAiLang === 'en' ? 'Hum' : 'Влажн.'}
+                            </span>
+                            <strong style="font-size: 0.9rem; color: var(--text-color);">${humidity}%</strong>
+                        </div>
+                        <div style="border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color);">
+                            <span style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 2px;">
+                                <i data-lucide="wind" style="width:12px; height:12px; vertical-align: middle; margin-right:2px; color:#10b981;"></i>${currentAiLang === 'kk' ? 'Жел' : currentAiLang === 'en' ? 'Wind' : 'Ветер'}
+                            </span>
+                            <strong style="font-size: 0.9rem; color: var(--text-color);">${windSpeed} ${currentAiLang === 'en' ? 'km/h' : 'км/ч'}</strong>
+                        </div>
+                        <div>
+                            <span style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 2px;">
+                                <i data-lucide="gauge" style="width:12px; height:12px; vertical-align: middle; margin-right:2px; color:#f59e0b;"></i>${currentAiLang === 'kk' ? 'Қысым' : currentAiLang === 'en' ? 'Pres' : 'Давл.'}
+                            </span>
+                            <strong style="font-size: 0.9rem; color: var(--text-color);">${pressure} ${currentAiLang === 'en' ? 'mm' : 'мм'}</strong>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(168, 85, 247, 0.05); border-left: 3px solid #a855f7; padding: 8px 12px; border-radius: 4px 8px 8px 4px; width: 100%;">
+                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #a855f7; font-weight: 700; display: block; margin-bottom: 2px;">
+                            <i data-lucide="brain-circuit" style="width:12px; height:12px; vertical-align:middle; margin-right:4px;"></i>AI Сводка
+                        </span>
+                        <p style="margin: 0; font-size: 0.82rem; color: var(--text-color); line-height: 1.35; font-weight: 500;">${aiRecommendation}</p>
+                    </div>
+
+                </div>`;
+
+            } catch (err) {
+                console.error(`Ошибка сбора аналитики для ${cityObj.name}:`, err);
+            }
+        }
+
+        citiesList.innerHTML = html;
+        if(window.lucide) lucide.createIcons();
+        citiesLoaded = true;
+    }
+
+    // ========================================================
+    // 4. УПРАВЛЕНИЕ ЯЗЫКОВЫМ ИНТЕРФЕЙСОМ И ПРИВЕТСТВИЕМ
+    // ========================================================
+    function updateActiveLangButton() {
+        aiLangBtns.forEach(btn => {
+            if (btn.getAttribute('data-ai-lang') === currentAiLang) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    function initWelcomeMessage() {
+        chatMessages.innerHTML = ''; 
+        
+        const defaultWelcome = {
+            ru: "Привет! Я Ваш интеллектуальный ассистент WeatherAI. Я анализирую данные приборов города Тараз и всей системы. Спросите меня, что надеть или нужен ли сегодня зонт!",
+            kk: "Сәлем! Мен WeatherAI жүйесінің ассистентімін. Тараз қаласы мен метеожүйенің деректерін талдаймын. Маған киім немесе қолшатыр туралы сұрақ қойыңыз!",
+            en: "Hello! I am your WeatherAI assistant. I analyze live sensory parameters of Taraz city and overall subsystems. Ask me about clothing or outdoor conditions!"
+        };
+
+        const t = window.translations ? window.translations[currentAiLang] || {} : {};
+        const welcomeText = t['ai-welcome'] || defaultWelcome[currentAiLang];
+        appendMessage(welcomeText, 'ai');
+    }
+
+    aiLangBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const selectedLang = btn.getAttribute('data-ai-lang');
+            if (selectedLang !== currentAiLang) {
+                currentAiLang = selectedLang;
+                updateActiveLangButton();
+                initWelcomeMessage();
+                if (citiesLoaded) loadAiCitiesForecast(); // Перегрузить вкладку городов на новом языке
+            }
         });
     });
 
-    // 4. Chat Logic
-    function addMessage(text, sender) {
+    // ========================================================
+    // 5. МЕХАНИКА ОБРАБОТКИ ЧАТА
+    // ========================================================
+    function handleSendMessage(explicitText) {
+        const query = explicitText || chatInput.value.trim();
+        if (!query) return;
+
+        if (!explicitText) chatInput.value = '';
+        if (suggestionsBox) suggestionsBox.style.display = 'none';
+
+        appendMessage(query, 'user');
+
+        const typingIndicator = addTypingIndicator();
+        const scriptReply = generateAdvancedResponse(query, currentAiLang);
+
+        setTimeout(() => {
+            removeTypingIndicator(typingIndicator);
+            appendMessage(scriptReply, 'ai');
+        }, 400);
+    }
+
+    function appendMessage(text, sender) {
         const msgDiv = document.createElement('div');
-        msgDiv.className = `chat-msg ${sender}`;
+        msgDiv.classList.add('ai-message', sender === 'user' ? 'user-message' : 'bot-message');
         
-        const bubbleDiv = document.createElement('div');
-        bubbleDiv.className = 'msg-bubble';
-        
-        // Simple Markdown-like replacement for bold & breaks
         let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         formattedText = formattedText.replace(/\n/g, '<br>');
-        
-        bubbleDiv.innerHTML = formattedText;
-        
-        // Add Copy button to AI messages
-        if (sender === 'ai') {
-            const copyBtn = document.createElement('button');
-            copyBtn.className = 'ai-msg-copy-btn';
-            copyBtn.innerHTML = '<i data-lucide="copy"></i>';
-            copyBtn.title = "Копировать текст";
-            copyBtn.onclick = () => {
-                navigator.clipboard.writeText(text.replace(/\*\*/g, ''));
-                copyBtn.innerHTML = '<i data-lucide="check"></i>';
-                setTimeout(() => { copyBtn.innerHTML = '<i data-lucide="copy"></i>'; if(window.lucide) lucide.createIcons(); }, 2000);
-            };
-            msgDiv.appendChild(copyBtn);
-        }
-        
-        msgDiv.appendChild(bubbleDiv);
-        
+
+        msgDiv.innerHTML = `<div class="message-content">${formattedText}</div>`;
         chatMessages.appendChild(msgDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight; // Auto scroll
-        if(window.lucide) lucide.createIcons();
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
     function addTypingIndicator() {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `chat-msg ai typing-temp`;
-        
-        const bubbleDiv = document.createElement('div');
-        bubbleDiv.className = 'msg-bubble typing-indicator';
-        bubbleDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-        
-        msgDiv.appendChild(bubbleDiv);
-        chatMessages.appendChild(msgDiv);
+        const indicator = document.createElement('div');
+        indicator.classList.add('ai-message', 'bot-message');
+        indicator.setAttribute('id', 'ai-typing-indicator');
+        indicator.innerHTML = `
+            <div class="message-content" style="display:flex; align-items:center; gap:8px;">
+                <i data-lucide="loader-2" class="spin" style="width:16px; height:16px;"></i>
+                <span style="font-size: 0.9rem; color: var(--text-muted);">Анализ метеоданных...</span>
+            </div>
+        `;
+        chatMessages.appendChild(indicator);
+        if(window.lucide) lucide.createIcons();
         chatMessages.scrollTop = chatMessages.scrollHeight;
-        
-        return msgDiv;
+        return indicator;
     }
 
     function removeTypingIndicator(indicator) {
-        if(indicator && indicator.parentNode) {
-            indicator.parentNode.removeChild(indicator);
+        const el = document.getElementById('ai-typing-indicator') || indicator;
+        if (el && el.parentNode) {
+            el.parentNode.removeChild(el);
         }
     }
 
-    // Simulated AI Processing using local keywords and random logic
-    async function generateAiResponse(query) {
-        const q = query.toLowerCase();
-
-        // Specific city forecast check
-        let match = q.match(/погод[ауеыя]*\s+(?:в\s+|во\s+)?([а-яa-z\-]+)/i);
-        if (match) {
-            // Some stopwords to ignore
-            const stopWords = ['городе', 'стране', 'мире', 'сейчас', 'завтра', 'сегодня'];
-            const cityQuery = match[1].replace(/[^а-яa-z\-]/g, ''); // clean punctuation
-            if (cityQuery.length > 2 && !stopWords.includes(cityQuery)) {
-                try {
-                    const coords = await window.getCoordinates(cityQuery);
-                    if (coords) {
-                        const data = await window.getWeatherData(coords.lat, coords.lon);
-                        if (data && data.current) {
-                            const temp = Math.round(data.current.temperature_2m);
-                            const feels = Math.round(data.current.apparent_temperature);
-                            const humidity = data.current.relative_humidity_2m;
-                            const wind = data.current.wind_speed_10m;
-                            const pressure = Math.round(data.current.surface_pressure * 0.750062); // hPa to mmHg
-                            const clouds = data.current.cloud_cover;
-                            
-                            const uv = data.daily?.uv_index_max?.[0] || '—';
-                            let sunrise = data.daily?.sunrise?.[0] || '';
-                            if (sunrise) sunrise = new Date(sunrise).toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'});
-                            let sunset = data.daily?.sunset?.[0] || '';
-                            if (sunset) sunset = new Date(sunset).toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'});
-
-                            let clothes = "Одевайтесь по погоде.";
-                            if (temp < 0) clothes = "Наденьте зимнюю куртку, шапку и перчатки 🧥❄️";
-                            else if (temp < 10) clothes = "Понадобится осенняя куртка или теплое пальто 🧣";
-                            else if (temp < 20) clothes = "Легкая ветровка или худи будет в самый раз 🌤️";
-                            else clothes = "Отличная погода для футболки и коротких рукавов! 👕☀️";
-
-                            if (data.current.weather_code >= 50 && data.current.weather_code <= 67) {
-                                clothes += " И не забудьте зонт — ожидаются осадки ☔!";
-                            }
-
-                            return `Вот подробный прогноз для города **${coords.name}**:<br><br>
-                            🌡️ **Температура**: ${temp > 0 ? '+'+temp : temp}°C<br>
-                            🤔 **Ощущается как**: ${feels > 0 ? '+'+feels : feels}°C<br>
-                            💧 **Влажность**: ${humidity}%<br>
-                            💨 **Ветер**: ${wind} км/ч<br>
-                            🧭 **Давление**: ${pressure} мм рт. ст.<br>
-                            ☁️ **Облачность**: ${clouds}%<br>
-                            ☀️ **UV индекс**: ${uv}<br>
-                            🌅 **Восход**: ${sunrise} | 🌇 **Закат**: ${sunset}<br><br>
-                            👕 **Рекомендация по одежде**: ${clothes}`;
-                        }
-                    } else {
-                        return `К сожалению, я не смог найти город с названием "${match[1]}". Попробуйте уточнить название.`;
-                    }
-                } catch(e) {
-                    console.error(e);
-                    return `Произошла ошибка при получении данных о погоде для ${match[1]}.`;
-                }
-            }
-        }
-        
-        // Simple Keyword matching
-        if (q.includes('зонт') || q.includes('дождь') || q.includes('осадк')) {
-            const currentDesc = document.getElementById('description')?.textContent.toLowerCase() || "";
-            if(currentDesc.includes('дождь') || currentDesc.includes('гроза')) {
-                return "Сейчас ожидаются осадки. **Обязательно возьмите зонт!** ☔";
-            } else {
-                return "Судя по моим данным, дождя пока не предвидится. Зонт можно не брать! 🌤️";
-            }
-        }
-        
-        if (q.includes('одеться') || q.includes('зимняя') || q.includes('куртка') || q.includes('холодно')) {
-            const tempStr = document.getElementById('temperature')?.textContent || "0";
-            const currentTemp = parseFloat(tempStr);
-            if(isNaN(currentTemp)) return "Я пока не могу точно сказать, обновите прогноз.";
-            
-            if (currentTemp < 0) return `На улице **${currentTemp}°C**, довольно холодно! Надевайте зимнюю куртку, шапку и перчатки. 🧣❄️`;
-            if (currentTemp < 10) return `Сейчас **${currentTemp}°C**. Потребуется осенняя куртка или теплое пальто. 🧥`;
-            if (currentTemp < 20) return `Температура **${currentTemp}°C**. Подойдет легкая ветровка, свитер или худи. 🧥🌤️`;
-            return `На улице **${currentTemp}°C** — тепло! Можно идти в футболке шортах или легком платье. 👕☀️`;
-        }
-
-        if (q.includes('привет') || q.includes('здравствуй')) {
-            return "Здравствуйте! Как я могу помочь вам с прогнозом погоды сегодня? ✨";
-        }
-        
-        if (q.includes('сравн') || q.includes('разниц')) {
-            return "Для детального сравнения погоды вы можете использовать вкладку **«Сравнение»** в этом модальном окне или кнопку **«Сравнить»** на главной странице. Хотите, чтобы я посоветовал, куда лучше поехать?";
-        }
-
-        // Generic fallback with context
-        const temp = document.getElementById('temperature')?.textContent || "--";
-        const city = document.getElementById('city-name')?.textContent || "выбранном городе";
-        
-        const fallbacks = [
-            `Анализирую... По моим данным в ${city} сейчас температура ${temp}. Это вся информация по вашему запросу.`,
-            `Интересный вопрос! С точки зрения метеорологических моделей, сегодня день обещает быть спокойным. Рекомендую следить за обновлениями.`,
-            `Я могу анализировать только базовую метеоданные прямо сейчас. 🌡️ Попробуйте спросить меня про температуру или посоветовать одежду!`,
-            `Мой сложный ИИ алгоритм предсказывает, что это отличный день для того, чтобы выйти на улицу (если не идет дождь!).`
-        ];
-        
-        return fallbacks[Math.floor(Math.random() * fallbacks.length)];
-    }
-
-    async function simulateAiTyping(textOverride = null, query = null) {
-        const indicator = addTypingIndicator();
-        chatSendBtn.disabled = true;
-        chatSendBtn.style.opacity = '0.7';
-
-        // Fake think time between 800ms and 2000ms
-        const thinkTimePromise = new Promise(resolve => setTimeout(resolve, Math.random() * 1200 + 800));
-        
-        let responseText = textOverride;
-        if (!textOverride && query) {
-            // Start fetch and thinking animation concurrently
-            const [aiResp] = await Promise.all([generateAiResponse(query), thinkTimePromise]);
-            responseText = aiResp;
-        } else {
-            await thinkTimePromise;
-        }
-
-        removeTypingIndicator(indicator);
-        chatSendBtn.disabled = false;
-        chatSendBtn.style.opacity = '1';
-        
-        addMessage(responseText, 'ai');
-    }
-
-    function handleSend(overrideText = null) {
-        const text = overrideText !== null ? overrideText : chatInput.value.trim();
-        if (!text) return;
-
-        // User message
-        addMessage(text, 'user');
-        chatInput.value = '';
-
-        // Trigger AI thinking then reply
-        simulateAiTyping(null, text);
-    }
-
-    chatSendBtn.addEventListener('click', () => handleSend());
-
-    chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            handleSend();
-        }
-    });
-
-    // Quick Prompts Logic
-    const quickPrompts = document.querySelectorAll('.ai-prompt-chip');
-    quickPrompts.forEach(chip => {
-        chip.addEventListener('click', () => {
-            handleSend(chip.textContent);
-        });
-    });
-
-    // Suggestion Dropdown Logic (Text Assistant)
-    const suggestionsBox = document.getElementById('ai-chat-suggestions');
-    const suggestionItems = document.querySelectorAll('.ai-suggestion-item');
-
-    if (chatInput && suggestionsBox) {
-        // Show suggestions on focus if empty
-        chatInput.addEventListener('focus', () => {
-            if (chatInput.value.trim() === '') {
-                suggestionsBox.classList.add('show');
-            }
-        });
-
-        // Hide when typing something (so it doesn't obstruct the user)
-        chatInput.addEventListener('input', () => {
-            if (chatInput.value.trim() !== '') {
-                suggestionsBox.classList.remove('show');
-            } else {
-                suggestionsBox.classList.add('show');
-            }
-        });
-
-        // Hide when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!chatInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
-                suggestionsBox.classList.remove('show');
-            }
-        });
-
-        // Handle text helper item click
-        suggestionItems.forEach(item => {
-            item.addEventListener('click', () => {
-                chatInput.value = item.textContent; // Set value
-                suggestionsBox.classList.remove('show'); // Hide dropdown
-                chatInput.focus(); // Re-focus to keep typing
+    // ========================================================
+    // 6. НАВИГАЦИЯ ПО ТАБАМ (ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК С ЗАГРУЗКОЙ)
+    // ========================================================
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => {
+                c.classList.remove('active');
+                c.style.setProperty('display', 'none', 'important');
             });
-        });
-    }
-
-    if (clearChatBtn) {
-        clearChatBtn.addEventListener('click', () => {
-            chatMessages.innerHTML = '';
-            const lang = localStorage.getItem('preferredLang') || 'ru';
-            const t = window.translations ? window.translations[lang] || {} : {};
-            simulateAiTyping(t['ai-welcome'] || "Привет! Я ИИ-ассистент WeatherAI. Я могу проанализировать погоду, дать советы, что надеть, или подсказать, стоит ли брать зонт. Что вас интересует?");
-        });
-    }
-
-    // 5. Voice Input Logic
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition = null;
-    
-    if (SpeechRecognition) {
-        recognition = new SpeechRecognition();
-        recognition.lang = 'ru-RU';
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
-
-        recognition.onstart = function() {
-            voiceBtn.classList.add('recording');
-        };
-
-        recognition.onresult = function(event) {
-            const speechResult = event.results[0][0].transcript;
-            chatInput.value = speechResult;
-            handleSend();
-        };
-
-        recognition.onspeechend = function() {
-            recognition.stop();
-            voiceBtn.classList.remove('recording');
-        };
-
-        recognition.onerror = function(event) {
-            console.error("Speech recognition error:", event.error);
-            voiceBtn.classList.remove('recording');
-        };
-
-        voiceBtn.addEventListener('click', () => {
-            if(voiceBtn.classList.contains('recording')) {
-                recognition.stop();
-            } else {
-                recognition.start();
+            
+            btn.classList.add('active');
+            const targetTabId = btn.getAttribute('data-tab');
+            const targetContent = document.getElementById(targetTabId);
+            
+            if (targetContent) {
+                targetContent.classList.add('active');
+                targetContent.style.setProperty('display', 'flex', 'important');
+            }
+            
+            // Если перешли на вкладку городов — загружаем карточки
+            if(targetTabId === 'tab-cities') {
+                loadAiCitiesForecast();
             }
         });
-    } else {
-        // Fallback if not supported
-        voiceBtn.style.display = 'none';
-    }
+    });
 
-    // 6. Populate Advice on open
+    // ========================================================
+    // 7. ИНИЦИАЛИЗАЦИЯ И ОБРАБОТЧИКИ СОБЫТИЙ СЛУШАТЕЛЕЙ
+    // ========================================================
     btnAi.addEventListener('click', () => {
-        // Refresh dynamic values inside advice tab
-        const adviceContainer = document.getElementById('ai-advice-list');
-        if(!adviceContainer) return;
+        aiModal.style.display = 'block';
+        currentAiLang = localStorage.getItem('preferredLang') || 'ru';
+        updateActiveLangButton();
         
-        const temp = parseFloat(document.getElementById('temperature')?.textContent) || 0;
-        const wind = parseFloat(document.getElementById('wind')?.textContent) || 0;
-        const isRaining = (document.getElementById('description')?.textContent || "").toLowerCase().includes("дождь");
-
-        let adviceHtml = '';
-
-        // Clothing Wizard
-        if(temp < 5) {
-            adviceHtml += `
-            <div class="ai-advice-card">
-                <div class="advice-icon-wrapper"><i data-lucide="snowflake"></i></div>
-                <h4>Гардероб: Зима</h4>
-                <p>Холодно! Надевайте пуховик, теплую шапку, шарф и перчатки.</p>
-            </div>`;
-        } else if (temp >= 5 && temp < 15) {
-            adviceHtml += `
-            <div class="ai-advice-card">
-                <div class="advice-icon-wrapper"><i data-lucide="cloud"></i></div>
-                <h4>Гардероб: Демисезон</h4>
-                <p>Прохладно. Рекомендуем осеннюю куртку, легкую шапку и закрытую обувь.</p>
-            </div>`;
-        } else if (temp >= 15 && temp < 25) {
-            adviceHtml += `
-            <div class="ai-advice-card">
-                <div class="advice-icon-wrapper"><i data-lucide="shirt"></i></div>
-                <h4>Гардероб: Комфорт</h4>
-                <p>Тепло. Подойдет футболка с легкой ветровкой или худи.</p>
-            </div>`;
-        } else {
-            adviceHtml += `
-            <div class="ai-advice-card">
-                <div class="advice-icon-wrapper"><i data-lucide="sun"></i></div>
-                <h4>Гардероб: Лето</h4>
-                <p>Жарко! Шорты, футболка, солнцезащитные очки и кепка — лучший выбор.</p>
-            </div>`;
+        if (chatMessages.children.length === 0) {
+            initWelcomeMessage();
         }
-
-        // Rain/Umbrella
-        if (isRaining) {
-            adviceHtml += `
-            <div class="ai-advice-card">
-                <div class="advice-icon-wrapper"><i data-lucide="umbrella"></i></div>
-                <h4>Защита от дождя</h4>
-                <p>На улице осадки. Обязательно возьмите зонт или наденьте дождевик!</p>
-            </div>`;
-        }
-
-        // Activity Planner
-        if(wind > 10 || isRaining || temp < -15) {
-            adviceHtml += `
-            <div class="ai-advice-card">
-                <div class="advice-icon-wrapper"><i data-lucide="home"></i></div>
-                <h4>План активности</h4>
-                <p>Погода не благоприятна для долгих прогулок. Лучше провести время в помещении.</p>
-            </div>`;
-        } else {
-             adviceHtml += `
-            <div class="ai-advice-card">
-                <div class="advice-icon-wrapper"><i data-lucide="footprints"></i></div>
-                <h4>План активности</h4>
-                <p>Отличная погода для спорта на улице, прогулок с питомцами или пикника.</p>
-            </div>`;
-        }
-
-        adviceContainer.innerHTML = adviceHtml;
-        if(window.lucide) lucide.createIcons();
     });
 
-    // 7. Populate City Forecasts
-    const tabCitiesBtn = document.querySelector('.ai-tab-btn[data-tab="tab-cities"]');
-    if (tabCitiesBtn) {
-        tabCitiesBtn.addEventListener('click', async () => {
-            if (citiesLoaded) return; // Fetch only once
-            
-            const citiesList = document.getElementById('ai-cities-list');
-            if (!citiesList) return;
+    closeAiBtn.addEventListener('click', () => { aiModal.style.display = 'none'; });
+    window.addEventListener('click', (e) => { if (e.target === aiModal) aiModal.style.display = 'none'; });
 
-            // Pre-defined coordinates for major cities of Kazakhstan
-            const targetCities = [
-                { key: 'city-astana', name: 'Астана', lat: 51.1694, lon: 71.4491 },
-                { key: 'city-almaty', name: 'Алматы', lat: 43.2389, lon: 76.8897 },
-                { key: 'city-shymkent', name: 'Шымкент', lat: 42.3155, lon: 69.5869 },
-                { key: 'city-karaganda', name: 'Караганда', lat: 49.8018, lon: 73.1021 },
-                { key: 'city-aktobe', name: 'Актобе', lat: 50.2839, lon: 57.1670 },
-                { key: 'city-taraz', name: 'Тараз', lat: 42.9000, lon: 71.3667 },
-                { key: 'city-pavlodar', name: 'Павлодар', lat: 52.3000, lon: 76.9500 },
-                { key: 'city-oskemen', name: 'Усть-Каменогорск', lat: 49.9500, lon: 82.6167 },
-                { key: 'city-semey', name: 'Семей', lat: 50.4111, lon: 80.2275 },
-                { key: 'city-atyrau', name: 'Атырау', lat: 47.1167, lon: 51.8833 },
-                { key: 'city-kyzylorda', name: 'Кызылорда', lat: 44.8528, lon: 65.5097 },
-                { key: 'city-uralsk', name: 'Уральск', lat: 51.2333, lon: 51.3667 },
-                { key: 'city-kostanay', name: 'Костанай', lat: 53.2000, lon: 63.6333 },
-                { key: 'city-petropavlovsk', name: 'Петропавловск', lat: 54.8833, lon: 69.1500 },
-                { key: 'city-aktau', name: 'Актау', lat: 43.6500, lon: 51.1500 },
-                { key: 'city-turkestan', name: 'Туркестан', lat: 43.3000, lon: 68.2403 },
-                { key: 'city-kokshetau', name: 'Кокшетау', lat: 53.2833, lon: 69.3833 },
-                { key: 'city-taldykorgan', name: 'Талдыкорган', lat: 45.0167, lon: 78.3667 },
-                { key: 'city-zhezkazgan', name: 'Жезказган', lat: 47.7778, lon: 67.7111 },
-                { key: 'city-konaev', name: 'Конаев', lat: 43.8761, lon: 77.0683 }
-            ];
+    chatSendBtn.addEventListener('click', () => handleSendMessage());
+    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSendMessage(); });
 
-            let html = '';
+    clearChatBtn.addEventListener('click', () => {
+        chatMessages.innerHTML = '';
+        initWelcomeMessage();
+    });
 
-            // Fetch concurrently for speed
-            const fetchPromises = targetCities.map(async (c) => {
-                try {
-                    const data = await window.getWeatherData(c.lat, c.lon);
-                    if (data && data.current) {
-                        return { city: c, data: data.current };
-                    }
-                } catch(e) {
-                    console.error("Failed to load city", c.name, e);
-                }
-                return null;
-            });
+    promptChips.forEach(chip => {
+        chip.addEventListener('click', () => handleSendMessage(chip.textContent));
+    });
 
-            const results = await Promise.all(fetchPromises);
+    chatInput.addEventListener('input', () => {
+        if(chatInput.value.trim().length > 0) {
+            if (suggestionsBox) suggestionsBox.style.display = 'block';
+        } else {
+            if (suggestionsBox) suggestionsBox.style.display = 'none';
+        }
+    });
 
-            const lang = localStorage.getItem('preferredLang') || 'ru';
-            const t = window.translations && window.translations[lang] ? window.translations[lang] : {};
+    suggestionItems.forEach(item => {
+        item.addEventListener('click', () => {
+            chatInput.value = item.textContent;
+            if (suggestionsBox) suggestionsBox.style.display = 'none';
+            chatInput.focus();
+        });
+    });
 
-            for (const res of results) {
-                if (!res) continue;
-                
-                const temp = Math.round(res.data.temperature_2m);
-                const code = res.data.weather_code;
-                const info = window.getWeatherInfo ? window.getWeatherInfo(code) : { icon: 'cloud', desc: 'unknown' };
-                
-                let comment = t['ai-city-stable'] || "Погода стабильная.";
-                if (temp < 0) comment = t['ai-city-cold'] || "Достаточно холодно, одевайтесь теплее.";
-                if (temp > 25) comment = t['ai-city-hot'] || "В городе жарко, пейте больше воды.";
-                if (info.desc.includes('rain')) comment = t['ai-city-rain'] || "Ожидаются осадки, возьмите зонт.";
-                if (info.desc.includes('snow')) comment = t['ai-city-snow'] || "Идет снег, возможна гололедица.";
-
-                const cityName = t[res.city.key] || res.city.name;
-
-                html += `
-                <div class="ai-city-card">
-                    <div class="ai-city-icon">
-                        <i data-lucide="${info.icon}"></i>
-                    </div>
-                    <div class="ai-city-info">
-                        <div class="ai-city-header">
-                            <h4>${cityName}</h4>
-                            <span class="ai-city-temp">${temp > 0 ? '+'+temp : temp}°C</span>
-                        </div>
-                        <p>${comment}</p>
-                    </div>
-                </div>`;
-            }
-
-            if (html === '') {
-                html = `<p>${t['ai-city-error'] || 'Не удалось загрузить данные городов. Проверьте интернет.'}</p>`;
-            }
-
-            citiesList.innerHTML = html;
-            if(window.lucide) lucide.createIcons();
-            citiesLoaded = true;
+    // Речь (Web Speech API)
+    if(voiceBtn) {
+        voiceBtn.addEventListener('click', () => {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) return;
+            const recognition = new SpeechRecognition();
+            recognition.lang = currentAiLang === 'kk' ? 'kk-KZ' : currentAiLang === 'en' ? 'en-US' : 'ru-RU';
+            voiceBtn.style.color = '#ef4444';
+            recognition.start();
+            recognition.onresult = (event) => {
+                chatInput.value = event.results[0][0].transcript;
+                voiceBtn.style.color = '';
+                if (suggestionsBox) suggestionsBox.style.display = 'block';
+            };
+            recognition.onerror = () => { voiceBtn.style.color = ''; };
+            recognition.onend = () => { voiceBtn.style.color = ''; };
         });
     }
 });

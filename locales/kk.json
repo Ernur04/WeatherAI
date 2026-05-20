@@ -465,5 +465,7 @@
     "export-param-ai": "ЖИ болжамы",
     "export-period-5days": "5 күнге",
     "export-period-7days": "7 күнге (Апта)",
-    "export-period-2days": "Бүгін және ертең"
+    "export-period-2days": "Бүгін және ертең",
+    "ai-analysis-progress": "{city} қаласы үшін ИИ-аналитика дайындалуда! Функция әзірлену үстінде.",
+"ai-analysis-select-city": "Талдау жасау үшін қаланы таңдаңыз немесе енгізіңіз."
 }

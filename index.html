@@ -583,38 +583,55 @@
             </div>
         </div>
 
-        <!-- AI Analysis Modal -->
         <div id="ai-modal" class="modal">
             <div class="modal-content ai-modal-content">
                 <div class="ai-modal-header">
-                    <h2 class="ai-modal-title"><i data-lucide="sparkles"></i> <span data-i18n="ai-modal-title">ИИ Анализ Погоды</span></h2>
-                    <button class="ai-close-btn" id="close-ai-modal" aria-label="Close AI"><i data-lucide="x"></i></button>
+                    <h2 class="ai-modal-title">
+                        <i data-lucide="sparkles"></i> 
+                        <span data-i18n="ai-modal-title">ИИ Анализ Погоды</span>
+                    </h2>
+                    
+                    <div class="ai-modal-lang-selector">
+                        <button class="ai-lang-btn" data-ai-lang="ru">RU</button>
+                        <button class="ai-lang-btn" data-ai-lang="kk">KK</button>
+                        <button class="ai-lang-btn" data-ai-lang="en">EN</button>
+                    </div>
+
+                    <button class="ai-close-btn" id="close-ai-modal" aria-label="Close AI">
+                        <i data-lucide="x"></i>
+                    </button>
                 </div>
                 
-                <!-- Tabs Navigation -->
                 <div class="ai-tabs">
-                    <button class="ai-tab-btn active" data-tab="tab-chat"><i data-lucide="message-square"></i> <span data-i18n="ai-tab-chat">Чат с ИИ</span></button>
-                    <button class="ai-tab-btn" data-tab="tab-cities"><i data-lucide="globe"></i> <span data-i18n="ai-tab-cities">Города</span></button>
+                    <button class="ai-tab-btn active" data-tab="tab-chat">
+                        <i data-lucide="message-square"></i> 
+                        <span data-i18n="ai-tab-chat">Чат с ИИ</span>
+                    </button>
+                    <button class="ai-tab-btn" data-tab="tab-cities">
+                        <i data-lucide="globe"></i> 
+                        <span data-i18n="ai-tab-cities">Города</span>
+                    </button>
                 </div>
 
-                <!-- Tab: AI Chat -->
                 <div id="tab-chat" class="ai-tab-content active">
                     <div class="ai-chat-container">
                         <div class="ai-chat-controls">
                             <span class="ai-chat-subtitle" data-i18n="ai-chat-subtitle">Диалог с ИИ</span>
-                            <button id="ai-clear-chat" class="ai-clear-btn" title="Очистить историю" data-i18n-title="ai-clear-chat"><i data-lucide="trash-2"></i></button>
+                            <button id="ai-clear-chat" class="ai-clear-btn" title="Очистить историю" data-i18n-title="ai-clear-chat">
+                                <i data-lucide="trash-2"></i>
+                            </button>
                         </div>
                         <div class="ai-chat-messages" id="ai-chat-messages">
-                            <!-- Messages will be injected here -->
-                        </div>
+                            </div>
+                        
                         <div class="ai-quick-prompts" id="ai-quick-prompts">
                             <button class="ai-prompt-chip" data-i18n="ai-prompt-1">Что надеть сегодня?</button>
                             <button class="ai-prompt-chip" data-i18n="ai-prompt-2">Нужен ли зонт?</button>
                             <button class="ai-prompt-chip" data-i18n="ai-prompt-3">Стоит ли идти гулять?</button>
                             <button class="ai-prompt-chip" data-i18n="ai-prompt-4">Какая сейчас влажность?</button>
                         </div>
+                        
                         <div class="ai-chat-input-area" style="position: relative;">
-                            <!-- Dropdown for Text Suggestions -->
                             <div id="ai-chat-suggestions" class="ai-chat-suggestions">
                                 <div class="ai-suggestion-item" data-i18n="ai-sug-1">Какая погода в </div>
                                 <div class="ai-suggestion-item" data-i18n="ai-sug-2">Погода в </div>
@@ -623,25 +640,29 @@
                                 <div class="ai-suggestion-item" data-i18n="ai-sug-5">Что лучше надеть на улицу?</div>
                             </div>
 
-                            <button id="ai-voice-btn" class="ai-voice-btn" title="Голосовой ввод" data-i18n-title="ai-voice-btn"><i data-lucide="mic"></i></button>
+                            <button id="ai-voice-btn" class="ai-voice-btn" title="Голосовой ввод" data-i18n-title="ai-voice-btn">
+                                <i data-lucide="mic"></i>
+                            </button>
                             <input type="text" id="ai-chat-input" class="ai-chat-input" placeholder="Спросите ИИ о погоде..." autocomplete="off" data-i18n-placeholder="ai-chat-input">
-                            <button id="ai-chat-send" class="ai-chat-send-btn" title="Отправить" data-i18n-title="ai-chat-send"><i data-lucide="send"></i></button>
+                            <button id="ai-chat-send" class="ai-chat-send-btn" title="Отправить" data-i18n-title="ai-chat-send">
+                                <i data-lucide="send"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Tab: AI Cities -->
                 <div id="tab-cities" class="ai-tab-content">
                     <div class="ai-compare-header">
                         <h3><i data-lucide="map-pin"></i> <span data-i18n="ai-cities-title">Прогноз городов Казахстана</span></h3>
                         <p data-i18n="ai-cities-desc">ИИ в реальном времени собирает и анализирует погоду во всех областных центрах и крупных городах РК.</p>
                     </div>
                     <div class="ai-cities-grid" id="ai-cities-list">
-                        <div class="ai-city-loading"><i data-lucide="loader-2" class="spin"></i> <span data-i18n="ai-cities-loading">Загрузка прогнозов...</span></div>
+                        <div class="ai-city-loading">
+                            <i data-lucide="loader-2" class="spin"></i> 
+                            <span data-i18n="ai-cities-loading">Загрузка прогнозов...</span>
+                        </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </main>

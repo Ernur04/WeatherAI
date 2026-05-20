@@ -246,7 +246,7 @@
     "export-format-csv-tip": "Универсальный формат для таблиц",
     "export-format-excel-tip": "Готовый файл для Microsoft Excel",
     "export-preview-title": "Предпросмотр данных",
-    "export-preview-empty": "Нажмите «Предпросмотр», чтобы увидеть данные",
+
     "export-generating": "Формирование...",
     "lang-ru": "Русский (RU)",
     "lang-kk": "Казахский (KK)",
@@ -465,6 +465,7 @@
     "export-param-ai": "Прогноз ИИ",
     "export-period-5days": "На 5 дней",
     "export-period-7days": "На 7 дней (Неделя)",
-    "export-period-2days": "Сегодня и завтра"
-    
+    "export-period-2days": "Сегодня и завтра",
+    "ai-analysis-progress": "Интеллектуальный анализ для города {city} уже на подходе! Функция в разработке.",
+    "ai-analysis-select-city": "Пожалуйста, выберите или введите город для анализа."
 }
