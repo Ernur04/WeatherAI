@@ -486,6 +486,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
             content = txt;
             contentType = 'text/plain;charset=utf-8;';
+        } else if (format === 'xls' || format === 'doc') {
+            const BOM = '\uFEFF';
+            let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:${format === 'xls' ? 'excel' : 'word'}" xmlns="http://www.w3.org/TR/REC-html40">\n`;
+            html += `<head><meta charset="utf-8">\n`;
+            if (format === 'doc') {
+                html += `
+                <style>
+                    @page WordSection1 {
+                        size: 841.9pt 595.3pt; /* A4 Landscape */
+                        mso-page-orientation: landscape;
+                        margin: 1.0in 1.0in 1.0in 1.0in;
+                    }
+                    div.WordSection1 { page: WordSection1; }
+                    table { border-collapse: collapse; width: 100%; font-family: sans-serif; font-size: 10pt; }
+                    th, td { border: 1px solid #999; padding: 4px; text-align: center; vertical-align: middle; }
+                    th { background-color: #f2f2f2; font-weight: bold; }
+                    body { font-family: sans-serif; font-size: 11pt; }
+                </style>\n`;
+            } else if (format === 'xls') {
+                html += `
+                <style>
+                    table { border-collapse: collapse; font-family: sans-serif; font-size: 10pt; }
+                    th, td { border: 1px solid #999; padding: 4px; text-align: center; vertical-align: middle; mso-number-format:"\@"; }
+                    th { background-color: #f2f2f2; font-weight: bold; }
+                    body { font-family: sans-serif; font-size: 11pt; }
+                </style>\n`;
+            }
+            html += `</head><body>\n`;
+            
+            if (format === 'doc') {
+                html += `<div class="WordSection1">\n`;
+            }
+            
+            html += `<h2>ОТЧЕТ О ПОГОДЕ: ${data.city}, ${data.country}</h2>\n`;
+            html += `<p><strong>Период:</strong> ${data.period} | <strong>Шаг данных:</strong> ${data.step}</p>\n`;
+            html += `<p><strong>Дата генерации:</strong> ${new Date(data.export_date).toLocaleString()}</p>\n<br>\n`;
+            
+            const headers = Object.keys(data.weather_data[0]);
+            
+            if (format === 'xls') {
+                html += `<table border="1" cellpadding="5" cellspacing="0">\n`;
+            } else {
+                html += `<table>\n`;
+            }
+
+            html += `  <thead>\n    <tr>\n`;
+            headers.forEach(h => {
+                html += `      <th>${h}</th>\n`;
+            });
+            html += `    </tr>\n  </thead>\n  <tbody>\n`;
+            
+            data.weather_data.forEach(row => {
+                html += `    <tr>\n`;
+                headers.forEach(h => {
+                    const val = row[h] !== undefined ? row[h] : '';
+                    html += `      <td>${val}</td>\n`;
+                });
+                html += `    </tr>\n`;
+            });
+            
+            html += `  </tbody>\n</table>\n`;
+            
+            if (format === 'doc') {
+                html += `</div>\n`;
+            }
+            html += `</body></html>`;
+            
+            content = BOM + html;
+            contentType = format === 'xls' ? 'application/vnd.ms-excel;charset=utf-8;' : 'application/msword;charset=utf-8;';
         }
 
         return {content, contentType};

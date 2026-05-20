@@ -744,14 +744,33 @@ async function updateKZLocations() {
     grid.innerHTML = '<div class="kz-loading"><div class="kz-loading-spinner"></div></div>';
 
     try {
-        const promises = kzCities.map(city => getWeatherData(city.lat, city.lon));
-        const results = await Promise.all(promises);
+        const latsStr = kzCities.map(c => c.lat).join(',');
+        const lonsStr = kzCities.map(c => c.lon).join(',');
+        
+        const urlParams = new URLSearchParams({
+            latitude: latsStr,
+            longitude: lonsStr,
+            current: 'temperature_2m,weather_code',
+            timezone: 'auto'
+        });
+        
+        // Define API URL here since we're bypassing getWeatherData to do batch query
+        const url = `https://api.open-meteo.com/v1/forecast?${urlParams.toString()}`;
+        const response = await fetch(url);
+        let results = await response.json();
+        
+        if (results.error) {
+            throw new Error(results.reason || 'API error');
+        }
+
+        // Open-Meteo returns an Array when batching multiple coordinates
+        const resultsArray = Array.isArray(results) ? results : [results];
 
         grid.innerHTML = '';
         const lang = document.getElementById('lang-select').value;
 
-        results.forEach((weather, index) => {
-            if (!weather) return;
+        resultsArray.forEach((weather, index) => {
+            if (!weather || weather.error || !weather.current) return;
 
             const city = kzCities[index];
             const temp = Math.round(weather.current.temperature_2m);

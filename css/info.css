@@ -1,88 +1,88 @@
-.info-sections {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    padding: 0.5rem;
-}
+/* CSS for Info Modal Accordion */
 
-.info-card {
-    background: var(--bg-body);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 1.5rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
+.info-accordion {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    z-index: 1;
+    gap: 1rem;
 }
 
-.info-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(168, 85, 247, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
-    opacity: 0;
-    z-index: -1;
-    transition: opacity 0.3s ease;
-}
-
-.info-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    border-color: rgba(168, 85, 247, 0.5);
-}
-
-[data-theme="dark"] .info-card:hover {
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-}
-
-.info-card:hover::before {
-    opacity: 1;
-}
-
-.info-card:hover .info-icon {
-    background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
-    color: white;
-    transform: scale(1.1) rotate(5deg);
-}
-
-.info-icon {
-    color: var(--primary);
-    width: 44px;
-    height: 44px;
-    margin-bottom: 1.25rem;
-    background: rgba(168, 85, 247, 0.1);
-    padding: 10px;
+.info-accordion details {
+    background: var(--bg-body);
+    border: 1px solid var(--border);
     border-radius: 12px;
+    overflow: hidden;
     transition: all 0.3s ease;
+}
+
+.info-accordion details[open] {
+    border-color: var(--primary);
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.1);
+}
+
+.info-accordion summary {
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    cursor: pointer;
+    list-style: none;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    background: var(--bg-card);
+    transition: background 0.2s ease;
 }
 
-.info-icon svg {
-    width: 100%;
-    height: 100%;
+.info-accordion summary::-webkit-details-marker {
+    display: none;
 }
 
-.info-card h4 {
-    margin-bottom: 0.75rem;
-    color: var(--text-main);
-    font-size: 1.15rem;
-    font-weight: 700;
+.info-accordion summary:hover {
+    background: rgba(168, 85, 247, 0.05);
 }
 
-.info-card p {
+.info-accordion summary .accordion-icon-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.info-accordion summary .accordion-icon-wrap i {
+    color: var(--primary);
+}
+
+.info-accordion summary .chevron {
+    transition: transform 0.3s ease;
+    color: var(--text-muted);
+}
+
+.info-accordion details[open] summary .chevron {
+    transform: rotate(180deg);
+}
+
+.info-accordion-content {
+    padding: 1rem 1.5rem 1.5rem;
     color: var(--text-muted);
     font-size: 0.95rem;
     line-height: 1.6;
-    margin: 0;
-    flex-grow: 1;
+    border-top: 1px solid var(--border);
+}
+
+.info-accordion-content ul {
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.info-accordion-content li {
+    margin-bottom: 0.25rem;
+}
+
+.info-accordion-content p {
+    margin-bottom: 0.75rem;
 }
 
 /* Introduction text inside modal body */
@@ -95,7 +95,7 @@
 }
 
 .info-modal-container {
-    max-width: 900px;
+    max-width: 800px; /* Reduced max-width for compact view */
     max-height: 90vh;
     display: flex;
     flex-direction: column;

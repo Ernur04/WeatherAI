@@ -546,7 +546,13 @@
                                         <i data-lucide="code-2"></i> <span>XML</span>
                                     </button>
                                     <button class="format-btn has-tooltip" data-format="txt" data-i18n-tooltip="export-format-txt-tip">
-                                        <i data-lucide="file-text"></i> <span>TXT отчет</span>
+                                        <i data-lucide="align-justify"></i> <span>TXT отчет</span>
+                                    </button>
+                                    <button class="format-btn has-tooltip" data-format="xls" data-i18n-tooltip="export-format-xls-tip">
+                                        <i data-lucide="file-spreadsheet"></i> <span>EXCEL</span>
+                                    </button>
+                                    <button class="format-btn has-tooltip" data-format="doc" data-i18n-tooltip="export-format-doc-tip">
+                                        <i data-lucide="file-text"></i> <span>WORD</span>
                                     </button>
                                 </div>
                             </div>
@@ -668,83 +674,116 @@
     </main>
 
     <!-- Info Modal -->
-    <div id="info-modal" class="modal"> <!-- Use base modal class -->
-        <div class="modal-content ai-modal-content info-modal-container"> <!-- Reuse ai-modal-content for dark theme popup style -->
+    <div id="info-modal" class="modal"> 
+        <div class="modal-content ai-modal-content info-modal-container"> 
             <div class="ai-modal-header">
                 <h2 class="ai-modal-title"><i data-lucide="help-circle"></i> <span data-i18n="info-modal-title">Инструкция: Как пользоваться сайтом?</span></h2>
                 <button class="ai-close-btn" id="close-info-modal"><i data-lucide="x"></i></button>
             </div>
             
-            <div class="ai-modal-body" style="padding: 1rem 1.5rem 2rem;">
-                <p style="color: var(--text-muted); margin-bottom: 1.5rem;" data-i18n="info-modal-desc">
-                    WeatherAI — это мощный инструмент для отслеживания погоды. Вот список основных функций, которые помогут вам получить максимум пользы:
-                </p>
-                <div class="info-sections">
-                    <div class="info-card">
-                        <i data-lucide="search" class="info-icon"></i>
-                        <h4 data-i18n="info-card-search-title">Поиск погоды</h4>
-                        <p data-i18n="info-card-search-desc">Введите название любого города в строку поиска на главной странице. Используйте кнопку геолокации (прицел) для автоматического определения вашего города.</p>
-                    </div>
+            <div class="ai-modal-body" style="padding: 1.5rem;">
+                <div class="info-accordion">
                     
-                    <div class="info-card">
-                        <i data-lucide="bot" class="info-icon"></i>
-                        <h4 data-i18n="info-card-ai-title">ИИ-Ассистент</h4>
-                        <p data-i18n="info-card-ai-desc">Нажмите большую фиолетовую кнопку с искорками в поиске, чтобы задать вопрос умному помощнику или получить прогноз для нескольких городов сразу.</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <i data-lucide="map" class="info-icon"></i>
-                        <h4 data-i18n="info-card-map-title">Интерактивная карта</h4>
-                        <p data-i18n="info-card-map-desc">На карте (внизу страницы) можно отслеживать погоду в реальном времени. Используйте иконку "Слои" справа на карте для переключения данных (осадки, ветер, облака).</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <i data-lucide="download" class="info-icon"></i>
-                        <h4 data-i18n="info-card-export-title">Экспорт данных</h4>
-                        <p data-i18n="info-card-export-desc">Нажмите значок загрузки (стрелка вниз) в верхнем правом углу, чтобы скачать исторические данные или прогноз в форматах Excel (.xlsx), CSV или JSON.</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <i data-lucide="calendar-heart" class="info-icon"></i>
-                        <h4 data-i18n="info-card-services-title">Доп. сервисы</h4>
-                        <p data-i18n="info-card-services-desc">Через бургер-меню (☰) в правом верхнем углу вы можете открыть детальный Лунный календарь, Гороскоп и Календарь садовода.</p>
-                    </div>
+                    <!-- ОБЗОР САЙТА -->
+                    <details open>
+                        <summary>
+                            <div class="accordion-icon-wrap">
+                                <i data-lucide="globe"></i> <span data-i18n="info-acc-overview-title">Обзор и Описание</span>
+                            </div>
+                            <i data-lucide="chevron-down" class="chevron"></i>
+                        </summary>
+                        <div class="info-accordion-content">
+                            <p data-i18n="info-acc-overview-desc"><strong>WeatherAI</strong> — это современная и быстрая платформа для отслеживания погодных данных с применением ИИ. <br><br>Мы объединили точнейшие метеоданные, интерактивные карты, детализированные графики и дополнительные инструменты (аналитика, советы ИИ) для максимального удобства на любом устройстве.</p>
+                        </div>
+                    </details>
 
-                    <div class="info-card">
-                        <i data-lucide="send" class="info-icon"></i>
-                        <h4 data-i18n="info-card-tg-title">Telegram Бот</h4>
-                        <p data-i18n="info-card-tg-desc">В блоке с основными показателями (по центру) есть круглая кнопка Telegram. Нажав её, вы перейдете в официального бота для быстрого просмотра прогнозов.</p>
-                    </div>
+                    <!-- ИНСТРУКЦИЯ ПО ФУНКЦИЯМ -->
+                    <details>
+                        <summary>
+                            <div class="accordion-icon-wrap">
+                                <i data-lucide="list"></i> <span data-i18n="info-acc-instructions-title">Основные функции</span>
+                            </div>
+                            <i data-lucide="chevron-down" class="chevron"></i>
+                        </summary>
+                        <div class="info-accordion-content">
+                            <ul>
+                                <li><strong data-i18n="info-acc-ins-sub1">Поиск и Геолокация:</strong> <span data-i18n="info-acc-ins-desc1">Введите город в строку поиска или нажмите на иконку «прицела», чтобы мы автоматически определили вашу геопозицию.</span></li>
+                                <li><strong data-i18n="info-acc-ins-sub2">Умный ИИ-помощник:</strong> <span data-i18n="info-acc-ins-desc2">Кнопка с искорками активирует встроенную нейросеть — вы можете узнать советы, одежду на выход или сравнить два города текстом!</span></li>
+                                <li><strong data-i18n="info-acc-ins-sub3">Экспорт отчётов:</strong> <span data-i18n="info-acc-ins-desc3">Иконка загрузки (справа сверху) выгрузит историю погоды или прогноз в Excel, Word, CSV или PDF форматы.</span></li>
+                                <li><strong data-i18n="info-acc-ins-sub4">Интерактивная карта:</strong> <span data-i18n="info-acc-ins-desc4">Внизу страницы есть мировая карта погоды. Слой можно переключать (ветер, осадки) с правой панели карты.</span></li>
+                                <li><strong data-i18n="info-acc-ins-sub5">Telegram Бот:</strong> <span data-i18n="info-acc-ins-desc5">Жмите на иконку Telegram, чтобы моментально запустить нашего официального бота!</span></li>
+                            </ul>
+                        </div>
+                    </details>
 
-                    <div class="info-card">
-                        <i data-lucide="bar-chart-2" class="info-icon"></i>
-                        <h4 data-i18n="info-card-chart-title">Графики температур</h4>
-                        <p data-i18n="info-card-chart-desc">Под прогнозом на день мы строим красивый график. Вы можете сравнивать дневную и ночную температуру наглядно. Наведите мышкой (или нажмите) на точки графика.</p>
-                    </div>
+                    <!-- ИНТЕРЕСНЫЕ ФАКТЫ -->
+                    <details>
+                        <summary>
+                            <div class="accordion-icon-wrap">
+                                <i data-lucide="lightbulb"></i> <span data-i18n="info-acc-facts-title">Интересные Факты</span>
+                            </div>
+                            <i data-lucide="chevron-down" class="chevron"></i>
+                        </summary>
+                        <div class="info-accordion-content">
+                            <ul>
+                                <li><strong data-i18n="info-acc-fact-sub1">Графики и Фазы:</strong> <span data-i18n="info-acc-fact-desc1">Вся статистика и УФ-индекс высчитываются онлайн, как и фазы Луны! Наведите мышкой на точки графика, чтобы сравнить температуры.</span></li>
+                                <li><strong data-i18n="info-acc-fact-sub2">Языки:</strong> <span data-i18n="info-acc-fact-desc2">Сайт 100% переведен на Русский, Казахский и Английский.</span></li>
+                                <li><strong data-i18n="info-acc-fact-sub3">Тема:</strong> <span data-i18n="info-acc-fact-desc3">Если вы любите работать в темноте, темная тема доступна прямо в шапке сайта.</span></li>
+                                <li><strong data-i18n="info-acc-fact-sub4">Автосохранение:</strong> <span data-i18n="info-acc-fact-desc4">Ваша история поиска запоминается автоматически под поисковой панелью для быстрого доступа.</span></li>
+                            </ul>
+                        </div>
+                    </details>
 
-                    <div class="info-card">
-                        <i data-lucide="globe" class="info-icon"></i>
-                        <h4 data-i18n="info-card-lang-title">Языки и Тема</h4>
-                        <p data-i18n="info-card-lang-desc">В самой верхней панели (шапке сайта) вы можете менять светлую/тёмную тему оформления и переключать языки (Русский, Казахский, Английский).</p>
-                    </div>
+                    <!-- ЧАСТЫЕ ВОПРОСЫ (FAQ) -->
+                    <details>
+                        <summary>
+                            <div class="accordion-icon-wrap">
+                                <i data-lucide="help-circle"></i> <span data-i18n="info-acc-faq-title">Частые вопросы (FAQ)</span>
+                            </div>
+                            <i data-lucide="chevron-down" class="chevron"></i>
+                        </summary>
+                        <div class="info-accordion-content">
+                            <ul>
+                                <li><strong data-i18n="info-acc-faq-sub1">Откуда берутся данные?</strong> <span data-i18n="info-acc-faq-desc1">Мы используем точнейшие спутниковые и метеорологические данные из открытых источников: Open-Meteo и OpenWeatherMap.</span></li>
+                                <li><strong data-i18n="info-acc-faq-sub2">Не работает местоположение?</strong> <span data-i18n="info-acc-faq-desc2">Убедитесь, что вы разрешили браузеру доступ к вашей геопозиции во всплывающем окне при первом запуске или в настройках сайта в адресной строке.</span></li>
+                                <li><strong data-i18n="info-acc-faq-sub3">Насколько точен ИИ-прогноз?</strong> <span data-i18n="info-acc-faq-desc3">Нейросеть (на базе Claude 3.5) опирается на официальные цифры метеорологов и даёт вероятностный совет. Но помните, что природа бывает непредсказуема!</span></li>
+                            </ul>
+                        </div>
+                    </details>
 
-                    <div class="info-card">
-                        <i data-lucide="layers" class="info-icon"></i>
-                        <h4 data-i18n="info-card-compare-title">Сравнение городов</h4>
-                        <p data-i18n="info-card-compare-desc">Нажмите кнопку "Сравнить", чтобы посмотреть погоду одновременно в двух выбранных вами городах и сравнить их показатели.</p>
-                    </div>
+                    <!-- ГЛОССАРИЙ: ЧТО ЕСТЬ ЧТО -->
+                    <details>
+                        <summary>
+                            <div class="accordion-icon-wrap">
+                                <i data-lucide="book-open"></i> <span data-i18n="info-acc-glossary-title">Глоссарий терминов</span>
+                            </div>
+                            <i data-lucide="chevron-down" class="chevron"></i>
+                        </summary>
+                        <div class="info-accordion-content">
+                            <ul>
+                                <li><strong>УФ-индекс (UV)</strong> — <span data-i18n="info-acc-glo-desc1">Показатель ультрафиолетового излучения. Если он выше 7 — категорически рекомендуем солнечные очки, крем и закрытую одежду при выходе на улицу.</span></li>
+                                <li><strong>Ощущается как</strong> — <span data-i18n="info-acc-glo-desc2">Температура, воспринимаемая человеком с учетом влажности и ветра. Именно на нее стоит ориентироваться при выборе одежды.</span></li>
+                                <li><strong>Видимость</strong> — <span data-i18n="info-acc-glo-desc3">Максимальное расстояние, на котором можно различить объекты. Если видимость низкая (до 1 км) — на улице густой туман или снежная буря.</span></li>
+                            </ul>
+                        </div>
+                    </details>
 
-                    <div class="info-card">
-                        <i data-lucide="calendar" class="info-icon"></i>
-                        <h4 data-i18n="info-card-calendar-title">Мини-календарь</h4>
-                        <p data-i18n="info-card-calendar-desc">Рядом с кнопкой переключения темы есть иконка календаря. Нажав её, вы сможете посмотреть удобный календарь на текущий месяц для планирования.</p>
-                    </div>
+                    <!-- ГОРЯЧИЕ КЛАВИШИ -->
+                    <details>
+                        <summary>
+                            <div class="accordion-icon-wrap">
+                                <i data-lucide="keyboard"></i> <span data-i18n="info-acc-shortcuts-title">Горячие клавиши</span>
+                            </div>
+                            <i data-lucide="chevron-down" class="chevron"></i>
+                        </summary>
+                        <div class="info-accordion-content">
+                            <ul>
+                                <li><strong>Enter</strong> — <span data-i18n="info-acc-key-enter">Нажмите после ввода названия города для мгновенного поиска.</span></li>
+                                <li><strong>Esc / Клик вне окна</strong> — <span data-i18n="info-acc-key-esc">Быстро закрывает любые информационные окна, модалки и графики.</span></li>
+                            </ul>
+                        </div>
+                    </details>
 
-                    <div class="info-card">
-                        <i data-lucide="navigation" class="info-icon"></i>
-                        <h4 data-i18n="info-card-location-title">Моё местоположение</h4>
-                        <p data-i18n="info-card-location-desc">Нажмите на кнопку с иконкой "прицела" (возле поиска или в блоке карточки), чтобы наш сервис автоматически нашел вас по GPS и показал самую точную погоду.</p>
-                    </div>
                 </div>
             </div>
         </div>
