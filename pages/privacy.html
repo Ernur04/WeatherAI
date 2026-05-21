@@ -55,9 +55,9 @@
     </header>
 
     <nav class="main-nav">
-        <a href="about.html" data-i18n="footer-about">О проекте</a>
-        <a href="privacy.html" class="active-link" data-i18n="footer-privacy">Конфиденциальность</a>
-        <a href="contact.html" data-i18n="footer-contact">Контакты</a>
+        <a href="about.html" class="nav-item" data-i18n="footer-about">О проекте</a>
+        <a href="privacy.html" class="nav-item active-link" data-i18n="footer-privacy">Конфиденциальность</a>
+        <a href="contact.html" class="nav-item" data-i18n="footer-contact">Контакты</a>
     </nav>
 
     <main class="privacy-main">
@@ -65,56 +65,85 @@
             <h1 class="section-title" data-i18n="privacy-title">Политика конфиденциальности</h1>
 
             <div class="text-block">
-                <p data-i18n="privacy-date">Дата последнего обновления: 14 марта 2026</p>
+                <p data-i18n="privacy-date">Дата последнего обновления: 21 мая 2026</p>
 
                 <h3 data-i18n="privacy-sec1-title">1. Общие положения</h3>
-                <p data-i18n="privacy-sec1-desc">Мы серьезно относимся к вашей конфиденциальности. Этот документ
-                    описывает, как WeatherAI обрабатывает
-                    данные при использовании нашего веб-приложения.</p>
+                <p data-i18n="privacy-sec1-desc">Мы серьезно относимся к вашей конфиденциальности. Этот документ описывает, как WeatherAI обрабатывает данные при использовании нашего веб-приложения и связанных с ним сервисов (включая Telegram-бота).</p>
 
                 <h3 data-i18n="privacy-sec2-title">2. Сбор и использование данных</h3>
-                <p><strong data-i18n="privacy-sec2-strong">Мы не собираем личные данные.</strong> <span
-                        data-i18n="privacy-sec2-desc">WeatherAI работает преимущественно на стороне клиента.</span>
-                </p>
-                <ul class="feature-list">
-                    <li><strong data-i18n="privacy-geo-title">Геолокация:</strong> <span
-                            data-i18n="privacy-geo-desc">Используется только для получения данных о погоде в вашем
-                            текущем
-                            местоположении. Координаты отправляются в API Open-Meteo, но не сохраняются на наших
-                            серверах.</span>
-                    </li>
-                    <li><strong data-i18n="privacy-local-title">Локальное хранилище:</strong> <span
-                            data-i18n="privacy-local-desc">Мы используем LocalStorage вашего браузера для сохранения
-                            ваших настроек (тема, язык) и истории поиска городов. Эти данные хранятся только на вашем
-                            устройстве.</span></li>
-                </ul>
+                <p><strong data-i18n="privacy-sec2-strong">Мы минимизируем сбор личных данных.</strong> <span data-i18n="privacy-sec2-desc">Основная часть WeatherAI работает на стороне клиента.</span></p>
+                
+                <div class="table-container">
+                    <table class="privacy-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 30%;" data-i18n="privacy-th-type">Тип данных</th>
+                                <th style="width: 70%;" data-i18n="privacy-th-desc">Цель и способ обработки</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong data-i18n="privacy-geo-title">Геолокация</strong></td>
+                                <td data-i18n="privacy-geo-desc">Используется только для получения данных о погоде в вашем текущем местоположении. Координаты отправляются в API Open-Meteo, но не сохраняются на наших серверах.</td>
+                            </tr>
+                            <tr>
+                                <td><strong data-i18n="privacy-local-title">Локальное хранилище</strong></td>
+                                <td data-i18n="privacy-local-desc">Мы используем LocalStorage вашего браузера для сохранения ваших настроек (тема, язык) и истории поиска городов. Эти данные хранятся только на вашем устройстве.</td>
+                            </tr>
+                            <tr>
+                                <td><strong data-i18n="privacy-tg-title">Telegram-бот</strong></td>
+                                <td data-i18n="privacy-tg-desc">При использовании нашего Telegram-бота обрабатываются только технические ID пользователя, выбранный город или переданная геопозиция для корректной отправки прогнозов. Мы не собираем ваши номера телефонов или личные переписки.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <h3 data-i18n="privacy-sec3-title">3. Сторонние сервисы и технологии</h3>
                 <p data-i18n="privacy-sec3-desc">Мы используем следующие технологии и сторонние сервисы, которые могут обрабатывать технические данные:</p>
-                <ul class="tech-list">
-                    <li><strong data-i18n="privacy-api-title">Open-Meteo API:</strong> <span
-                            data-i18n="privacy-api-desc">Для получения погодных данных.</span></li>
-                    <li><strong data-i18n="privacy-map-title">OpenStreetMap & Leaflet:</strong> <span
-                            data-i18n="privacy-map-desc">Для отображения карт.</span></li>
-                    <li><strong data-i18n="privacy-ai-title">ИИ Алгоритмы:</strong> <span
-                            data-i18n="privacy-ai-desc">WeatherAI использует алгоритмы для формирования советов (одежда, зонт). Мы не передаем ваши личные данные сторонним ИИ-моделям в открытом виде для обучения.</span></li>
-                </ul>
+                
+                <div class="table-container">
+                    <table class="privacy-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 30%;" data-i18n="privacy-th-tech">Технология / Сервис</th>
+                                <th style="width: 70%;" data-i18n="privacy-th-desc">Назначение</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong data-i18n="privacy-api-title">Open-Meteo API</strong></td>
+                                <td data-i18n="privacy-api-desc">Для получения актуальных погодных данных.</td>
+                            </tr>
+                            <tr>
+                                <td><strong data-i18n="privacy-map-title">OpenStreetMap & Leaflet</strong></td>
+                                <td data-i18n="privacy-map-desc">Для отображения интерактивных карт.</td>
+                            </tr>
+                            <tr>
+                                <td><strong data-i18n="privacy-services-title">Информационные сервисы</strong></td>
+                                <td data-i18n="privacy-services-desc">Данные для дополнительных страниц (лунный календарь, астрологические прогнозы/гороскопы) генерируются локально или запрашиваются из открытых источников без привязки к вашей личности.</td>
+                            </tr>
+                            <tr>
+                                <td><strong data-i18n="privacy-ai-title">ИИ Алгоритмы</strong></td>
+                                <td data-i18n="privacy-ai-desc">WeatherAI использует алгоритмы для формирования персонализированных советов (одежда, зонт). Мы не передаем ваши личные данные сторонним ИИ-моделям в открытом виде для обучения.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <h3 data-i18n="privacy-sec4-title">4. Cookies</h3>
-                <p data-i18n="privacy-sec4-desc">Мы не используем отслеживающие куки (tracking cookies). Мы используем
-                    только технически необходимые механизмы для сохранения ваших предпочтений.</p>
+                <p data-i18n="privacy-sec4-desc">Мы не используем отслеживающие куки (tracking cookies). Мы используем только технически необходимые механизмы для сохранения ваших предпочтений и выбранного языка интерфейса.</p>
 
                 <h3 data-i18n="privacy-sec5-title">5. Экспорт и обработка данных</h3>
                 <p data-i18n="privacy-sec5-desc">Функционал экспорта данных (JSON, CSV, Excel) работает полностью на стороне вашего браузера. Никакие сформированные отчеты не отправляются на наши серверы и сохраняются только на вашем устройстве.</p>
 
                 <h3 data-i18n="privacy-sec6-title">6. Безопасность</h3>
-                <p data-i18n="privacy-sec6-desc">Несмотря на то, что мы не храним личные данные, мы применяем современные стандарты веб-безопасности и HTTPS-шифрование для защиты процесса передачи технической информации.</p>
+                <p data-i18n="privacy-sec6-desc">Несмотря на то, что мы не храним личные данные, мы применяем современные стандарты веб-безопасности, протоколы EmailJS для обратной связи и HTTPS-шифрование для защиты процесса передачи технической информации.</p>
 
                 <h3 data-i18n="privacy-sec7-title">7. Изменения в политике</h3>
-                <p data-i18n="privacy-sec7-desc">Мы оставляем за собой право вносить изменения в эту Политику по мере расширения функционалов (например, внедрения Telegram-ботов или новых API).</p>
+                <p data-i18n="privacy-sec7-desc">Мы оставляем за собой право вносить изменения в эту Политику по мере расширения функционала платформы. Новые версии политики вступают в силу с момента их публикации на этой странице.</p>
 
                 <h3 data-i18n="privacy-sec8-title">8. Контакты</h3>
-                <p data-i18n="privacy-sec8-desc">Если у вас есть вопросы по поводу нашей политики конфиденциальности, пожалуйста, свяжитесь с нами через соответствующую страницу.</p>
+                <p data-i18n="privacy-sec8-desc">Если у вас есть вопросы по поводу нашей политики конфиденциальности, пожалуйста, свяжитесь с нами через страницу контактов.</p>
 
                 <div class="cta-block">
                     <a href="../index.html" class="back-btn">

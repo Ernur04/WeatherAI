@@ -449,3 +449,103 @@
     width: 18px;
     height: 18px;
 }
+
+/* Адаптивные контейнеры таблиц */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin: 24px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+/* Стилизация интерактивных таблиц */
+.privacy-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    text-align: left;
+    background: var(--bg-card);
+}
+
+.privacy-table th {
+    background-color: rgba(168, 85, 247, 0.06); /* Легкий оттенок акцентного цвета */
+    color: var(--text-main);
+    font-weight: 700;
+    padding: 14px 16px;
+    border-bottom: 2px solid var(--border);
+}
+
+.privacy-table td {
+    padding: 14px 16px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+}
+
+.privacy-table tbody tr td:first-child strong {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.privacy-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.02); /* Эффект наведения */
+}
+
+.privacy-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==================== ОБНОВЛЕННАЯ СТИЛЬНАЯ НАВИГАЦИЯ ==================== */
+.main-nav {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    background: rgba(255, 255, 255, 0.03); /* Эффект стекла */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    padding: 6px;
+    border-radius: 14px;
+    margin: 15px auto 25px auto;
+    gap: 4px;
+}
+
+/* Стилизация вкладок меню */
+.main-nav .nav-item {
+    position: relative;
+    padding: 10px 22px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 10px;
+    z-index: 2;
+    transition: color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Эффект наведения мыши */
+.main-nav .nav-item:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Активная страница (Подсветка) */
+.main-nav .nav-item.active-link {
+    color: #ffffff !important;
+    background: var(--primary) !important;
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.25); /* Неоновое свечение */
+}
+
+/* Фикс для активной ссылки (убираем старое нижнее подчеркивание) */
+.main-nav .nav-item.active-link::after {
+    display: none !important;
+}
+
+/* Стили для центрирования навигации внутри футера */
+.footer-links {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}

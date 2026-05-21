@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-i18n-page-title="page-title-contact">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Контакты – WeatherAI</title>
+    <title>WeatherAI – Контакты</title>
 
     <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
 
@@ -56,9 +56,9 @@
     </header>
 
     <nav class="main-nav">
-        <a href="about.html" data-i18n="footer-about">О проекте</a>
-        <a href="privacy.html" data-i18n="footer-privacy">Конфиденциальность</a>
-        <a href="contact.html" class="active-link" data-i18n="footer-contact">Контакты</a>
+        <a href="about.html" class="nav-item" data-i18n="footer-about">О проекте</a>
+        <a href="privacy.html" class="nav-item" data-i18n="footer-privacy">Конфиденциальность</a>
+        <a href="contact.html" class="nav-item active-link" data-i18n="footer-contact">Контакты</a>
     </nav>
 
     <main class="contact-main">
@@ -100,10 +100,17 @@
                     </div>
 
                     <div class="social-links">
-                        <a href="https://www.instagram.com/ernur2004internet?igsh=MWRlYXIyNndtczA3Zg=="
-                            class="social-btn"><i data-lucide="instagram"></i></a>
-                        <a href="https://t.me/god2075" class="social-btn"><i data-lucide="send"></i></a>
-                        <a href="https://github.com/Ernur04" class="social-btn"><i data-lucide="github"></i></a>
+                        <a href="https://t.me/god2075" class="social-btn">
+                            <i data-lucide="message-circle"></i>
+                        </a>
+                        
+                        <a href="https://www.instagram.com/ernur2004internet?igsh=MWRlYXIyNndtczA3Zg==" class="social-btn">
+                            <i data-lucide="user"></i>
+                        </a>
+                        
+                        <a href="https://github.com/Ernur04" class="social-btn">
+                            <i data-lucide="code-2"></i>
+                        </a>
                     </div>
                 </div>
 
@@ -162,47 +169,72 @@
     <script src="../js/language.js"></script>
     <script src="../js/calendar.js"></script>
     <script src="../js/scroll.js"></script>
-    <script>
-        // Инициализация основных функций
-        document.addEventListener('DOMContentLoaded', () => {
+<script>
+    // Объект с текстами для процесса отправки (подстраивается под локализацию)
+    const formStates = {
+        ru: { sending: 'Отправка...', success: 'Успешно отправлено!', error: 'Ошибка отправки. Попробуйте позже.' },
+        kk: { sending: 'Жіберілуде...', success: 'Сәтті жіберілді!', error: 'Жіберу қатесі. Кейінірек қайталаңыз.' },
+        en: { sending: 'Sending...', success: 'Successfully sent!', error: 'Sending error. Please try again later.' }
+    };
+
+    // Инициализация основных функций при загрузке страницы
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') {
             lucide.createIcons();
-            if (typeof initTheme === 'function') initTheme();
-            if (typeof initLanguage === 'function') initLanguage();
-        });
+        }
+        if (typeof initTheme === 'function') initTheme();
+        if (typeof initLanguage === 'function') initLanguage();
+    });
 
-        // Инициализация верным ключом из вашего скриншота
-        emailjs.init("19hajHSEQw-4Br9Re");
+    // Инициализация EmailJS вашим публичным ключом
+    emailjs.init("19hajHSEQw-4Br9Re");
 
-        document.getElementById('contact-form').addEventListener('submit', function (event) {
-            event.preventDefault();
+    // Обработчик отправки формы
+    document.getElementById('contact-form').addEventListener('submit', function (event) {
+        event.preventDefault();
 
-            const submitBtn = this.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Отправка...';
-            submitBtn.disabled = true;
+        // Определяем текущий язык сайта (смотрим на <select id="lang-select">)
+        const langSelect = document.getElementById('lang-select');
+        const currentLang = langSelect ? langSelect.value : 'ru';
+        const states = formStates[currentLang] || formStates.ru;
 
-            const templateParams = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                message: document.getElementById('message').value,
-                title: "WeatherAI: Новое сообщение",
-                time: new Date().toLocaleString()
-            };
+        const submitBtn = this.querySelector('.submit-btn');
+        const originalText = submitBtn.textContent;
+        
+        // Визуальное изменение кнопки во время отправки
+        submitBtn.textContent = states.sending;
+        submitBtn.disabled = true;
 
-            // Используйте ваш ID сервиса и ID шаблона
-            emailjs.send('service_cz4pisk', 'template_wtcu0ig', templateParams)
-                .then(() => {
-                    alert('Успешно отправлено!');
-                    document.getElementById('contact-form').reset();
-                }, (err) => {
-                    alert('Ошибка: ' + JSON.stringify(err));
-                })
-                .finally(() => {
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
-                });
-        });
-    </script>
+        // Сбор параметров для шаблона EmailJS
+        const templateParams = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            message: document.getElementById('message').value,
+            title: "WeatherAI: Новое сообщение",
+            time: new Date().toLocaleString()
+        };
+
+        // Отправка через ваш Сервис и Шаблон
+        emailjs.send('service_cz4pisk', 'template_wtcu0ig', templateParams)
+            .then(() => {
+                alert(states.success);
+                document.getElementById('contact-form').reset();
+            }, (err) => {
+                // Если это известная нам ошибка авторизации Gmail API
+                if (err.text && err.text.includes('Gmail_API')) {
+                    alert('Ошибка: Проблема с авторизацией почты на сервере. Администратор уже уведомлен. Пожалуйста, свяжитесь через соцсети.');
+                } else {
+                    alert(states.error + ' (' + err.status + ')');
+                }
+                console.error('EmailJS Error:', err);
+            })
+            .finally(() => {
+                // Возвращаем кнопку в исходное состояние
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+    });
+</script>
 
 </body>
 

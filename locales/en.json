@@ -504,5 +504,6 @@
     "info-acc-glo-desc3": "The maximum distance at which objects can be distinguished. If visibility is low (up to 1 km), there is a thick fog or snowstorm outside.",
     "info-acc-shortcuts-title": "Hotkeys",
     "info-acc-key-enter": "Press after entering a city name for an instant search.",
-    "info-acc-key-esc": "Quickly closes any info windows, modals, and charts."
+    "info-acc-key-esc": "Quickly closes any info windows, modals, and charts.",
+    "page-title-contact": "WeatherAI – Contacts"
 }
